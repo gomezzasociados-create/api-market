@@ -3,122 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linda Mamá Spa - POS</title>
+    <title>Linda Mamá Spa - POS Neón</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        :root { --violeta-profundo: #100118; --violeta-tarjeta: #1c0229; --fucsia-neon: #ff00ff; --cyan-neon: #00e5ff; --blanco-puro: #ffffff; }
+        body { background-color: var(--violeta-profundo); color: var(--blanco-puro); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+        /* HEADER POS */
+        .navbar-cyber { background: rgba(28, 2, 41, 0.95); border-bottom: 2px solid var(--cyan-neon); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); margin-bottom: 20px;}
+        .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; color: var(--blanco-puro) !important; text-shadow: 0 0 10px var(--cyan-neon); letter-spacing: 1px; }
 
         /* Contenedor Principal */
-        .pos-container { height: 100vh; padding: 20px; }
+        .pos-container { height: calc(100vh - 80px); padding: 0 20px; }
 
         /* Contenedor de Servicios con Scroll */
-        .contenedor-servicios { max-height: 65vh; overflow-y: auto; overflow-x: hidden; }
+        .contenedor-servicios { max-height: 75vh; overflow-y: auto; overflow-x: hidden; padding-right: 10px; }
 
         /* Estilo de las Tarjetas de Tratamiento */
         .card-servicio {
-            background: #1e1e1e;
-            border: 2px solid #333;
-            border-radius: 12px;
+            background: linear-gradient(145deg, var(--violeta-tarjeta), #2a0342);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
             height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .card-servicio:hover, .card-servicio:active {
-            border-color: #ff00ff;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
-            background: #252525;
+            border-color: var(--cyan-neon);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
+            background: #2a0342;
         }
-        .card-servicio h5 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #fff;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .card-servicio .precio { color: #ff00ff; font-weight: bold; font-size: 1.1rem; }
+        .card-servicio h5 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; color: var(--blanco-puro); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-servicio .precio { color: var(--cyan-neon); font-weight: 800; font-size: 1.2rem; text-shadow: 0 0 10px rgba(0,229,255,0.3); }
 
         /* Barra Lateral del Carrito */
         .carrito {
-            background: #1e1e1e;
-            border-radius: 15px;
+            background: rgba(28, 2, 41, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
             padding: 25px;
-            height: 90vh;
-            border-left: 4px solid #ff00ff;
+            height: 85vh;
+            border: 1px solid var(--fucsia-neon);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
             position: sticky;
             top: 20px;
             display: flex;
             flex-direction: column;
         }
 
-        .btn-fucsia { background: linear-gradient(135deg, #ff00ff 0%, #c01a7c 100%); border: none; color: white; font-weight: 800; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,0,255,0.3); }
-        .btn-fucsia:hover, .btn-fucsia:active { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255,0,255,0.6); }
+        .btn-fucsia { background: var(--fucsia-neon); border: none; color: white; font-weight: 800; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,0,255,0.3); letter-spacing: 1px;}
+        .btn-fucsia:hover, .btn-fucsia:active { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255,0,255,0.6); background: #d000d0; color: white;}
 
-        .item-carrito { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 12px 0; font-size: 0.95rem; }
+        .item-carrito { display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,0,255,0.3); padding: 12px 0; font-size: 0.95rem; }
 
-        #lista-busqueda { position: absolute; z-index: 1000; width: 100%; background: #2d2d2d; border-radius: 0 0 10px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .cliente-opcion { padding: 12px; cursor: pointer; border-bottom: 1px solid #3d3d3d; }
-        .cliente-opcion:hover { background: #ff00ff; color: white; }
+        #lista-busqueda { position: absolute; z-index: 1000; width: 100%; background: var(--violeta-tarjeta); border: 1px solid var(--cyan-neon); border-top: none; border-radius: 0 0 10px 10px; box-shadow: 0 5px 15px rgba(0,229,255,0.2); }
+        .cliente-opcion { padding: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); transition: 0.2s;}
+        .cliente-opcion:hover { background: rgba(0,229,255,0.2); color: var(--cyan-neon); padding-left: 18px;}
 
-        /* Inputs oscuros */
-        .input-dark { background-color: #2a2a2a; border: 1px solid #444; color: white; }
-        .input-dark:focus { background-color: #2a2a2a; color: white; border-color: #ff00ff; box-shadow: 0 0 5px rgba(255,0,255,0.5); }
-        .input-dark:disabled { background-color: #1a1a1a; color: #777; border-color: #333; }
+        /* Inputs oscuros Neón */
+        .input-dark { background-color: #100118; border: 1px solid rgba(255,255,255,0.2); color: white; }
+        .input-dark:focus { background-color: #100118; color: white; border-color: var(--fucsia-neon); box-shadow: 0 0 10px rgba(255,0,255,0.4); }
+        .input-dark:disabled { background-color: rgba(255,255,255,0.05); color: #888; border-color: transparent; }
 
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #ff00ff; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: var(--violeta-profundo); }
+        ::-webkit-scrollbar-thumb { background: var(--cyan-neon); border-radius: 10px; }
 
         /* 🔥 MAGIA PARA CELULARES 🔥 */
         @media (max-width: 768px) {
             body { padding-bottom: 20px; }
             .pos-container { height: auto; padding: 10px; }
-            .contenedor-servicios { max-height: 40vh; border-bottom: 1px solid #333; padding-bottom: 15px; } /* Más cortito para que se vea el carrito */
+            .contenedor-servicios { max-height: 40vh; border-bottom: 1px solid var(--fucsia-neon); padding-bottom: 15px; }
             .card-servicio { height: auto; min-height: 110px; padding: 8px; }
             .card-servicio h5 { font-size: 0.85rem; }
             .card-servicio .precio { font-size: 1rem; }
-            .carrito { height: auto; position: relative; top: 0; border-left: none; border-top: 4px solid #ff00ff; margin-top: 20px; padding: 15px; }
-            #items-pos { max-height: 200px; } /* Límite para el carrito en móvil */
+            .carrito { height: auto; position: relative; top: 0; margin-top: 20px; padding: 15px; }
+            #items-pos { max-height: 200px; }
         }
     </style>
 </head>
 <body>
 
+<nav class="navbar navbar-expand navbar-cyber">
+    <div class="container-fluid px-3 px-md-4">
+        <a class="navbar-brand m-0" href="/admin"><i class="bi bi-stars me-1"></i>Linda Mamá <span class="text-white fw-light fs-6 ms-2 d-none d-md-inline">| Punto de Venta</span></a>
+
+        <div class="d-flex align-items-center">
+            <span class="badge border border-info text-info p-2 fs-6" id="badge-vendedor" style="background: rgba(0,229,255,0.1);"><i class="bi bi-person-circle"></i> Cargando...</span>
+            <a href="/admin" class="btn btn-sm btn-outline-light ms-3"><i class="bi bi-arrow-left-circle"></i> Volver</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container-fluid pos-container">
     <div class="row">
         <div class="col-md-7 col-lg-8 px-2 px-md-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 style="font-weight: 800; color: #fff;">✨ Punto de Venta</h3>
-                <span class="badge bg-dark border border-secondary p-2 d-none d-md-block">Terminal 01</span>
-            </div>
 
-            <div class="position-relative mb-3">
-                <label class="form-label text-secondary small fw-bold">BUSCAR CLIENTA REGISTRADA</label>
+            <div class="position-relative mb-4">
+                <label class="form-label text-info small fw-bold"><i class="bi bi-search"></i> BUSCAR CLIENTA REGISTRADA</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-dark border-secondary text-secondary">🔍</span>
-                    <input type="text" id="input-buscador" class="form-control bg-dark text-white border-secondary"
-                           placeholder="Buscar por nombre..." onkeyup="buscarCliente()">
+                    <span class="input-group-text border-info text-info" style="background: var(--violeta-tarjeta);"><i class="bi bi-people-fill"></i></span>
+                    <input type="text" id="input-buscador" class="form-control input-dark border-info" placeholder="Escribe el nombre de la clienta..." onkeyup="buscarCliente()">
                 </div>
                 <div id="lista-busqueda"></div>
             </div>
 
             <div class="row contenedor-servicios pe-2 mx-0">
-                <div class="col-6 col-md-6 col-lg-4 mb-3 px-1" th:each="s : ${servicios}">
-                    <div class="card card-servicio"
-                         th:data-id="${s.id}"
-                         th:data-nombre="${s.nombre}"
-                         th:data-precio="${s.precio}"
-                         onclick="capturarServicio(this)">
+                <div class="col-6 col-md-6 col-lg-4 mb-3 px-2" th:each="s : ${servicios}">
+                    <div class="card card-servicio" th:data-id="${s.id}" th:data-nombre="${s.nombre}" th:data-precio="${s.precio}" onclick="capturarServicio(this)">
                         <h5 th:text="${s.nombre}">Tratamiento</h5>
                         <div class="precio" th:text="'$' + ${#numbers.formatInteger(s.precio, 0, 'POINT')}">$0</div>
                     </div>
@@ -127,27 +130,25 @@
         </div>
 
         <div class="col-md-5 col-lg-4 mt-3 mt-md-0">
-            <div class="carrito shadow-lg">
+            <div class="carrito">
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0 fw-bold" style="color:#ff00ff;">🛒 Carrito</h5>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="limpiarCliente()" id="btn-limpiar" style="display:none; font-size: 0.75rem;">
-                        Limpiar Clienta
-                    </button>
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2">
+                    <h5 class="mb-0 fw-bold" style="color: var(--fucsia-neon);"><i class="bi bi-cart-check-fill"></i> Resumen de Venta</h5>
+                    <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="limpiarCliente()" id="btn-limpiar" style="display:none; font-size: 0.75rem;"><i class="bi bi-x-circle"></i> Soltar Clienta</button>
                 </div>
 
-                <div class="p-3 mb-3" style="background: #252525; border-radius: 10px; border: 1px dashed #555;">
+                <div class="p-3 mb-3 border border-secondary rounded" style="background: rgba(255,255,255,0.02);">
                     <div class="mb-2">
-                        <label class="form-label small text-secondary fw-bold mb-1">NOMBRE COMPLETO <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">NOMBRE COMPLETO <span class="text-danger">*</span></label>
                         <input type="text" id="cliente-nombre" class="form-control form-control-sm input-dark" placeholder="Ej: María Gómez">
                     </div>
                     <div class="row g-2">
                         <div class="col-6">
-                            <label class="form-label small text-secondary fw-bold mb-1">WHATSAPP</label>
+                            <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">WHATSAPP</label>
                             <input type="text" id="cliente-telefono" class="form-control form-control-sm input-dark" placeholder="+569...">
                         </div>
                         <div class="col-6">
-                            <label class="form-label small text-secondary fw-bold mb-1">CORREO</label>
+                            <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">CORREO</label>
                             <input type="email" id="cliente-correo" class="form-control form-control-sm input-dark" placeholder="@">
                         </div>
                     </div>
@@ -155,37 +156,34 @@
                 </div>
 
                 <div class="mb-2">
-                    <label class="form-label small text-secondary fw-bold mb-1">FECHA Y HORA</label>
-                    <input type="datetime-local" id="fecha-servicio" class="form-control form-control-sm input-dark">
+                    <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">FECHA Y HORA DE CITA</label>
+                    <input type="datetime-local" id="fecha-servicio" class="form-control form-control-sm input-dark text-info">
                 </div>
 
-                <hr class="border-secondary my-2">
-
-                <div id="items-pos" style="flex-grow: 1; overflow-y: auto;">
-                    <div class="text-center text-secondary small mt-4">
-                        Toca los servicios para agregarlos aquí
+                <div id="items-pos" class="mt-2 mb-2" style="flex-grow: 1; overflow-y: auto;">
+                    <div class="text-center text-muted small mt-4 opacity-50">
+                        <i class="bi bi-hand-index-thumb fs-1 d-block mb-2"></i>
+                        Toca los servicios a la izquierda<br>para agregarlos al carrito
                     </div>
                 </div>
 
-                <hr class="border-secondary my-2">
-
-                <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-                    <span class="h6 mb-0 text-secondary fw-bold">TOTAL</span>
-                    <span id="total-final" class="h2 mb-0" style="color: #ff00ff; font-weight: 900;">$0</span>
+                <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top border-secondary mb-3">
+                    <span class="h6 mb-0 fw-bold text-white">TOTAL A COBRAR</span>
+                    <span id="total-final" class="h2 mb-0" style="color: var(--cyan-neon); font-weight: 900; text-shadow: 0 0 15px rgba(0,229,255,0.4);">$0</span>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label small text-secondary fw-bold mb-1">MÉTODO DE PAGO</label>
-                    <select id="metodo-pago" class="form-select input-dark">
-                        <option value="EFECTIVO">💵 Efectivo (Caja)</option>
+                    <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">MÉTODO DE PAGO</label>
+                    <select id="metodo-pago" class="form-select input-dark border-info fw-bold text-info">
+                        <option value="EFECTIVO">💵 Efectivo (Caja Fija)</option>
                         <option value="TARJETA">💳 Tarjeta (Transbank)</option>
                         <option value="TRANSFERENCIA">🏦 Transferencia Bancaria</option>
                         <option value="MERCADO_PAGO">📱 Link de Mercado Pago</option>
                     </select>
                 </div>
 
-                <button class="btn btn-fucsia w-100 py-3 mt-auto rounded text-uppercase" onclick="confirmarVenta()">
-                    Cobrar Ahora
+                <button class="btn btn-fucsia w-100 py-3 rounded text-uppercase fs-5" onclick="confirmarVenta()">
+                    <i class="bi bi-check2-circle me-1"></i> Procesar Venta
                 </button>
             </div>
         </div>
@@ -195,10 +193,17 @@
 <script>
     let carrito = [];
 
+    // --- MAGIA: LEER QUIÉN INICIÓ SESIÓN DESDE EL ADMIN ---
+    let vendedorActual = localStorage.getItem('spa_usuario') || 'Caja General';
+
     window.onload = () => {
+        // Colocar la fecha actual
         const ahora = new Date();
         ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
         document.getElementById('fecha-servicio').value = ahora.toISOString().slice(0,16);
+
+        // Mostrar el nombre de quien cobra
+        document.getElementById('badge-vendedor').innerHTML = `<i class="bi bi-person-badge"></i> Atiende: ${vendedorActual}`;
     };
 
     function buscarCliente() {
@@ -211,7 +216,8 @@
                 let html = '';
                 data.forEach(c => {
                     html += `<div class="cliente-opcion" onclick="seleccionarCliente(${c.id}, '${c.nombre}', '${c.telefono || ''}', '${c.correo || ''}')">
-                                <strong>${c.nombre}</strong> <br> <small class="text-muted">${c.telefono || 'Sin teléfono'}</small>
+                                <i class="bi bi-person-check text-info me-2"></i><strong>${c.nombre}</strong> <br>
+                                <small class="text-muted ms-4">${c.telefono || 'Sin teléfono'}</small>
                              </div>`;
                 });
                 document.getElementById('lista-busqueda').innerHTML = html;
@@ -259,7 +265,7 @@
     function renderizarCarrito() {
         const div = document.getElementById('items-pos');
         if (carrito.length === 0) {
-            div.innerHTML = '<div class="text-center text-secondary small mt-4">Toca los servicios para agregarlos aquí</div>';
+            div.innerHTML = '<div class="text-center text-muted small mt-4 opacity-50"><i class="bi bi-hand-index-thumb fs-1 d-block mb-2"></i>Toca los servicios a la izquierda<br>para agregarlos al carrito</div>';
             document.getElementById('total-final').innerText = "$0";
             return;
         }
@@ -270,9 +276,9 @@
             total += item.precio;
             div.innerHTML += `
                 <div class="item-carrito align-items-center">
-                    <span style="flex:1;">${item.nombre}</span>
-                    <span class="fw-bold me-2 text-white">$${item.precio.toLocaleString('es-CL')}</span>
-                    <button class="btn btn-sm btn-outline-danger border-0 p-1 lh-1" onclick="quitar(${index})" title="Quitar">✕</button>
+                    <span style="flex:1; color: var(--blanco-puro); font-weight:600;"><i class="bi bi-check2 text-info me-1"></i>${item.nombre}</span>
+                    <span class="fw-bold mx-2" style="color: var(--fucsia-neon);">$${item.precio.toLocaleString('es-CL')}</span>
+                    <button class="btn btn-sm btn-outline-danger border-0 p-1 lh-1" onclick="quitar(${index})" title="Quitar"><i class="bi bi-trash-fill"></i></button>
                 </div>`;
         });
         document.getElementById('total-final').innerText = "$" + total.toLocaleString('es-CL');
@@ -292,12 +298,16 @@
         const fecha = document.getElementById('fecha-servicio').value;
         if (!fecha) return alert("⚠️ Seleccione una fecha para la cita.");
 
+        // AQUÍ ADJUNTAMOS EL NOMBRE DEL CAJERO AL NOMBRE DEL TRATAMIENTO
+        const serviciosAgrupados = carrito.map(i => i.nombre).join(" + ");
+        const nombreConFirma = `${serviciosAgrupados} [Cobró: ${vendedorActual}]`;
+
         const venta = {
             clienteId: document.getElementById('cliente-id').value || null,
             nuevoClienteNombre: nombreCliente,
             nuevoClienteTelefono: document.getElementById('cliente-telefono').value.trim(),
             nuevoClienteCorreo: document.getElementById('cliente-correo').value.trim(),
-            nombreTratamiento: carrito.map(i => i.nombre).join(" + "),
+            nombreTratamiento: nombreConFirma, // Se manda firmado al Admin
             totalPagado: carrito.reduce((sum, i) => sum + i.precio, 0),
             metodoPago: document.getElementById('metodo-pago').value,
             fechaHora: fecha,
@@ -306,7 +316,7 @@
 
         const btn = document.querySelector('.btn-fucsia');
         btn.disabled = true;
-        btn.innerText = "Procesando...";
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Procesando...`;
 
         fetch('/api/pos/venta-directa', {
             method: 'POST',
@@ -318,14 +328,14 @@
             if (data.startsWith('http')) {
                 window.location.href = data;
             } else {
-                alert("🎉 Venta registrada correctamente en el sistema.");
+                alert("🎉 ¡Venta registrada exitosamente!");
                 location.reload();
             }
         })
         .catch(err => {
-            alert("Ocurrió un error al procesar la venta.");
+            alert("Ocurrió un error al procesar la venta. Revise su conexión.");
             btn.disabled = false;
-            btn.innerText = "Cobrar Ahora";
+            btn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Procesar Venta`;
             console.error(err);
         });
     }

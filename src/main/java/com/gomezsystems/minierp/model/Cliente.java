@@ -13,13 +13,17 @@ public class Cliente {
     private String nombre;
     private String telefono;
     private String correo;
-    private String cumpleanos; // Guardaremos algo como "15 de Mayo" o "1990-05-15"
+    private String cumpleanos;
 
     @Column(columnDefinition = "TEXT")
     private String notasMedicas;
 
     @Column(columnDefinition = "TEXT")
-    private String historialCompras; // Aquí anotaremos qué ha comprado o datos clave
+    private String historialCompras;
+
+    // NUEVO: Aquí guardaremos la Ficha Antropométrica completa comprimida
+    @Column(columnDefinition = "LONGTEXT")
+    private String kardexJson;
 
     public Cliente() {}
 
@@ -44,4 +48,7 @@ public class Cliente {
 
     public String getHistorialCompras() { return historialCompras; }
     public void setHistorialCompras(String historialCompras) { this.historialCompras = historialCompras; }
+
+    public String getKardexJson() { return kardexJson; }
+    public void setKardexJson(String kardexJson) { this.kardexJson = kardexJson; }
 }

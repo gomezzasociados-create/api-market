@@ -13,10 +13,16 @@
         :root { --violeta-profundo: #100118; --violeta-tarjeta: #1c0229; --fucsia-neon: #ff00ff; --cyan-neon: #00e5ff; --blanco-puro: #ffffff; }
         body { background-color: var(--violeta-profundo); font-family: 'Poppins', sans-serif; color: var(--blanco-puro); padding-bottom: 50px; overflow-x: hidden; }
 
+        /* PANTALLA DE LOGIN */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--violeta-profundo); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .login-box { background: rgba(28, 2, 41, 0.9); border: 2px solid var(--fucsia-neon); padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(255,0,255,0.2); }
+        .pin-input { background: #100118; color: var(--cyan-neon); font-size: 2.5rem; text-align: center; letter-spacing: 20px; border: 1px solid var(--cyan-neon); border-radius: 10px; width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold;}
+        .pin-input:focus { outline: none; box-shadow: 0 0 15px rgba(0,229,255,0.5); }
+        #app-dashboard { display: none; }
+
         .navbar-cyber { background: rgba(28, 2, 41, 0.95); border-bottom: 2px solid var(--fucsia-neon); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); backdrop-filter: blur(10px); }
         .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; color: var(--blanco-puro) !important; text-shadow: 0 0 10px var(--fucsia-neon); letter-spacing: 1px; }
 
-        /* Magia para las Pestañas */
         .nav-tabs { border-bottom: 1px solid rgba(0, 229, 255, 0.3); flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding-bottom: 5px; }
         .nav-tabs::-webkit-scrollbar { height: 4px; }
         .nav-tabs::-webkit-scrollbar-thumb { background: var(--cyan-neon); border-radius: 4px; }
@@ -28,7 +34,7 @@
         .card-stat:hover { transform: translateY(-5px); border-color: var(--cyan-neon); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
         .stat-icon { font-size: 2.5rem; color: var(--fucsia-neon); text-shadow: 0 0 15px var(--fucsia-neon); }
 
-        .table-cyber { background-color: var(--violeta-tarjeta); color: white; border-radius: 10px; overflow: hidden; margin-bottom: 0; min-width: 600px; /* Evita que la tabla se apachurre demasiado */ }
+        .table-cyber { background-color: var(--violeta-tarjeta); color: white; border-radius: 10px; overflow: hidden; margin-bottom: 0; min-width: 600px; }
         .table-cyber th { background-color: #2a0342; color: var(--cyan-neon); border-bottom: 2px solid var(--fucsia-neon); text-transform: uppercase; font-size: 0.9rem; }
         .table-cyber td { border-color: rgba(255, 255, 255, 0.1); vertical-align: middle; background: transparent; color: white; font-size: 0.9rem; }
         .table-cyber tbody tr:hover td { background-color: rgba(0, 229, 255, 0.05); }
@@ -44,10 +50,26 @@
         @keyframes latido { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         .modal-content { background-color: #1c0229; border: 2px solid #00e5ff; box-shadow: 0 0 30px rgba(0, 229, 255, 0.4); color: white; border-radius: 15px; }
-        .form-control { background: #100118; border: 1px solid #ff00ff; color: white; }
-        .form-control:focus { background: #100118; color: white; border-color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .form-control, .form-select { background: #100118; border: 1px solid #ff00ff; color: white; }
+        .form-control:focus, .form-select:focus { background: #100118; color: white; border-color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .form-select option { background: #100118; color: white; }
 
-        /* 🔥 AJUSTES PARA CELULAR 🔥 */
+        /* KARDEX ESPECÍFICO */
+        .check-neon { accent-color: var(--fucsia-neon); width: 18px; height: 18px; cursor: pointer; }
+        .table-kardex input { width: 100%; border: none; border-bottom: 1px dashed var(--fucsia-neon); background: transparent; color: white; text-align: center; }
+        .table-kardex input:focus { outline: none; border-bottom: 2px solid var(--cyan-neon); }
+        .bg-neon-contrast { background: var(--cyan-neon) !important; color: #100118 !important; text-shadow: none !important; font-weight: 800; letter-spacing: 1px;}
+        .bg-fucsia-contrast { background: var(--fucsia-neon) !important; color: white !important; font-weight: 800; letter-spacing: 1px;}
+        .imc-table { font-size: 0.7rem; color: #ccc; border-color: rgba(0,229,255,0.2); }
+        .imc-table td { padding: 3px; border-color: rgba(0,229,255,0.2); }
+
+        .contador-pack { background: rgba(255,0,255,0.1); border: 1px solid var(--fucsia-neon); border-radius: 8px; padding: 2px; text-align: center; font-weight: bold; font-size: 1rem; color: var(--cyan-neon); width: 50px; }
+        .contador-pack:focus { background: #100118; border-color: var(--cyan-neon); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
+        .input-fecha-mini { background: #100118; color: var(--cyan-neon); border: 1px solid var(--fucsia-neon); border-radius: 5px; font-size: 0.8rem; padding: 2px; text-align: center; width: 100%; margin-top: 5px; }
+
+        .finanzas-card { background: rgba(0, 229, 255, 0.05); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 15px; }
+        .finanzas-total { font-size: 2rem; font-weight: 900; text-shadow: 0 0 15px rgba(0,229,255,0.5); }
+
         @media (max-width: 768px) {
             .navbar-brand { font-size: 1.1rem; }
             .btn-nav-top { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
@@ -57,252 +79,718 @@
             .header-tab { flex-direction: column; gap: 10px; align-items: stretch !important; text-align: center; }
             .btn-fucsia { width: 100%; }
             .table-responsive { border-radius: 10px; border: 1px solid rgba(255,0,255,0.2); }
-            td.acciones-col { white-space: nowrap; } /* Mantiene los botones en una sola línea */
+            td.acciones-col { white-space: nowrap; }
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand navbar-cyber sticky-top">
-    <div class="container-fluid px-2 px-md-4">
-        <a class="navbar-brand" href="#"><i class="bi bi-stars me-1 text-info"></i>Linda Mamá <span class="d-none d-md-inline">| <span style="font-family: 'Poppins'; font-size: 1rem; color: var(--cyan-neon);">CENTRO DE MANDO</span></span></a>
-        <div class="d-flex gap-2">
-            <a href="/catalogo" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-shop"></i> <span class="d-none d-md-inline">Web</span></a>
-            <a href="/agenda" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-calendar3"></i> <span class="d-none d-md-inline">Agenda</span></a>
-            <a href="/pos" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-calculator"></i> <span class="d-none d-md-inline">POS</span></a>
-        </div>
+<div id="login-screen">
+    <div class="login-box">
+        <h2 class="fw-bold mb-1" style="color: var(--cyan-neon); font-family: 'Playfair Display';"><i class="bi bi-stars"></i> Linda Mamá Spa</h2>
+        <p class="text-white mb-4 opacity-75">Control de Acceso</p>
+        <input type="password" id="input-pin" class="pin-input" maxlength="4" placeholder="••••" onkeypress="if(event.key === 'Enter') validarAcceso()">
+        <button class="btn btn-fucsia w-100 py-3 fs-5 mt-2" onclick="validarAcceso()">INICIAR SESIÓN</button>
+        <p class="small text-muted mt-3 mb-0">PROPIETARIA (7777) | ADMINISTRADORA (1010)</p>
     </div>
-</nav>
+</div>
 
-<div class="container-fluid px-3 mt-3 mt-md-4">
-    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
-        <li class="nav-item" role="presentation"><button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button"><i class="bi bi-speedometer2 me-2"></i>Dashboard</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" id="catalogo-tab" data-bs-toggle="tab" data-bs-target="#catalogo" type="button"><i class="bi bi-box-seam me-2"></i>Catálogo</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button"><i class="bi bi-journal-check me-2"></i>Citas y Pagos</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button"><i class="bi bi-people-fill me-2"></i>CRM Clientes</button></li>
-    </ul>
+<div id="app-dashboard">
+    <nav class="navbar navbar-expand navbar-cyber sticky-top">
+        <div class="container-fluid px-2 px-md-4">
+            <a class="navbar-brand" href="#"><i class="bi bi-stars me-1 text-info"></i>Linda Mamá <span class="d-none d-md-inline">| <span style="font-family: 'Poppins'; font-size: 1rem; color: var(--cyan-neon);">CENTRO DE MANDO</span></span></a>
 
-    <div class="tab-content" id="adminTabsContent">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge me-3" style="background: rgba(255,0,255,0.2); color: var(--fucsia-neon); border: 1px solid var(--fucsia-neon);" id="etiqueta-usuario"><i class="bi bi-person-circle"></i> ...</span>
+                <a href="/catalogo" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-shop"></i> <span class="d-none d-md-inline">Web</span></a>
+                <a href="/agenda" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-calendar3"></i> <span class="d-none d-md-inline">Agenda</span></a>
+                <a href="/pos" class="btn btn-sm btn-outline-light btn-nav-top"><i class="bi bi-calculator"></i> <span class="d-none d-md-inline">POS</span></a>
+            </div>
+        </div>
+    </nav>
 
-        <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-            <div class="row g-3 g-md-4 mb-4">
-                <div class="col-12 col-md-4">
-                    <div class="card-stat p-4 d-flex align-items-center">
-                        <i class="bi bi-cash-stack stat-icon me-3 me-md-4"></i>
-                        <div>
-                            <h6 class="text-muted mb-1 fw-bold">Ingresos Reales</h6>
-                            <h2 class="mb-0 fw-bold" style="color: var(--cyan-neon);"
-                                th:text="${'$' + #numbers.formatInteger(#aggregates.sum(citas.?[estado == 'CONFIRMADO'].![totalPagado]) ?: 0, 0, 'POINT')}">
-                                $0
-                            </h2>
-                        </div>
-                    </div>
-                </div>
+    <div class="container-fluid px-3 mt-3 mt-md-4">
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button"><i class="bi bi-speedometer2 me-2"></i>Dashboard</button></li>
+            <li class="nav-item"><button class="nav-link" id="catalogo-tab" data-bs-toggle="tab" data-bs-target="#catalogo" type="button"><i class="bi bi-box-seam me-2"></i>Catálogo</button></li>
+            <li class="nav-item"><button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button"><i class="bi bi-journal-check me-2"></i>Citas y Pagos</button></li>
+            <li class="nav-item"><button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button"><i class="bi bi-people-fill me-2"></i>CRM Clientes</button></li>
+        </ul>
 
-                <div class="col-12 col-md-4">
-                    <div class="card-stat p-4 d-flex align-items-center">
-                        <i class="bi bi-calendar-event stat-icon me-3 me-md-4" style="color: #ff9800;"></i>
-                        <div>
-                            <h6 class="text-muted mb-1 fw-bold">Citas por Cobrar</h6>
-                            <h2 class="mb-0 fw-bold"
-                                th:text="${citas.?[estado == 'RESERVADO'].size() + ' Pendientes'}">
-                                0
-                            </h2>
-                        </div>
-                    </div>
-                </div>
+        <div class="tab-content" id="adminTabsContent">
 
-                <div class="col-12 col-md-4">
-                    <div class="card-stat p-4 d-flex align-items-center">
-                        <i class="bi bi-people stat-icon me-3 me-md-4" style="color: #28a745;"></i>
-                        <div>
-                            <h6 class="text-muted mb-1 fw-bold">Clientes Registrados</h6>
-                            <h2 class="mb-0 fw-bold" th:text="${#lists.size(clientes)}">0</h2>
-                        </div>
-                    </div>
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                <div class="row g-3 g-md-4 mb-4">
+                    <div class="col-12 col-md-4"><div class="card-stat p-4 d-flex align-items-center"><i class="bi bi-cash-stack stat-icon me-3 me-md-4"></i><div><h6 class="text-muted mb-1 fw-bold">Ingresos Reales</h6><h2 id="monto-ingresos" class="mb-0 fw-bold" style="color: var(--cyan-neon);" th:text="${'$' + #numbers.formatInteger(#aggregates.sum(citas.?[estado == 'CONFIRMADO'].![totalPagado]) ?: 0, 0, 'POINT')}">$0</h2></div></div></div>
+                    <div class="col-12 col-md-4"><div class="card-stat p-4 d-flex align-items-center"><i class="bi bi-calendar-event stat-icon me-3 me-md-4" style="color: #ff9800;"></i><div><h6 class="text-muted mb-1 fw-bold">Citas por Cobrar</h6><h2 class="mb-0 fw-bold" th:text="${citas.?[estado == 'RESERVADO'].size() + ' Pendientes'}">0</h2></div></div></div>
+                    <div class="col-12 col-md-4"><div class="card-stat p-4 d-flex align-items-center"><i class="bi bi-people stat-icon me-3 me-md-4" style="color: #28a745;"></i><div><h6 class="text-muted mb-1 fw-bold">Clientes Registrados</h6><h2 class="mb-0 fw-bold" th:text="${#lists.size(clientes)}">0</h2></div></div></div>
                 </div>
             </div>
-        </div>
 
-        <div class="tab-pane fade" id="catalogo" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3 header-tab">
-                <h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4>
-                <button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento()"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button>
+            <div class="tab-pane fade" id="catalogo" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3 header-tab"><h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4><button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento()"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button></div>
+                <div class="table-responsive"><table class="table table-cyber text-center align-middle"><thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead><tbody><tr th:each="t : ${tratamientos}"><td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td><td class="fw-bold text-start" th:text="${t.nombre}">Nombre</td><td class="fw-bold text-info" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</td><td class="acciones-col"><button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" th:data-id="${t.id}" th:data-nombre="${t.nombre}" th:data-precio="${t.precio}" th:data-cantidad="${t.cantidad}" th:data-imagen="${t.imagen}" th:data-descripcion="${t.descripcion}" onclick="editarServicio(this)"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarServicio(' + ${t.id} + ')'"><i class="bi bi-trash"></i></button></td></tr></tbody></table></div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-cyber text-center align-middle">
-                    <thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead>
-                    <tbody>
-                    <tr th:each="t : ${tratamientos}">
-                        <td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td>
-                        <td class="fw-bold text-start" th:text="${t.nombre}">Nombre</td>
-                        <td class="fw-bold text-info" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</td>
-                        <td class="acciones-col">
-                            <button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" th:data-id="${t.id}" th:data-nombre="${t.nombre}" th:data-precio="${t.precio}" th:data-cantidad="${t.cantidad}" th:data-imagen="${t.imagen}" th:data-descripcion="${t.descripcion}" onclick="editarServicio(this)"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarServicio(' + ${t.id} + ')'"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <div class="tab-pane fade" id="citas" role="tabpanel">
-            <h4 class="fw-bold mb-3 text-center text-md-start" style="color: var(--cyan-neon);">Últimas Reservas</h4>
-            <div class="table-responsive">
-                <table class="table table-cyber align-middle">
-                    <thead><tr><th>Cliente</th><th>Fecha Cita</th><th>Servicio</th><th>Monto</th><th>Estado</th><th>Acciones</th></tr></thead>
-                    <tbody>
-                    <tr th:each="c : ${citas}"
-                        th:style="${c.estado == 'RESERVADO'} ? 'background-color: rgba(255, 152, 0, 0.08);' : ''">
-                        <td class="text-nowrap">
-                            <span class="fw-bold" th:text="${c.cliente != null ? c.cliente.nombre : 'Cliente Web'}">Nombre</span><br>
-                            <small><i class="bi bi-whatsapp text-success"></i> <span th:text="${c.cliente != null ? c.cliente.telefono : '---'}">Tel</span></small>
-                        </td>
-                        <td class="text-white text-nowrap" th:text="${c.fechaHora != null ? #temporals.format(c.fechaHora, 'dd/MM HH:mm') : 'Por definir'}">Fecha</td>
-                        <td th:text="${c.nombreTratamiento}">Servicio</td>
-                        <td class="fw-bold" style="color: var(--fucsia-neon);" th:text="'$' + ${#numbers.formatInteger(c.totalPagado, 0, 'POINT')}">$0</td>
-                        <td>
-                            <span class="badge" th:classappend="${c.estado == 'RESERVADO'} ? 'badge-reservado' : 'badge-confirmado'"
-                                  th:text="${c.estado == 'RESERVADO'} ? 'PENDIENTE' : 'PAGADO'">Estado</span>
-                        </td>
-                        <td class="acciones-col">
-                            <button class="btn btn-sm btn-success me-1 mb-1 mb-md-0" title="Aprobar" th:onclick="'confirmarCita(' + ${c.id} + ')'"><i class="bi bi-check-lg"></i></button>
-                            <button class="btn btn-sm btn-primary me-1 mb-1 mb-md-0" title="Reagendar" th:onclick="'abrirModalReagendar(' + ${c.id} + ')'"><i class="bi bi-clock-history"></i></button>
-                            <button class="btn btn-sm btn-danger mb-1 mb-md-0" title="Cancelar" th:onclick="'cancelarCita(' + ${c.id} + ')'"><i class="bi bi-x-lg"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="tab-pane fade" id="citas" role="tabpanel">
+                <h4 class="fw-bold mb-3 text-center text-md-start" style="color: var(--cyan-neon);">Últimas Reservas</h4>
+                <div class="table-responsive"><table class="table table-cyber align-middle"><thead><tr><th>Cliente</th><th>Fecha Cita</th><th>Servicio</th><th>Monto</th><th>Estado</th><th>Acciones</th></tr></thead><tbody><tr th:each="c : ${citas}" th:style="${c.estado == 'RESERVADO'} ? 'background-color: rgba(255, 152, 0, 0.08);' : ''"><td class="text-nowrap"><span class="fw-bold" th:text="${c.cliente != null ? c.cliente.nombre : 'Cliente Web'}">Nombre</span><br><small><i class="bi bi-whatsapp text-success"></i> <span th:text="${c.cliente != null ? c.cliente.telefono : '---'}">Tel</span></small></td><td class="text-white text-nowrap" th:text="${c.fechaHora != null ? #temporals.format(c.fechaHora, 'dd/MM HH:mm') : 'Por definir'}">Fecha</td><td th:text="${c.nombreTratamiento}">Servicio</td><td class="fw-bold" style="color: var(--fucsia-neon);" th:text="'$' + ${#numbers.formatInteger(c.totalPagado, 0, 'POINT')}">$0</td><td><span class="badge" th:classappend="${c.estado == 'RESERVADO'} ? 'badge-reservado' : 'badge-confirmado'" th:text="${c.estado == 'RESERVADO'} ? 'PENDIENTE' : 'PAGADO'">Estado</span></td><td class="acciones-col"><button class="btn btn-sm btn-success me-1 mb-1 mb-md-0" title="Aprobar" th:onclick="'confirmarCita(' + ${c.id} + ')'"><i class="bi bi-check-lg"></i></button><button class="btn btn-sm btn-primary me-1 mb-1 mb-md-0" title="Reagendar" th:onclick="'abrirModalReagendar(' + ${c.id} + ')'"><i class="bi bi-clock-history"></i></button><button class="btn btn-sm btn-danger mb-1 mb-md-0" title="Cancelar" th:onclick="'cancelarCita(' + ${c.id} + ')'"><i class="bi bi-x-lg"></i></button></td></tr></tbody></table></div>
             </div>
-        </div>
 
-        <div class="tab-pane fade" id="crm" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3 header-tab">
-                <h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Base de Clientes</h4>
-                <button class="btn btn-fucsia px-4" onclick="abrirModalCliente()"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</button>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-cyber align-middle">
-                    <thead><tr><th>Nombre</th><th>WhatsApp</th><th>Acciones</th></tr></thead>
-                    <tbody>
-                    <tr th:each="cli : ${clientes}">
-                        <td class="fw-bold text-white text-nowrap" th:text="${cli.nombre}">Nombre</td>
-                        <td th:text="${cli.telefono}">Tel</td>
-                        <td class="acciones-col">
-                            <button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="editarCliente(this)"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarCliente(' + ${cli.id} + ')'"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="tab-pane fade" id="crm" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3 header-tab">
+                    <h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Base de Clientes</h4>
+                    <button class="btn btn-fucsia px-4" onclick="abrirModalCliente()"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-cyber align-middle">
+                        <thead><tr><th>Nombre</th><th>WhatsApp</th><th>Acciones</th></tr></thead>
+                        <tbody>
+                        <tr th:each="cli : ${clientes}">
+                            <td class="fw-bold text-white text-nowrap" th:text="${cli.nombre}">Nombre</td>
+                            <td th:text="${cli.telefono}">Tel</td>
+                            <td class="acciones-col">
+                                <input type="hidden" th:id="'kjson-' + ${cli.id}" th:value="${cli.kardexJson}">
+                                <button class="btn btn-sm btn-fucsia me-1 mb-1 mb-md-0" title="Ficha Médica (Kardex)" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="abrirKardex(this)">
+                                    <i class="bi bi-file-medical"></i> KARDEX
+                                </button>
+                                <button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" title="Editar Básico" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="editarCliente(this)"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarCliente(' + ${cli.id} + ')'"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="modalReagendar" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);">Reagendar Cita</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <input type="hidden" id="reagendarCitaId">
-                <label class="form-label text-info fw-bold">Nueva Fecha y Hora:</label>
-                <input type="datetime-local" id="nuevaFechaInput" class="form-control">
+    <div class="modal fade" id="modalKardex" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-bottom border-info">
+                    <div>
+                        <h4 class="modal-title fw-bold m-0" style="color: var(--cyan-neon);"><i class="bi bi-clipboard2-pulse"></i> Ficha de Evaluación Antropométrica</h4>
+                        <p class="m-0 text-white opacity-75" id="lblKardexNombre">Cliente: ...</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" style="background-color: var(--violeta-profundo);">
+
+                    <ul class="nav nav-tabs mb-4" id="kardexTabs">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#k-habitos">Hábitos y Salud</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-medidas">Evaluación & Medidas</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-tratamiento">Control de Sesiones</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-finanzas"><i class="bi bi-cash-coin me-1"></i> Finanzas / Abonos</button></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="k-habitos">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="p-3 border border-secondary rounded" style="background: rgba(28, 2, 41, 0.5);">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="fw-bold m-0" style="color: var(--fucsia-neon);">Estadísticas Vitales</h6>
+                                            <div class="input-group input-group-sm w-auto">
+                                                <span class="input-group-text text-info border-secondary" style="background:transparent;">Creación Kardex</span>
+                                                <input type="date" id="k-fecha-creacion" class="form-control" style="max-width:130px;">
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6 col-md-4"><label class="small text-info">Fecha Nac.</label><input type="date" id="k-fecha-nac" class="form-control form-control-sm"></div>
+                                            <div class="col-3 col-md-2"><label class="small text-info">Estatura</label><input type="number" id="k-estatura" class="form-control form-control-sm" placeholder="cm"></div>
+                                            <div class="col-3 col-md-2"><label class="small text-info">Edad</label><input type="number" id="k-edad" class="form-control form-control-sm"></div>
+                                            <div class="col-12 col-md-4"><label class="small text-info">Profesión</label><input type="text" id="k-profesion" class="form-control form-control-sm"></div>
+
+                                            <div class="col-6 col-md-4"><label class="small text-info">Estado Civil</label><select id="k-estado-civil" class="form-select form-select-sm"><option>Soltera(o)</option><option>Casada(o)</option><option>Divorciada(o)</option><option>Viuda(o)</option></select></div>
+                                            <div class="col-3 col-md-2"><label class="small text-info">Embarazos</label><input type="number" id="k-embarazos" class="form-control form-control-sm"></div>
+                                            <div class="col-3 col-md-2"><label class="small text-info">Partos</label><input type="number" id="k-partos" class="form-control form-control-sm"></div>
+                                            <div class="col-6 col-md-2"><label class="small text-info">Edad Últ. Hijo</label><input type="number" id="k-edad-hijo" class="form-control form-control-sm"></div>
+                                            <div class="col-6 col-md-2"><label class="small text-info">M.C.A.</label><input type="text" id="k-mca" class="form-control form-control-sm" placeholder="Método Anti."></div>
+                                        </div>
+
+                                        <h6 class="fw-bold border-bottom pb-2" style="color: var(--fucsia-neon);">Hábitos Diarios</h6>
+                                        <div class="d-flex justify-content-between mb-3 flex-wrap">
+                                            <label><input type="checkbox" class="check-neon me-1" id="hab-desayuno"> Desayuno</label>
+                                            <label><input type="checkbox" class="check-neon me-1" id="hab-almuerzo"> Almuerzo</label>
+                                            <label><input type="checkbox" class="check-neon me-1" id="hab-once"> Once</label>
+                                            <label><input type="checkbox" class="check-neon me-1" id="hab-cena"> Cena</label>
+                                            <label><input type="checkbox" class="check-neon me-1" id="hab-colacion"> Colación</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4"><label><input type="checkbox" class="check-neon me-1" id="hab-tabaco"> Tabaco</label></div>
+                                            <div class="col-4"><label><input type="checkbox" class="check-neon me-1" id="hab-alcohol"> Alcohol</label></div>
+                                            <div class="col-4"><label><input type="checkbox" class="check-neon me-1" id="hab-marihuana"> Marihuana</label></div>
+                                            <div class="col-4 mt-2"><label><input type="checkbox" class="check-neon me-1" id="hab-agua"> Agua</label></div>
+                                            <div class="col-4 mt-2"><label><input type="checkbox" class="check-neon me-1" id="hab-act-fisica"> Act. Física</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 border border-secondary rounded h-100" style="background: rgba(28, 2, 41, 0.5);">
+                                        <h6 class="fw-bold" style="color: var(--fucsia-neon);">Historial Médico</h6>
+                                        <label class="small text-info">Enfermedades Preexistentes</label>
+                                        <textarea class="form-control form-control-sm mb-2" id="hist-enfermedades" rows="2"></textarea>
+                                        <label class="small text-info">Cirugías / Operaciones</label>
+                                        <textarea class="form-control form-control-sm mb-3" id="hist-cirugias" rows="2"></textarea>
+                                        <div class="row">
+                                            <div class="col-6"><label class="small text-info">Digestión</label><select id="hist-digestion" class="form-select form-select-sm"><option>Normal</option><option>Lenta</option><option>Acelerada</option></select></div>
+                                            <div class="col-6"><label class="small text-info">Energía</label><select id="hist-energia" class="form-select form-select-sm"><option>Alta</option><option>Normal</option><option>Fatiga</option></select></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="k-medidas">
+                            <div class="row g-3">
+                                <div class="col-md-9">
+                                    <div class="table-responsive border border-secondary rounded">
+                                        <table class="table table-cyber table-kardex text-center m-0">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-start ps-3 bg-fucsia-contrast w-25 align-middle">EVALUACIÓN MÉDICA</th>
+                                                <th>INICIO <br><input type="date" id="m-fecha-i" class="input-fecha-mini"></th>
+                                                <th>1ra Evaluación <br><input type="date" id="m-fecha-1" class="input-fecha-mini"></th>
+                                                <th>EVAL. FINAL <br><input type="date" id="m-fecha-f" class="input-fecha-mini"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Peso (Kg)</td><td><input type="text" id="m-peso-i"></td><td><input type="text" id="m-peso-1"></td><td><input type="text" id="m-peso-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">IMC / BMI</td><td><input type="text" id="m-imc-i"></td><td><input type="text" id="m-imc-1"></td><td><input type="text" id="m-imc-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Grasa Corporal</td><td><input type="text" id="m-grac-i"></td><td><input type="text" id="m-grac-1"></td><td><input type="text" id="m-grac-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Grasa Visceral</td><td><input type="text" id="m-grav-i"></td><td><input type="text" id="m-grav-1"></td><td><input type="text" id="m-grav-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Masa Muscular</td><td><input type="text" id="m-masm-i"></td><td><input type="text" id="m-masm-1"></td><td><input type="text" id="m-masm-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Calorías Diarias</td><td><input type="text" id="m-cal-i"></td><td><input type="text" id="m-cal-1"></td><td><input type="text" id="m-cal-f"></td></tr>
+                                            <tr><td class="text-start ps-3 fw-bold text-info">Edad Metabólica</td><td><input type="text" id="m-edmet-i"></td><td><input type="text" id="m-edmet-1"></td><td><input type="text" id="m-edmet-f"></td></tr>
+
+                                            <tr><td colspan="4" class="text-start ps-3 bg-neon-contrast">MEDIDAS EN CENTÍMETROS</td></tr>
+                                            <tr><td class="text-start ps-3">Axilar</td><td><input type="text" id="m-axi-i"></td><td><input type="text" id="m-axi-1"></td><td><input type="text" id="m-axi-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Busto</td><td><input type="text" id="m-bus-i"></td><td><input type="text" id="m-bus-1"></td><td><input type="text" id="m-bus-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Cintura</td><td><input type="text" id="m-cin-i"></td><td><input type="text" id="m-cin-1"></td><td><input type="text" id="m-cin-f"></td></tr>
+                                            <tr><td class="text-start ps-3">SOB. Cintura</td><td><input type="text" id="m-sbc-i"></td><td><input type="text" id="m-sbc-1"></td><td><input type="text" id="m-sbc-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Cadera</td><td><input type="text" id="m-cad-i"></td><td><input type="text" id="m-cad-1"></td><td><input type="text" id="m-cad-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Glúteos</td><td><input type="text" id="m-glu-i"></td><td><input type="text" id="m-glu-1"></td><td><input type="text" id="m-glu-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Brazo Derecho</td><td><input type="text" id="m-brd-i"></td><td><input type="text" id="m-brd-1"></td><td><input type="text" id="m-brd-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Brazo Izquierdo</td><td><input type="text" id="m-bri-i"></td><td><input type="text" id="m-bri-1"></td><td><input type="text" id="m-bri-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Pierna Derecha</td><td><input type="text" id="m-pid-i"></td><td><input type="text" id="m-pid-1"></td><td><input type="text" id="m-pid-f"></td></tr>
+                                            <tr><td class="text-start ps-3">Pierna Izquierda</td><td><input type="text" id="m-pii-i"></td><td><input type="text" id="m-pii-1"></td><td><input type="text" id="m-pii-f"></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="border border-info rounded p-2 text-center" style="background: rgba(0,229,255,0.05);">
+                                        <h6 class="fw-bold text-info border-bottom border-info pb-2"><i class="bi bi-info-circle"></i> Tabla de IMC</h6>
+                                        <table class="table table-borderless imc-table m-0">
+                                            <tbody>
+                                            <tr><td class="text-end fw-bold">Menor 18.5</td><td class="text-start">Bajo peso</td></tr>
+                                            <tr><td class="text-end fw-bold">18.5 - 24.9</td><td class="text-start text-success">Normopeso</td></tr>
+                                            <tr><td class="text-end fw-bold">25.0 - 26.9</td><td class="text-start text-warning">Sobrepeso G. I</td></tr>
+                                            <tr><td class="text-end fw-bold">27.0 - 29.9</td><td class="text-start text-warning">Sobrepeso G. II</td></tr>
+                                            <tr><td class="text-end fw-bold">30.0 - 34.9</td><td class="text-start text-danger">Obesidad Tipo I</td></tr>
+                                            <tr><td class="text-end fw-bold">35.0 - 39.9</td><td class="text-start text-danger">Obesidad Tipo II</td></tr>
+                                            <tr><td class="text-end fw-bold">Mayor a 40</td><td class="text-start text-danger">Obes. Mórbida III</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="k-tratamiento">
+                            <div class="row g-3">
+                                <div class="col-md-7">
+                                    <div class="p-3 border border-secondary rounded h-100" style="background: rgba(28, 2, 41, 0.5);">
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                            <h5 class="fw-bold m-0" style="color: var(--cyan-neon);"><i class="bi bi-bag-check-fill"></i> Control de Sesiones</h5>
+                                            <span class="badge bg-secondary">Carga el total y descuenta con "✔ Usar 1"</span>
+                                        </div>
+
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. y tonif. senos</label><div class="d-flex"><input type="number" id="pack-senos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-senos', 'Levant. Senos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reducción Abdomen</label><div class="d-flex"><input type="number" id="pack-abd" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-abd', 'Reduc. Abdomen')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor Brazos</label><div class="d-flex"><input type="number" id="pack-brazos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-brazos', 'Reduc. Brazos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de Piernas</label><div class="d-flex"><input type="number" id="pack-piernas" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-piernas', 'Reduc. Piernas')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de papada</label><div class="d-flex"><input type="number" id="pack-papada" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-papada', 'Reduc. Papada')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. Glúteos</label><div class="d-flex"><input type="number" id="pack-gluteos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-gluteos', 'Levant. Glúteos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Masaje Relajante</label><div class="d-flex"><input type="number" id="pack-masaje" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-masaje', 'Masaje Relaj.')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Limpieza Facial</label><div class="d-flex"><input type="number" id="pack-facial" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-facial', 'Limp. Facial')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Lipólisis</label><div class="d-flex"><input type="number" id="pack-lipo" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-lipo', 'Lipólisis')">✔ Usar 1</button></div></div>
+                                            </div>
+
+                                            <div class="col-md-6 border-start border-secondary">
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Plataforma Vibrat.</label><div class="d-flex"><input type="number" id="pack-plat" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-plat', 'Plat. Vibratoria')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Aplicaciones</label><div class="d-flex"><input type="number" id="pack-aplic" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-aplic', 'Aplicaciones')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Pulpas</label><div class="d-flex"><input type="number" id="pack-pulpas" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-pulpas', 'Pulpas')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Electrodos</label><div class="d-flex"><input type="number" id="pack-electro" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-electro', 'Electrodos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Vacunterapia</label><div class="d-flex"><input type="number" id="pack-vacum" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-vacum', 'Vacunterapia')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Criolipólisis</label><div class="d-flex"><input type="number" id="pack-crio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-crio', 'Criolipólisis')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Galvánica</label><div class="d-flex"><input type="number" id="pack-galva" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-galva', 'Galvánica')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Radio Frecuencia</label><div class="d-flex"><input type="number" id="pack-radio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-radio', 'Radio Frecuencia')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Carboxiterapia</label><div class="d-flex"><input type="number" id="pack-carboxi" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-carboxi', 'Carboxiterapia')">✔ Usar 1</button></div></div>
+                                            </div>
+
+                                            <div class="col-12 mt-3 pt-3 border-top border-info">
+                                                <h6 class="fw-bold mb-3" style="color: var(--fucsia-neon);"><i class="bi bi-stars"></i> Tratamientos Complementarios</h6>
+
+                                                <div class="row align-items-end mb-2">
+                                                    <div class="col-md-5"><label class="small text-info mb-0">Productos</label><input type="text" id="comp-prod-nombre" class="form-control form-control-sm" placeholder="Ej: Crema Reafirmante"></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-prod-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-prod-cant', 'Producto', 'comp-prod-nombre')">✔ Usar 1</button></div></div>
+                                                </div>
+
+                                                <div class="row align-items-end mb-2">
+                                                    <div class="col-md-5"><label class="small text-info mb-0">Ampollas Quema Grasa</label><input type="text" id="comp-amp-nombre" class="form-control form-control-sm" placeholder="Ej: L-Carnitina"></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-amp-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-amp-cant', 'Ampolla', 'comp-amp-nombre')">✔ Usar 1</button></div></div>
+                                                </div>
+
+                                                <div class="row align-items-end mb-2">
+                                                    <div class="col-md-5"><label class="small text-info mb-0">Corriente Galvánica</label><p class="small text-muted mb-0">Sesiones estándar</p></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-galva-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-galva-cant', 'Corr. Galvánica')">✔ Usar 1</button></div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="p-3 border border-info rounded h-100" style="background: rgba(0,229,255,0.05);">
+                                        <h5 class="fw-bold text-info border-bottom border-info pb-2"><i class="bi bi-clock-history"></i> Historial de Visitas</h5>
+                                        <p class="small text-muted mb-2">Al darle a "Usar 1", se registrará aquí automáticamente con la firma de quien lo aplicó.</p>
+
+                                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                            <table class="table table-cyber table-sm text-center">
+                                                <thead style="position: sticky; top: 0; z-index: 1;"><tr><th>Fecha</th><th>Servicio Realizado</th><th>Acción</th></tr></thead>
+                                                <tbody id="tabla-visitas">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="k-finanzas">
+                            <div class="row g-4">
+                                <div class="col-md-5">
+                                    <div class="finanzas-card mb-3 text-center">
+                                        <h6 class="text-info fw-bold">VALOR TOTAL DEL PLAN/PACK</h6>
+                                        <input type="number" id="f-total-pack" class="form-control text-center finanzas-total" placeholder="0" onkeyup="dibujarTablaPagos()">
+                                    </div>
+
+                                    <div class="row g-2 mb-4 text-center">
+                                        <div class="col-6">
+                                            <div class="border border-success rounded p-2" style="background: rgba(40,167,69,0.1);">
+                                                <small class="text-success fw-bold d-block">TOTAL ABONADO</small>
+                                                <span id="f-lbl-abonado" class="fs-5 fw-bold text-success">$0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="border border-danger rounded p-2" style="background: rgba(220,53,69,0.1);">
+                                                <small class="text-danger fw-bold d-block">SALDO PENDIENTE</small>
+                                                <span id="f-lbl-deuda" class="fs-5 fw-bold text-danger">$0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 border border-secondary rounded" style="background: rgba(28, 2, 41, 0.5);">
+                                        <h6 class="fw-bold mb-3" style="color: var(--fucsia-neon);"><i class="bi bi-plus-circle"></i> Registrar Nuevo Abono</h6>
+                                        <div class="mb-2"><label class="small text-info">Fecha del Pago</label><input type="date" id="f-fecha-pago" class="form-control form-control-sm"></div>
+                                        <div class="mb-2"><label class="small text-info">Monto Abonado ($)</label><input type="number" id="f-monto-pago" class="form-control form-control-sm" placeholder="Ej: 50000"></div>
+                                        <div class="mb-3"><label class="small text-info">Método / Nota</label><input type="text" id="f-nota-pago" class="form-control form-control-sm" placeholder="Efectivo, Transferencia..."></div>
+                                        <button class="btn btn-fucsia w-100" onclick="registrarPago()"><i class="bi bi-cash"></i> Agregar Pago al Historial</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <div class="p-3 border border-info rounded h-100" style="background: rgba(0,229,255,0.05);">
+                                        <h5 class="fw-bold text-info border-bottom border-info pb-2"><i class="bi bi-journal-text"></i> Historial de Pagos</h5>
+                                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                            <table class="table table-cyber text-center">
+                                                <thead style="position: sticky; top: 0; z-index: 1;"><tr><th>Fecha</th><th>Abono</th><th>Detalle</th><th>Acción</th></tr></thead>
+                                                <tbody id="tabla-pagos">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-info" style="background-color: var(--violeta-tarjeta);">
+                    <input type="hidden" id="k-cli-id">
+                    <input type="hidden" id="k-cli-nombre">
+                    <input type="hidden" id="k-cli-telefono">
+                    <input type="hidden" id="k-cli-correo">
+                    <input type="hidden" id="k-cli-cumple">
+                    <input type="hidden" id="k-cli-notas">
+                    <input type="hidden" id="k-cli-hist">
+
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar sin Guardar</button>
+                    <button type="button" class="btn btn-fucsia px-5" onclick="guardarKardex()"><i class="bi bi-cloud-arrow-up"></i> Guardar Ficha Completa</button>
+                </div>
             </div>
-            <div class="modal-footer"><button type="button" class="btn btn-cyan w-100 fw-bold" onclick="ejecutarReagendamiento()">Confirmar Cambio</button></div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <form id="formTratamiento">
-                    <input type="hidden" id="tratamientoId">
-                    <div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div>
-                    <div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div></div>
-                    <div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div>
-                    <div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div>
-                </form>
-            </div>
-            <div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarTratamiento()">Guardar Servicio</button></div>
-        </div>
-    </div>
-</div>
+    <div class="modal fade" id="modalReagendar" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);">Reagendar Cita</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="reagendarCitaId"><label class="form-label text-info fw-bold">Nueva Fecha y Hora:</label><input type="datetime-local" id="nuevaFechaInput" class="form-control"></div><div class="modal-footer"><button type="button" class="btn btn-cyan w-100 fw-bold" onclick="ejecutarReagendamiento()">Confirmar Cambio</button></div></div></div></div>
+    <div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formTratamiento"><input type="hidden" id="tratamientoId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div><div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarTratamiento()">Guardar Servicio</button></div></div></div></div>
+    <div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalCliente">Perfil Cliente Básico</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formCliente"><input type="hidden" id="clienteId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre Completo</label><input type="text" class="form-control" id="cliNombre" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">WhatsApp</label><input type="text" class="form-control" id="cliTelefono"></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Cumpleaños</label><input type="date" class="form-control" id="cliCumple"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">Email</label><input type="email" class="form-control" id="cliCorreo"></div><div class="mb-3"><label class="form-label text-info fw-bold">Notas de Recepción</label><textarea class="form-control" id="cliNotas" rows="2"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarCliente()">Guardar Básico</button></div></div></div></div>
 
-<div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalCliente">Perfil Cliente</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <form id="formCliente">
-                    <input type="hidden" id="clienteId">
-                    <div class="mb-3"><label class="form-label text-info fw-bold">Nombre Completo</label><input type="text" class="form-control" id="cliNombre" required></div>
-                    <div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">WhatsApp</label><input type="text" class="form-control" id="cliTelefono"></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Cumpleaños</label><input type="date" class="form-control" id="cliCumple"></div></div>
-                    <div class="mb-3"><label class="form-label text-info fw-bold">Email</label><input type="email" class="form-control" id="cliCorreo"></div>
-                    <div class="mb-3"><label class="form-label text-info fw-bold">Notas Médicas</label><textarea class="form-control" id="cliNotas" rows="2"></textarea></div>
-                </form>
-            </div>
-            <div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarCliente()">Guardar en CRM</button></div>
-        </div>
-    </div>
-</div>
+</div> <script>
+    // ==========================================
+    // LÓGICA DE SEGURIDAD Y ROLES
+    // ==========================================
+    let usuarioActual = "";
+    let rolActual = "";
 
-<script>
-    // --- CITAS ---
+    function validarAcceso() {
+        const pin = document.getElementById('input-pin').value.trim();
+
+        if (pin === '7777') {
+            usuarioActual = "Crisley Paredes";
+            rolActual = "PROPIETARIA";
+        } else if (pin === '1010') {
+            usuarioActual = "Janet";
+            rolActual = "ADMINISTRADORA";
+        } else {
+            alert("ACCESO DENEGADO. PIN INCORRECTO.");
+            return;
+        }
+
+        // GUARDAMOS EN LA MEMORIA DEL NAVEGADOR PARA QUE EL POS LO LEA
+        localStorage.setItem('spa_usuario', usuarioActual);
+
+        // Ocultar login, mostrar sistema
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app-dashboard').style.display = 'block';
+        document.getElementById('etiqueta-usuario').innerHTML = `<i class="bi bi-person-circle"></i> ${usuarioActual}`;
+
+        // Aplicar Restricciones de Administradora
+        if (rolActual === "ADMINISTRADORA") {
+            let ingresosEl = document.getElementById('monto-ingresos');
+            ingresosEl.innerText = "$****";
+            ingresosEl.classList.remove('text-cyan-neon');
+            ingresosEl.style.color = "#888";
+        }
+    }
+
+    // ==========================================
+    // LÓGICA DEL MEGA-KARDEX MÉDICO
+    // ==========================================
+    let visitasKardexTemporal = [];
+    let pagosKardexTemporal = [];
+
+    function abrirKardex(btn) {
+        const id = btn.getAttribute('data-id');
+        const nombre = btn.getAttribute('data-nombre');
+
+        document.getElementById('k-cli-id').value = id; document.getElementById('k-cli-nombre').value = nombre;
+        document.getElementById('k-cli-telefono').value = btn.getAttribute('data-telefono') || '';
+        document.getElementById('k-cli-correo').value = btn.getAttribute('data-correo') || '';
+        document.getElementById('k-cli-cumple').value = btn.getAttribute('data-cumpleanos') || '';
+        document.getElementById('k-cli-notas').value = btn.getAttribute('data-notas') || '';
+        document.getElementById('k-cli-hist').value = btn.getAttribute('data-historial') || '';
+
+        document.getElementById('lblKardexNombre').innerText = "Cliente: " + nombre;
+
+        limpiarFormKardex();
+
+        const jsonStr = document.getElementById('kjson-' + id).value;
+        if(jsonStr && jsonStr.trim() !== '') {
+            try { llenarFormKardex(JSON.parse(jsonStr)); } catch(e) { console.error("Error JSON:", e); }
+        }
+
+        dibujarTablaVisitas();
+        dibujarTablaPagos();
+        new bootstrap.Modal(document.getElementById('modalKardex')).show();
+    }
+
+    // --- LÓGICA: DESCUENTO Y REGISTRO AUTOMÁTICO (CON FIRMA DEL USUARIO) ---
+    function registrarVisitaRapida(inputId, nombreProcedimiento, descInputId = null) {
+        let inputContador = document.getElementById(inputId);
+        let sesionesActuales = parseInt(inputContador.value) || 0;
+
+        if(sesionesActuales <= 0) {
+            alert(`⚠️ El cliente ya no tiene sesiones disponibles de ${nombreProcedimiento}.`);
+            return;
+        }
+
+        let detalle = nombreProcedimiento;
+        if(descInputId) {
+            let extra = document.getElementById(descInputId).value;
+            if(extra) detalle += ` (${extra})`;
+        }
+
+        // FIRMA DIGITAL DEL USUARIO
+        detalle += ` (Aplicó: ${usuarioActual})`;
+
+        inputContador.value = sesionesActuales - 1;
+        const hoy = new Date().toLocaleDateString('es-CL');
+        const nuevaVisita = { id: Date.now(), fecha: hoy, proc: detalle };
+        visitasKardexTemporal.unshift(nuevaVisita);
+        dibujarTablaVisitas();
+    }
+
+    function borrarRegistroVisita(idVisita) {
+        if(confirm("¿Borrar este registro del historial?")){
+            visitasKardexTemporal = visitasKardexTemporal.filter(v => v.id !== idVisita);
+            dibujarTablaVisitas();
+        }
+    }
+
+    function dibujarTablaVisitas() {
+        const tbody = document.getElementById('tabla-visitas');
+        tbody.innerHTML = '';
+        if(visitasKardexTemporal.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-muted small">No hay visitas registradas</td></tr>';
+            return;
+        }
+        visitasKardexTemporal.forEach(v => {
+            tbody.innerHTML += `<tr>
+                <td class="small text-info">${v.fecha}</td>
+                <td class="fw-bold small">${v.proc}</td>
+                <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarRegistroVisita(${v.id})"><i class="bi bi-trash"></i></button></td>
+            </tr>`;
+        });
+    }
+
+    // --- LÓGICA: FINANZAS Y ABONOS (CON FIRMA DEL USUARIO) ---
+    function registrarPago() {
+        const monto = parseFloat(document.getElementById('f-monto-pago').value);
+        if(!monto || monto <= 0) return alert("Ingrese un monto válido");
+
+        const fecha = document.getElementById('f-fecha-pago').value || new Date().toISOString().split('T')[0];
+        let nota = document.getElementById('f-nota-pago').value || 'Abono General';
+
+        // FIRMA DIGITAL DEL USUARIO
+        nota += ` (Recibió: ${usuarioActual})`;
+
+        pagosKardexTemporal.push({ id: Date.now(), fecha: fecha, monto: monto, nota: nota });
+
+        document.getElementById('f-monto-pago').value = '';
+        document.getElementById('f-nota-pago').value = '';
+        dibujarTablaPagos();
+    }
+
+    function borrarPago(id) {
+        if(confirm("¿Eliminar este pago del historial?")) {
+            pagosKardexTemporal = pagosKardexTemporal.filter(p => p.id !== id);
+            dibujarTablaPagos();
+        }
+    }
+
+    function dibujarTablaPagos() {
+        const tbody = document.getElementById('tabla-pagos');
+        tbody.innerHTML = '';
+        let totalAbonado = 0;
+
+        if(pagosKardexTemporal.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-muted small">No hay pagos registrados</td></tr>';
+        } else {
+            pagosKardexTemporal.forEach(p => {
+                totalAbonado += p.monto;
+                tbody.innerHTML += `<tr>
+                    <td class="small">${p.fecha}</td>
+                    <td class="fw-bold text-success">$${p.monto.toLocaleString('es-CL')}</td>
+                    <td class="small">${p.nota}</td>
+                    <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarPago(${p.id})"><i class="bi bi-trash"></i></button></td>
+                </tr>`;
+            });
+        }
+
+        const totalPack = parseFloat(document.getElementById('f-total-pack').value) || 0;
+        const deuda = totalPack - totalAbonado;
+
+        document.getElementById('f-lbl-abonado').innerText = '$' + totalAbonado.toLocaleString('es-CL');
+        const lblDeuda = document.getElementById('f-lbl-deuda');
+        lblDeuda.innerText = '$' + deuda.toLocaleString('es-CL');
+
+        if(deuda > 0) lblDeuda.className = "fs-5 fw-bold text-danger";
+        else if (deuda === 0 && totalPack > 0) lblDeuda.className = "fs-5 fw-bold text-success";
+        else lblDeuda.className = "fs-5 fw-bold text-info";
+    }
+
+    // --- LÓGICA: GUARDAR EN BASE DE DATOS ---
+    function guardarKardex() {
+        const id = document.getElementById('k-cli-id').value; if(!id) return;
+
+        const kardexData = {
+            vitales: {
+                fechaCreacion: document.getElementById('k-fecha-creacion').value, fechaNac: document.getElementById('k-fecha-nac').value,
+                estatura: document.getElementById('k-estatura').value, edad: document.getElementById('k-edad').value,
+                profesion: document.getElementById('k-profesion').value, estadoCivil: document.getElementById('k-estado-civil').value,
+                embarazos: document.getElementById('k-embarazos').value, partos: document.getElementById('k-partos').value,
+                edadHijo: document.getElementById('k-edad-hijo').value, mca: document.getElementById('k-mca').value
+            },
+            habitos: {
+                desayuno: document.getElementById('hab-desayuno').checked, almuerzo: document.getElementById('hab-almuerzo').checked,
+                once: document.getElementById('hab-once').checked, cena: document.getElementById('hab-cena').checked,
+                colacion: document.getElementById('hab-colacion').checked, tabaco: document.getElementById('hab-tabaco').checked,
+                alcohol: document.getElementById('hab-alcohol').checked, marihuana: document.getElementById('hab-marihuana').checked,
+                agua: document.getElementById('hab-agua').checked, actFisica: document.getElementById('hab-act-fisica').checked
+            },
+            historial: {
+                enfermedades: document.getElementById('hist-enfermedades').value, cirugias: document.getElementById('hist-cirugias').value,
+                digestion: document.getElementById('hist-digestion').value, energia: document.getElementById('hist-energia').value
+            },
+            medidas: {
+                fechas: { i: document.getElementById('m-fecha-i').value, m1: document.getElementById('m-fecha-1').value, f: document.getElementById('m-fecha-f').value },
+                peso: { i: document.getElementById('m-peso-i').value, m1: document.getElementById('m-peso-1').value, f: document.getElementById('m-peso-f').value },
+                imc: { i: document.getElementById('m-imc-i').value, m1: document.getElementById('m-imc-1').value, f: document.getElementById('m-imc-f').value },
+                grasaCor: { i: document.getElementById('m-grac-i').value, m1: document.getElementById('m-grac-1').value, f: document.getElementById('m-grac-f').value },
+                grasaVis: { i: document.getElementById('m-grav-i').value, m1: document.getElementById('m-grav-1').value, f: document.getElementById('m-grav-f').value },
+                masaMus: { i: document.getElementById('m-masm-i').value, m1: document.getElementById('m-masm-1').value, f: document.getElementById('m-masm-f').value },
+                calorias: { i: document.getElementById('m-cal-i').value, m1: document.getElementById('m-cal-1').value, f: document.getElementById('m-cal-f').value },
+                edadMet: { i: document.getElementById('m-edmet-i').value, m1: document.getElementById('m-edmet-1').value, f: document.getElementById('m-edmet-f').value },
+                axilar: { i: document.getElementById('m-axi-i').value, m1: document.getElementById('m-axi-1').value, f: document.getElementById('m-axi-f').value },
+                busto: { i: document.getElementById('m-bus-i').value, m1: document.getElementById('m-bus-1').value, f: document.getElementById('m-bus-f').value },
+                cintura: { i: document.getElementById('m-cin-i').value, m1: document.getElementById('m-cin-1').value, f: document.getElementById('m-cin-f').value },
+                sobCintura: { i: document.getElementById('m-sbc-i').value, m1: document.getElementById('m-sbc-1').value, f: document.getElementById('m-sbc-f').value },
+                cadera: { i: document.getElementById('m-cad-i').value, m1: document.getElementById('m-cad-1').value, f: document.getElementById('m-cad-f').value },
+                gluteos: { i: document.getElementById('m-glu-i').value, m1: document.getElementById('m-glu-1').value, f: document.getElementById('m-glu-f').value },
+                brazoD: { i: document.getElementById('m-brd-i').value, m1: document.getElementById('m-brd-1').value, f: document.getElementById('m-brd-f').value },
+                brazoI: { i: document.getElementById('m-bri-i').value, m1: document.getElementById('m-bri-1').value, f: document.getElementById('m-bri-f').value },
+                piernaD: { i: document.getElementById('m-pid-i').value, m1: document.getElementById('m-pid-1').value, f: document.getElementById('m-pid-f').value },
+                piernaI: { i: document.getElementById('m-pii-i').value, m1: document.getElementById('m-pii-1').value, f: document.getElementById('m-pii-f').value }
+            },
+            tratamiento: {
+                senos: document.getElementById('pack-senos').value, abd: document.getElementById('pack-abd').value,
+                brazos: document.getElementById('pack-brazos').value, piernas: document.getElementById('pack-piernas').value,
+                papada: document.getElementById('pack-papada').value, gluteos: document.getElementById('pack-gluteos').value,
+                masaje: document.getElementById('pack-masaje').value, facial: document.getElementById('pack-facial').value,
+                lipo: document.getElementById('pack-lipo').value, plat: document.getElementById('pack-plat').value,
+                aplic: document.getElementById('pack-aplic').value, pulpas: document.getElementById('pack-pulpas').value,
+                electro: document.getElementById('pack-electro').value, vacum: document.getElementById('pack-vacum').value,
+                crio: document.getElementById('pack-crio').value, galva: document.getElementById('pack-galva').value,
+                radio: document.getElementById('pack-radio').value, carboxi: document.getElementById('pack-carboxi').value,
+                compProdNombre: document.getElementById('comp-prod-nombre').value, compProdCant: document.getElementById('comp-prod-cant').value,
+                compAmpNombre: document.getElementById('comp-amp-nombre').value, compAmpCant: document.getElementById('comp-amp-cant').value,
+                compGalvaCant: document.getElementById('comp-galva-cant').value
+            },
+            visitas: visitasKardexTemporal,
+            finanzas: {
+                totalPack: document.getElementById('f-total-pack').value,
+                pagos: pagosKardexTemporal
+            }
+        };
+
+        const payloadCliente = {
+            id: id, nombre: document.getElementById('k-cli-nombre').value, telefono: document.getElementById('k-cli-telefono').value,
+            correo: document.getElementById('k-cli-correo').value, cumpleanos: document.getElementById('k-cli-cumple').value,
+            notasMedicas: document.getElementById('k-cli-notas').value, historialCompras: document.getElementById('k-cli-hist').value,
+            kardexJson: JSON.stringify(kardexData)
+        };
+
+        fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payloadCliente) }).then(()=>window.location.reload());
+    }
+
+    function llenarFormKardex(data) {
+        if(!data) return;
+
+        if(data.vitales) {
+            document.getElementById('k-fecha-creacion').value = data.vitales.fechaCreacion || ''; document.getElementById('k-fecha-nac').value = data.vitales.fechaNac || '';
+            document.getElementById('k-estatura').value = data.vitales.estatura || ''; document.getElementById('k-edad').value = data.vitales.edad || '';
+            document.getElementById('k-profesion').value = data.vitales.profesion || ''; document.getElementById('k-estado-civil').value = data.vitales.estadoCivil || 'Soltera(o)';
+            document.getElementById('k-embarazos').value = data.vitales.embarazos || ''; document.getElementById('k-partos').value = data.vitales.partos || '';
+            document.getElementById('k-edad-hijo').value = data.vitales.edadHijo || ''; document.getElementById('k-mca').value = data.vitales.mca || '';
+        }
+
+        if(data.habitos) {
+            document.getElementById('hab-desayuno').checked = data.habitos.desayuno; document.getElementById('hab-almuerzo').checked = data.habitos.almuerzo;
+            document.getElementById('hab-once').checked = data.habitos.once; document.getElementById('hab-cena').checked = data.habitos.cena;
+            document.getElementById('hab-colacion').checked = data.habitos.colacion; document.getElementById('hab-tabaco').checked = data.habitos.tabaco;
+            document.getElementById('hab-alcohol').checked = data.habitos.alcohol; document.getElementById('hab-marihuana').checked = data.habitos.marihuana;
+            document.getElementById('hab-agua').checked = data.habitos.agua; document.getElementById('hab-act-fisica').checked = data.habitos.actFisica;
+        }
+
+        if(data.historial) {
+            document.getElementById('hist-enfermedades').value = data.historial.enfermedades || ''; document.getElementById('hist-cirugias').value = data.historial.cirugias || '';
+            document.getElementById('hist-digestion').value = data.historial.digestion || 'Normal'; document.getElementById('hist-energia').value = data.historial.energia || 'Normal';
+        }
+
+        if(data.medidas) {
+            if(data.medidas.fechas) {
+                document.getElementById('m-fecha-i').value = data.medidas.fechas.i || '';
+                document.getElementById('m-fecha-1').value = data.medidas.fechas.m1 || '';
+                document.getElementById('m-fecha-f').value = data.medidas.fechas.f || '';
+            }
+
+            ['peso', 'imc', 'grac', 'grav', 'masm', 'cal', 'edmet', 'axi', 'bus', 'cin', 'sbc', 'cad', 'glu', 'brd', 'bri', 'pid', 'pii'].forEach(prefix => {
+                let mapKey = prefix;
+                if(prefix === 'cin') mapKey = 'cintura'; if(prefix === 'cad') mapKey = 'cadera'; if(prefix === 'glu') mapKey = 'gluteos';
+                if(prefix === 'brd') mapKey = 'brazoD'; if(prefix === 'pid') mapKey = 'piernaD'; if(prefix === 'grac') mapKey = 'grasaCor';
+                if(prefix === 'grav') mapKey = 'grasaVis'; if(prefix === 'masm') mapKey = 'masaMus'; if(prefix === 'cal') mapKey = 'calorias';
+                if(prefix === 'edmet') mapKey = 'edadMet'; if(prefix === 'axi') mapKey = 'axilar'; if(prefix === 'bus') mapKey = 'busto';
+                if(prefix === 'sbc') mapKey = 'sobCintura'; if(prefix === 'bri') mapKey = 'brazoI'; if(prefix === 'pii') mapKey = 'piernaI';
+
+                if(data.medidas[mapKey]) {
+                    if(document.getElementById(`m-${prefix}-i`)) document.getElementById(`m-${prefix}-i`).value = data.medidas[mapKey].i || '';
+                    if(document.getElementById(`m-${prefix}-1`)) document.getElementById(`m-${prefix}-1`).value = data.medidas[mapKey].m1 || '';
+                    if(document.getElementById(`m-${prefix}-f`)) document.getElementById(`m-${prefix}-f`).value = data.medidas[mapKey].f || '';
+                }
+            });
+        }
+
+        if(data.tratamiento) {
+            document.getElementById('pack-senos').value = data.tratamiento.senos || 0; document.getElementById('pack-abd').value = data.tratamiento.abd || 0;
+            document.getElementById('pack-brazos').value = data.tratamiento.brazos || 0; document.getElementById('pack-piernas').value = data.tratamiento.piernas || 0;
+            document.getElementById('pack-papada').value = data.tratamiento.papada || 0; document.getElementById('pack-gluteos').value = data.tratamiento.gluteos || 0;
+            document.getElementById('pack-masaje').value = data.tratamiento.masaje || 0; document.getElementById('pack-facial').value = data.tratamiento.facial || 0;
+            document.getElementById('pack-lipo').value = data.tratamiento.lipo || 0; document.getElementById('pack-plat').value = data.tratamiento.plat || 0;
+            document.getElementById('pack-aplic').value = data.tratamiento.aplic || 0; document.getElementById('pack-pulpas').value = data.tratamiento.pulpas || 0;
+            document.getElementById('pack-electro').value = data.tratamiento.electro || 0; document.getElementById('pack-vacum').value = data.tratamiento.vacum || 0;
+            document.getElementById('pack-crio').value = data.tratamiento.crio || 0; document.getElementById('pack-galva').value = data.tratamiento.galva || 0;
+            document.getElementById('pack-radio').value = data.tratamiento.radio || 0; document.getElementById('pack-carboxi').value = data.tratamiento.carboxi || 0;
+
+            document.getElementById('comp-prod-nombre').value = data.tratamiento.compProdNombre || ''; document.getElementById('comp-prod-cant').value = data.tratamiento.compProdCant || 0;
+            document.getElementById('comp-amp-nombre').value = data.tratamiento.compAmpNombre || ''; document.getElementById('comp-amp-cant').value = data.tratamiento.compAmpCant || 0;
+            document.getElementById('comp-galva-cant').value = data.tratamiento.compGalvaCant || 0;
+        }
+
+        if(data.visitas) visitasKardexTemporal = data.visitas;
+
+        if(data.finanzas) {
+            document.getElementById('f-total-pack').value = data.finanzas.totalPack || '';
+            if(data.finanzas.pagos) pagosKardexTemporal = data.finanzas.pagos;
+        }
+    }
+
+    function limpiarFormKardex() {
+        visitasKardexTemporal = [];
+        pagosKardexTemporal = [];
+
+        document.querySelectorAll('#modalKardex input[type="text"], #modalKardex input[type="number"], #modalKardex input[type="date"], #modalKardex textarea').forEach(i => {
+            if(i.id.startsWith('pack-') || i.id.startsWith('comp-') && i.id.endsWith('cant')) i.value = 0;
+            else i.value = '';
+        });
+        document.querySelectorAll('#modalKardex input[type="checkbox"]').forEach(c => c.checked = false);
+
+        document.getElementById('k-fecha-creacion').value = new Date().toISOString().split('T')[0];
+        document.getElementById('f-fecha-pago').value = new Date().toISOString().split('T')[0];
+    }
+
+    // ==========================================
+    // LÓGICA RESTANTE (CITAS, SERVICIOS, CLIENTES BASE)
+    // ==========================================
+    let modalReagendar;
+    function abrirModalReagendar(id) { document.getElementById('reagendarCitaId').value = id; modalReagendar = new bootstrap.Modal(document.getElementById('modalReagendar')); modalReagendar.show(); }
+    function ejecutarReagendamiento() { const id = document.getElementById('reagendarCitaId').value; const fecha = document.getElementById('nuevaFechaInput').value; if(!fecha) return alert("Selecciona fecha"); fetch(`/api/admin/citas/reagendar/${id}?nuevaFecha=${fecha}`, {method:'POST'}).then(res => { if(res.ok) window.location.reload(); else alert("Error al reagendar"); }); }
     function confirmarCita(id) { if(confirm("¿Confirmar pago y aprobar?")) { fetch('/api/admin/citas/confirmar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
     function cancelarCita(id) { if(confirm("¿Eliminar cita definitivamente?")) { fetch('/api/admin/citas/cancelar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
 
-    let modalReagendar;
-    function abrirModalReagendar(id) {
-        document.getElementById('reagendarCitaId').value = id;
-        modalReagendar = new bootstrap.Modal(document.getElementById('modalReagendar'));
-        modalReagendar.show();
-    }
-    function ejecutarReagendamiento() {
-        const id = document.getElementById('reagendarCitaId').value;
-        const fecha = document.getElementById('nuevaFechaInput').value;
-        if(!fecha) return alert("Selecciona fecha");
-        fetch(`/api/admin/citas/reagendar/${id}?nuevaFecha=${fecha}`, {method:'POST'}).then(res => { if(res.ok) window.location.reload(); else alert("Error al reagendar"); });
-    }
-
-    // --- CATALOGO ---
     function abrirModalTratamiento() { document.getElementById('formTratamiento').reset(); document.getElementById('tratamientoId').value = ""; document.getElementById('tituloModalTratamiento').innerText = "Nuevo Servicio"; new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
-    function editarServicio(btn) {
-        document.getElementById('tratamientoId').value = btn.getAttribute('data-id');
-        document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre');
-        document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio');
-        document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad');
-        document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen');
-        document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion');
-        new bootstrap.Modal(document.getElementById('modalTratamiento')).show();
-    }
-    function guardarTratamiento() {
-        const payload = { nombre: document.getElementById('nombreTratamiento').value, precio: parseInt(document.getElementById('precioTratamiento').value), cantidad: document.getElementById('cantidadTratamiento').value, imagen: document.getElementById('imagenTratamiento').value, descripcion: document.getElementById('descripcionTratamiento').value };
-        const id = document.getElementById('tratamientoId').value; if(id) payload.id = id;
-        fetch('/api/tratamientos/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload());
-    }
+    function editarServicio(btn) { document.getElementById('tratamientoId').value = btn.getAttribute('data-id'); document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre'); document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio'); document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad'); document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen'); document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion'); new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
+    function guardarTratamiento() { const payload = { nombre: document.getElementById('nombreTratamiento').value, precio: parseInt(document.getElementById('precioTratamiento').value), cantidad: document.getElementById('cantidadTratamiento').value, imagen: document.getElementById('imagenTratamiento').value, descripcion: document.getElementById('descripcionTratamiento').value }; const id = document.getElementById('tratamientoId').value; if(id) payload.id = id; fetch('/api/tratamientos/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()); }
     function borrarServicio(id) { if(confirm("¿Eliminar servicio?")) { fetch('/api/tratamientos/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
 
-    // --- CRM ---
     function abrirModalCliente() { document.getElementById('formCliente').reset(); document.getElementById('clienteId').value = ""; new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
-    function editarCliente(btn) {
-        document.getElementById('clienteId').value = btn.getAttribute('data-id');
-        document.getElementById('cliNombre').value = btn.getAttribute('data-nombre');
-        document.getElementById('cliTelefono').value = btn.getAttribute('data-telefono');
-        document.getElementById('cliCorreo').value = btn.getAttribute('data-correo');
-        document.getElementById('cliCumple').value = btn.getAttribute('data-cumpleanos');
-        document.getElementById('cliNotas').value = btn.getAttribute('data-notas');
-        new bootstrap.Modal(document.getElementById('modalCliente')).show();
-    }
-    function guardarCliente() {
-        const payload = { nombre: document.getElementById('cliNombre').value, telefono: document.getElementById('cliTelefono').value, correo: document.getElementById('cliCorreo').value, cumpleanos: document.getElementById('cliCumple').value, notasMedicas: document.getElementById('cliNotas').value };
-        const id = document.getElementById('clienteId').value; if(id) payload.id = id;
-        fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload());
-    }
+    function editarCliente(btn) { document.getElementById('clienteId').value = btn.getAttribute('data-id'); document.getElementById('cliNombre').value = btn.getAttribute('data-nombre'); document.getElementById('cliTelefono').value = btn.getAttribute('data-telefono'); document.getElementById('cliCorreo').value = btn.getAttribute('data-correo'); document.getElementById('cliCumple').value = btn.getAttribute('data-cumpleanos'); document.getElementById('cliNotas').value = btn.getAttribute('data-notas'); new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
+    function guardarCliente() { const payload = { nombre: document.getElementById('cliNombre').value, telefono: document.getElementById('cliTelefono').value, correo: document.getElementById('cliCorreo').value, cumpleanos: document.getElementById('cliCumple').value, notasMedicas: document.getElementById('cliNotas').value }; const id = document.getElementById('clienteId').value; if(id) payload.id = id; fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()); }
     function borrarCliente(id) { if(confirm("¿Eliminar cliente?")) { fetch('/api/clientes/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
 </script>
 </body>
