@@ -13,13 +13,32 @@
         :root { --violeta-profundo: #100118; --violeta-tarjeta: #1c0229; --fucsia-neon: #ff00ff; --cyan-neon: #00e5ff; --blanco-puro: #ffffff; }
         body { background-color: var(--violeta-profundo); font-family: 'Poppins', sans-serif; color: var(--blanco-puro); padding-bottom: 50px; overflow-x: hidden; }
 
-        /* PANTALLA DE LOGIN */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--violeta-profundo); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .login-box { background: rgba(28, 2, 41, 0.9); border: 2px solid var(--fucsia-neon); padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(255,0,255,0.2); }
-        .pin-input { background: #100118; color: var(--cyan-neon); font-size: 2.5rem; text-align: center; letter-spacing: 20px; border: 1px solid var(--cyan-neon); border-radius: 10px; width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold;}
-        .pin-input:focus { outline: none; box-shadow: 0 0 15px rgba(0,229,255,0.5); }
-        #app-dashboard { display: none; }
+        /* EFECTOS WAOOO (VISUALES) */
+        .efecto-waooo { animation: estallidoNeon 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: var(--cyan-neon) !important; color: black !important; box-shadow: 0 0 40px var(--cyan-neon), inset 0 0 10px white !important; border-color: var(--cyan-neon) !important; }
+        @keyframes estallidoNeon { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 50px var(--cyan-neon); } 100% { transform: scale(1); } }
+        @keyframes latido { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } }
+        .shake-error { animation: shake 0.4s ease-in-out; border-color: red !important; box-shadow: 0 0 30px rgba(255,0,0,0.8) !important; }
 
+        /* NUEVA PANTALLA DE LOGIN EJECUTIVA (DIFERENTE AL POS) */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #2a0342 0%, var(--violeta-profundo) 80%); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+        .admin-login-card { background: rgba(16, 1, 24, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(0, 229, 255, 0.3); border-top: 4px solid var(--cyan-neon); padding: 50px 40px; border-radius: 12px; text-align: center; width: 90%; max-width: 450px; box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,255,0.1); transition: 0.3s; }
+        .admin-avatar { width: 80px; height: 80px; background: var(--cyan-neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #000; margin: -90px auto 20px; box-shadow: 0 0 20px rgba(0,229,255,0.6); }
+        .admin-pin-input { background: transparent; color: white; font-size: 2rem; text-align: center; letter-spacing: 15px; border: none; border-bottom: 2px solid rgba(255,255,255,0.2); width: 80%; margin: 20px auto 30px; padding: 10px; font-weight: 300; transition: 0.3s;}
+        .admin-pin-input:focus { outline: none; border-bottom-color: var(--cyan-neon); text-shadow: 0 0 10px var(--cyan-neon); }
+        .btn-admin-login { background: transparent; border: 2px solid var(--cyan-neon); color: var(--cyan-neon); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+        .btn-admin-login:hover { background: var(--cyan-neon); color: black; box-shadow: 0 0 20px rgba(0,229,255,0.5); }
+
+        /* PANTALLA DE BIENVENIDA VIP */
+        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(42, 3, 66, 0.95) 0%, rgba(16, 1, 24, 1) 100%); z-index: 10005; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .welcome-text { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: #fff; text-align: center; text-shadow: 0 0 20px var(--fucsia-neon), 0 0 40px var(--cyan-neon); animation: zoomInBounce 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .welcome-sub { color: var(--cyan-neon); font-family: 'Poppins'; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; animation: latido 1.5s infinite; }
+        @keyframes zoomInBounce { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+        #app-dashboard { display: none; animation: fadeIn 1s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* HEADER Y TABS */
         .navbar-cyber { background: rgba(28, 2, 41, 0.95); border-bottom: 2px solid var(--fucsia-neon); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); backdrop-filter: blur(10px); }
         .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; color: var(--blanco-puro) !important; text-shadow: 0 0 10px var(--fucsia-neon); letter-spacing: 1px; }
 
@@ -47,8 +66,6 @@
         .badge-reservado { background-color: #ff9800; color: black; font-weight: bold; box-shadow: 0 0 10px rgba(255, 152, 0, 0.6); animation: latido 2s infinite; }
         .badge-confirmado { background-color: #00e5ff; color: black; font-weight: bold; box-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
 
-        @keyframes latido { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-
         .modal-content { background-color: #1c0229; border: 2px solid #00e5ff; box-shadow: 0 0 30px rgba(0, 229, 255, 0.4); color: white; border-radius: 15px; }
         .form-control, .form-select { background: #100118; border: 1px solid #ff00ff; color: white; }
         .form-control:focus, .form-select:focus { background: #100118; color: white; border-color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
@@ -62,11 +79,9 @@
         .bg-fucsia-contrast { background: var(--fucsia-neon) !important; color: white !important; font-weight: 800; letter-spacing: 1px;}
         .imc-table { font-size: 0.7rem; color: #ccc; border-color: rgba(0,229,255,0.2); }
         .imc-table td { padding: 3px; border-color: rgba(0,229,255,0.2); }
-
         .contador-pack { background: rgba(255,0,255,0.1); border: 1px solid var(--fucsia-neon); border-radius: 8px; padding: 2px; text-align: center; font-weight: bold; font-size: 1rem; color: var(--cyan-neon); width: 50px; }
         .contador-pack:focus { background: #100118; border-color: var(--cyan-neon); box-shadow: 0 0 10px rgba(0,229,255,0.4); }
         .input-fecha-mini { background: #100118; color: var(--cyan-neon); border: 1px solid var(--fucsia-neon); border-radius: 5px; font-size: 0.8rem; padding: 2px; text-align: center; width: 100%; margin-top: 5px; }
-
         .finanzas-card { background: rgba(0, 229, 255, 0.05); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 15px; }
         .finanzas-total { font-size: 2rem; font-weight: 900; text-shadow: 0 0 15px rgba(0,229,255,0.5); }
 
@@ -80,19 +95,35 @@
             .btn-fucsia { width: 100%; }
             .table-responsive { border-radius: 10px; border: 1px solid rgba(255,0,255,0.2); }
             td.acciones-col { white-space: nowrap; }
+            .welcome-text { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
+<audio id="sfx-login-ok" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=success-1-6297.mp3"></audio>
+<audio id="sfx-login-fail" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=error-126627.mp3"></audio>
+<audio id="sfx-waooo" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7314742eaf.mp3?filename=magic-strike-6098.mp3"></audio>
+<audio id="sfx-click" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=bubble-sound-43207.mp3"></audio>
+
 <div id="login-screen">
-    <div class="login-box">
-        <h2 class="fw-bold mb-1" style="color: var(--cyan-neon); font-family: 'Playfair Display';"><i class="bi bi-stars"></i> Linda Mamá Spa</h2>
-        <p class="text-white mb-4 opacity-75">Control de Acceso</p>
-        <input type="password" id="input-pin" class="pin-input" maxlength="4" placeholder="••••" onkeypress="if(event.key === 'Enter') validarAcceso()">
-        <button class="btn btn-fucsia w-100 py-3 fs-5 mt-2" onclick="validarAcceso()">INICIAR SESIÓN</button>
-        <p class="small text-muted mt-3 mb-0">PROPIETARIA (7777) | ADMINISTRADORA (1010)</p>
+    <div class="admin-login-card" id="login-box">
+        <div class="admin-avatar"><i class="bi bi-shield-lock-fill"></i></div>
+        <h3 class="fw-bold mb-1" style="color: var(--cyan-neon); font-family: 'Playfair Display';">Linda Mamá Spa</h3>
+        <p class="text-white mb-4 opacity-50 small text-uppercase tracking-wider">Centro de Mando Administrativo</p>
+
+        <input type="password" id="input-pin" class="admin-pin-input" maxlength="4" placeholder="••••" onkeypress="if(event.key === 'Enter') validarAcceso(event)">
+
+        <button class="btn btn-admin-login w-100 py-3 fs-6 rounded-pill" onclick="validarAcceso(event)">
+            INGRESAR AL SISTEMA <i class="bi bi-arrow-right-short fs-4 align-middle"></i>
+        </button>
     </div>
+</div>
+
+<div id="welcome-screen">
+    <i class="bi bi-shield-check" style="font-size: 5rem; color: var(--cyan-neon); animation: latido 1.5s infinite;"></i>
+    <h1 class="welcome-text" id="welcome-message">¡Bienvenida!</h1>
+    <p class="welcome-sub">Autorización Concedida...</p>
 </div>
 
 <div id="app-dashboard">
@@ -111,10 +142,10 @@
 
     <div class="container-fluid px-3 mt-3 mt-md-4">
         <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
-            <li class="nav-item"><button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button"><i class="bi bi-speedometer2 me-2"></i>Dashboard</button></li>
-            <li class="nav-item"><button class="nav-link" id="catalogo-tab" data-bs-toggle="tab" data-bs-target="#catalogo" type="button"><i class="bi bi-box-seam me-2"></i>Catálogo</button></li>
-            <li class="nav-item"><button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button"><i class="bi bi-journal-check me-2"></i>Citas y Pagos</button></li>
-            <li class="nav-item"><button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button"><i class="bi bi-people-fill me-2"></i>CRM Clientes</button></li>
+            <li class="nav-item"><button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" onclick="reproducirClick()"><i class="bi bi-speedometer2 me-2"></i>Dashboard</button></li>
+            <li class="nav-item"><button class="nav-link" id="catalogo-tab" data-bs-toggle="tab" data-bs-target="#catalogo" type="button" onclick="reproducirClick()"><i class="bi bi-box-seam me-2"></i>Catálogo</button></li>
+            <li class="nav-item"><button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" onclick="reproducirClick()"><i class="bi bi-journal-check me-2"></i>Citas y Pagos</button></li>
+            <li class="nav-item"><button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button" onclick="reproducirClick()"><i class="bi bi-people-fill me-2"></i>CRM Clientes</button></li>
         </ul>
 
         <div class="tab-content" id="adminTabsContent">
@@ -128,7 +159,7 @@
             </div>
 
             <div class="tab-pane fade" id="catalogo" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-3 header-tab"><h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4><button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento()"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button></div>
+                <div class="d-flex justify-content-between align-items-center mb-3 header-tab"><h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4><button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento(event)"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button></div>
                 <div class="table-responsive"><table class="table table-cyber text-center align-middle"><thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead><tbody><tr th:each="t : ${tratamientos}"><td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td><td class="fw-bold text-start" th:text="${t.nombre}">Nombre</td><td class="fw-bold text-info" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</td><td class="acciones-col"><button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" th:data-id="${t.id}" th:data-nombre="${t.nombre}" th:data-precio="${t.precio}" th:data-cantidad="${t.cantidad}" th:data-imagen="${t.imagen}" th:data-descripcion="${t.descripcion}" onclick="editarServicio(this)"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarServicio(' + ${t.id} + ')'"><i class="bi bi-trash"></i></button></td></tr></tbody></table></div>
             </div>
 
@@ -140,7 +171,7 @@
             <div class="tab-pane fade" id="crm" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-3 header-tab">
                     <h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Base de Clientes</h4>
-                    <button class="btn btn-fucsia px-4" onclick="abrirModalCliente()"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</button>
+                    <button class="btn btn-fucsia px-4" onclick="abrirModalCliente(event)"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-cyber align-middle">
@@ -151,9 +182,7 @@
                             <td th:text="${cli.telefono}">Tel</td>
                             <td class="acciones-col">
                                 <input type="hidden" th:id="'kjson-' + ${cli.id}" th:value="${cli.kardexJson}">
-                                <button class="btn btn-sm btn-fucsia me-1 mb-1 mb-md-0" title="Ficha Médica (Kardex)" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="abrirKardex(this)">
-                                    <i class="bi bi-file-medical"></i> KARDEX
-                                </button>
+                                <button class="btn btn-sm btn-fucsia me-1 mb-1 mb-md-0" title="Ficha Médica (Kardex)" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="abrirKardex(this)"><i class="bi bi-file-medical"></i> KARDEX</button>
                                 <button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" title="Editar Básico" th:data-id="${cli.id}" th:data-nombre="${cli.nombre}" th:data-telefono="${cli.telefono}" th:data-correo="${cli.correo}" th:data-cumpleanos="${cli.cumpleanos}" th:data-notas="${cli.notasMedicas}" th:data-historial="${cli.historialCompras}" onclick="editarCliente(this)"><i class="bi bi-pencil"></i></button>
                                 <button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarCliente(' + ${cli.id} + ')'"><i class="bi bi-trash"></i></button>
                             </td>
@@ -178,10 +207,10 @@
                 <div class="modal-body p-4" style="background-color: var(--violeta-profundo);">
 
                     <ul class="nav nav-tabs mb-4" id="kardexTabs">
-                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#k-habitos">Hábitos y Salud</button></li>
-                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-medidas">Evaluación & Medidas</button></li>
-                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-tratamiento">Control de Sesiones</button></li>
-                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-finanzas"><i class="bi bi-cash-coin me-1"></i> Finanzas / Abonos</button></li>
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#k-habitos" onclick="reproducirClick()">Hábitos y Salud</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-medidas" onclick="reproducirClick()">Evaluación & Medidas</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-tratamiento" onclick="reproducirClick()">Control de Sesiones</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#k-finanzas" onclick="reproducirClick()"><i class="bi bi-cash-coin me-1"></i> Finanzas / Abonos</button></li>
                     </ul>
 
                     <div class="tab-content">
@@ -310,45 +339,42 @@
 
                                         <div class="row g-4">
                                             <div class="col-md-6">
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. y tonif. senos</label><div class="d-flex"><input type="number" id="pack-senos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-senos', 'Levant. Senos')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reducción Abdomen</label><div class="d-flex"><input type="number" id="pack-abd" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-abd', 'Reduc. Abdomen')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor Brazos</label><div class="d-flex"><input type="number" id="pack-brazos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-brazos', 'Reduc. Brazos')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de Piernas</label><div class="d-flex"><input type="number" id="pack-piernas" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-piernas', 'Reduc. Piernas')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de papada</label><div class="d-flex"><input type="number" id="pack-papada" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-papada', 'Reduc. Papada')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. Glúteos</label><div class="d-flex"><input type="number" id="pack-gluteos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-gluteos', 'Levant. Glúteos')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Masaje Relajante</label><div class="d-flex"><input type="number" id="pack-masaje" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-masaje', 'Masaje Relaj.')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Limpieza Facial</label><div class="d-flex"><input type="number" id="pack-facial" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-facial', 'Limp. Facial')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Lipólisis</label><div class="d-flex"><input type="number" id="pack-lipo" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida('pack-lipo', 'Lipólisis')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. y tonif. senos</label><div class="d-flex"><input type="number" id="pack-senos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-senos', 'Levant. Senos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reducción Abdomen</label><div class="d-flex"><input type="number" id="pack-abd" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-abd', 'Reduc. Abdomen')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor Brazos</label><div class="d-flex"><input type="number" id="pack-brazos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-brazos', 'Reduc. Brazos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de Piernas</label><div class="d-flex"><input type="number" id="pack-piernas" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-piernas', 'Reduc. Piernas')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Reductor de papada</label><div class="d-flex"><input type="number" id="pack-papada" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-papada', 'Reduc. Papada')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Levant. Glúteos</label><div class="d-flex"><input type="number" id="pack-gluteos" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-gluteos', 'Levant. Glúteos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Masaje Relajante</label><div class="d-flex"><input type="number" id="pack-masaje" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-masaje', 'Masaje Relaj.')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Limpieza Facial</label><div class="d-flex"><input type="number" id="pack-facial" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-facial', 'Limp. Facial')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-white small mb-0 w-50">Lipólisis</label><div class="d-flex"><input type="number" id="pack-lipo" class="contador-pack me-1" min="0" value="0"><button type="button" class="btn btn-sm btn-fucsia py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-lipo', 'Lipólisis')">✔ Usar 1</button></div></div>
                                             </div>
 
                                             <div class="col-md-6 border-start border-secondary">
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Plataforma Vibrat.</label><div class="d-flex"><input type="number" id="pack-plat" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-plat', 'Plat. Vibratoria')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Aplicaciones</label><div class="d-flex"><input type="number" id="pack-aplic" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-aplic', 'Aplicaciones')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Pulpas</label><div class="d-flex"><input type="number" id="pack-pulpas" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-pulpas', 'Pulpas')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Electrodos</label><div class="d-flex"><input type="number" id="pack-electro" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-electro', 'Electrodos')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Vacunterapia</label><div class="d-flex"><input type="number" id="pack-vacum" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-vacum', 'Vacunterapia')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Criolipólisis</label><div class="d-flex"><input type="number" id="pack-crio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-crio', 'Criolipólisis')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Galvánica</label><div class="d-flex"><input type="number" id="pack-galva" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-galva', 'Galvánica')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Radio Frecuencia</label><div class="d-flex"><input type="number" id="pack-radio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-radio', 'Radio Frecuencia')">✔ Usar 1</button></div></div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Carboxiterapia</label><div class="d-flex"><input type="number" id="pack-carboxi" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida('pack-carboxi', 'Carboxiterapia')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Plataforma Vibrat.</label><div class="d-flex"><input type="number" id="pack-plat" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-plat', 'Plat. Vibratoria')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Aplicaciones</label><div class="d-flex"><input type="number" id="pack-aplic" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-aplic', 'Aplicaciones')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Pulpas</label><div class="d-flex"><input type="number" id="pack-pulpas" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-pulpas', 'Pulpas')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Electrodos</label><div class="d-flex"><input type="number" id="pack-electro" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-electro', 'Electrodos')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Vacunterapia</label><div class="d-flex"><input type="number" id="pack-vacum" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-vacum', 'Vacunterapia')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Criolipólisis</label><div class="d-flex"><input type="number" id="pack-crio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-crio', 'Criolipólisis')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Galvánica</label><div class="d-flex"><input type="number" id="pack-galva" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-galva', 'Galvánica')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Radio Frecuencia</label><div class="d-flex"><input type="number" id="pack-radio" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-radio', 'Radio Frecuencia')">✔ Usar 1</button></div></div>
+                                                <div class="d-flex justify-content-between align-items-center mb-2"><label class="text-info small mb-0 w-50">Carboxiterapia</label><div class="d-flex"><input type="number" id="pack-carboxi" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-1" onclick="registrarVisitaRapida(event, 'pack-carboxi', 'Carboxiterapia')">✔ Usar 1</button></div></div>
                                             </div>
 
                                             <div class="col-12 mt-3 pt-3 border-top border-info">
                                                 <h6 class="fw-bold mb-3" style="color: var(--fucsia-neon);"><i class="bi bi-stars"></i> Tratamientos Complementarios</h6>
-
                                                 <div class="row align-items-end mb-2">
                                                     <div class="col-md-5"><label class="small text-info mb-0">Productos</label><input type="text" id="comp-prod-nombre" class="form-control form-control-sm" placeholder="Ej: Crema Reafirmante"></div>
-                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-prod-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-prod-cant', 'Producto', 'comp-prod-nombre')">✔ Usar 1</button></div></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-prod-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida(event, 'comp-prod-cant', 'Producto', 'comp-prod-nombre')">✔ Usar 1</button></div></div>
                                                 </div>
-
                                                 <div class="row align-items-end mb-2">
                                                     <div class="col-md-5"><label class="small text-info mb-0">Ampollas Quema Grasa</label><input type="text" id="comp-amp-nombre" class="form-control form-control-sm" placeholder="Ej: L-Carnitina"></div>
-                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-amp-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-amp-cant', 'Ampolla', 'comp-amp-nombre')">✔ Usar 1</button></div></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-amp-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida(event, 'comp-amp-cant', 'Ampolla', 'comp-amp-nombre')">✔ Usar 1</button></div></div>
                                                 </div>
-
                                                 <div class="row align-items-end mb-2">
                                                     <div class="col-md-5"><label class="small text-info mb-0">Corriente Galvánica</label><p class="small text-muted mb-0">Sesiones estándar</p></div>
-                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-galva-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida('comp-galva-cant', 'Corr. Galvánica')">✔ Usar 1</button></div></div>
+                                                    <div class="col-md-7"><div class="d-flex justify-content-end align-items-end h-100"><input type="number" id="comp-galva-cant" class="contador-pack me-1" min="0" value="0" style="border-color:var(--cyan-neon);"><button type="button" class="btn btn-sm btn-cyan py-0 px-2" onclick="registrarVisitaRapida(event, 'comp-galva-cant', 'Corr. Galvánica')">✔ Usar 1</button></div></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -400,7 +426,7 @@
                                         <div class="mb-2"><label class="small text-info">Fecha del Pago</label><input type="date" id="f-fecha-pago" class="form-control form-control-sm"></div>
                                         <div class="mb-2"><label class="small text-info">Monto Abonado ($)</label><input type="number" id="f-monto-pago" class="form-control form-control-sm" placeholder="Ej: 50000"></div>
                                         <div class="mb-3"><label class="small text-info">Método / Nota</label><input type="text" id="f-nota-pago" class="form-control form-control-sm" placeholder="Efectivo, Transferencia..."></div>
-                                        <button class="btn btn-fucsia w-100" onclick="registrarPago()"><i class="bi bi-cash"></i> Agregar Pago al Historial</button>
+                                        <button class="btn btn-fucsia w-100" onclick="registrarPago(event)"><i class="bi bi-cash"></i> Agregar Pago al Historial</button>
                                     </div>
                                 </div>
 
@@ -431,24 +457,53 @@
                     <input type="hidden" id="k-cli-hist">
 
                     <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar sin Guardar</button>
-                    <button type="button" class="btn btn-fucsia px-5" onclick="guardarKardex()"><i class="bi bi-cloud-arrow-up"></i> Guardar Ficha Completa</button>
+                    <button type="button" class="btn btn-fucsia px-5" onclick="guardarKardex(event)"><i class="bi bi-cloud-arrow-up"></i> Guardar Ficha Completa</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalReagendar" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);">Reagendar Cita</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="reagendarCitaId"><label class="form-label text-info fw-bold">Nueva Fecha y Hora:</label><input type="datetime-local" id="nuevaFechaInput" class="form-control"></div><div class="modal-footer"><button type="button" class="btn btn-cyan w-100 fw-bold" onclick="ejecutarReagendamiento()">Confirmar Cambio</button></div></div></div></div>
-    <div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formTratamiento"><input type="hidden" id="tratamientoId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div><div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarTratamiento()">Guardar Servicio</button></div></div></div></div>
-    <div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalCliente">Perfil Cliente Básico</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formCliente"><input type="hidden" id="clienteId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre Completo</label><input type="text" class="form-control" id="cliNombre" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">WhatsApp</label><input type="text" class="form-control" id="cliTelefono"></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Cumpleaños</label><input type="date" class="form-control" id="cliCumple"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">Email</label><input type="email" class="form-control" id="cliCorreo"></div><div class="mb-3"><label class="form-label text-info fw-bold">Notas de Recepción</label><textarea class="form-control" id="cliNotas" rows="2"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarCliente()">Guardar Básico</button></div></div></div></div>
+    <div class="modal fade" id="modalReagendar" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);">Reagendar Cita</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="reagendarCitaId"><label class="form-label text-info fw-bold">Nueva Fecha y Hora:</label><input type="datetime-local" id="nuevaFechaInput" class="form-control"></div><div class="modal-footer"><button type="button" class="btn btn-cyan w-100 fw-bold" onclick="ejecutarReagendamiento(event)">Confirmar Cambio</button></div></div></div></div>
+    <div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formTratamiento"><input type="hidden" id="tratamientoId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div><div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarTratamiento(event)">Guardar Servicio</button></div></div></div></div>
+    <div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalCliente">Perfil Cliente Básico</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formCliente"><input type="hidden" id="clienteId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre Completo</label><input type="text" class="form-control" id="cliNombre" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">WhatsApp</label><input type="text" class="form-control" id="cliTelefono"></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Cumpleaños</label><input type="date" class="form-control" id="cliCumple"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">Email</label><input type="email" class="form-control" id="cliCorreo"></div><div class="mb-3"><label class="form-label text-info fw-bold">Notas de Recepción</label><textarea class="form-control" id="cliNotas" rows="2"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarCliente(event)">Guardar Básico</button></div></div></div></div>
 
-</div> <script>
+</div>
+<script>
     // ==========================================
-    // LÓGICA DE SEGURIDAD Y ROLES
+    // UTILIDADES: EFECTOS DE SONIDO Y ANIMACIÓN
+    // ==========================================
+    const sfxOk = document.getElementById('sfx-login-ok');
+    const sfxFail = document.getElementById('sfx-login-fail');
+    const sfxWaooo = document.getElementById('sfx-waooo');
+    const sfxClick = document.getElementById('sfx-click');
+
+    function reproducirClick() {
+        sfxClick.currentTime = 0;
+        sfxClick.play().catch(()=>{});
+    }
+
+    function activarEfectoWaooo(botonEvent) {
+        if(botonEvent && botonEvent.currentTarget) {
+            let btn = botonEvent.currentTarget;
+            btn.classList.add('efecto-waooo');
+            setTimeout(() => btn.classList.remove('efecto-waooo'), 600);
+        }
+        sfxWaooo.currentTime = 0;
+        sfxWaooo.play().catch(()=>{});
+    }
+
+    function reproducirError() {
+        sfxFail.currentTime = 0;
+        sfxFail.play().catch(()=>{});
+    }
+
+    // ==========================================
+    // LÓGICA DE SEGURIDAD Y ROLES (ADMIN)
     // ==========================================
     let usuarioActual = "";
     let rolActual = "";
 
-    function validarAcceso() {
+    function validarAcceso(event) {
         const pin = document.getElementById('input-pin').value.trim();
 
         if (pin === '7777') {
@@ -458,25 +513,48 @@
             usuarioActual = "Janet";
             rolActual = "ADMINISTRADORA";
         } else {
-            alert("ACCESO DENEGADO. PIN INCORRECTO.");
+            // Error visual y sonoro
+            reproducirError();
+            const loginBox = document.getElementById('login-box');
+            loginBox.classList.add('shake-error');
+            setTimeout(() => loginBox.classList.remove('shake-error'), 400);
             return;
         }
 
-        // GUARDAMOS EN LA MEMORIA DEL NAVEGADOR PARA QUE EL POS LO LEA
+        // Éxito en el login
+        sfxOk.currentTime = 0; sfxOk.play().catch(()=>{});
         localStorage.setItem('spa_usuario', usuarioActual);
 
-        // Ocultar login, mostrar sistema
+        // Pantalla de Bienvenida Waooo
         document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app-dashboard').style.display = 'block';
-        document.getElementById('etiqueta-usuario').innerHTML = `<i class="bi bi-person-circle"></i> ${usuarioActual}`;
+        const welcomeScreen = document.getElementById('welcome-screen');
+        welcomeScreen.style.display = 'flex';
 
-        // Aplicar Restricciones de Administradora
-        if (rolActual === "ADMINISTRADORA") {
-            let ingresosEl = document.getElementById('monto-ingresos');
-            ingresosEl.innerText = "$****";
-            ingresosEl.classList.remove('text-cyan-neon');
-            ingresosEl.style.color = "#888";
+        const primerNombre = usuarioActual.split(' ')[0];
+        document.getElementById('welcome-message').innerText = "¡Bienvenida " + primerNombre + "!";
+
+        // SALUDO DE VOZ (SÍNTESIS DE VOZ NATIVA)
+        if ('speechSynthesis' in window) {
+            const mensajeVoz = new SpeechSynthesisUtterance("Bienvenida " + primerNombre + ". Iniciando panel de administración.");
+            mensajeVoz.lang = 'es-ES'; // Idioma español
+            mensajeVoz.rate = 1.0;     // Velocidad normal
+            window.speechSynthesis.speak(mensajeVoz);
         }
+
+        // Transición automática al panel en 2.5 segundos
+        setTimeout(() => {
+            sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{}); // Suena mágico al entrar
+            welcomeScreen.style.display = 'none';
+            document.getElementById('app-dashboard').style.display = 'block';
+            document.getElementById('etiqueta-usuario').innerHTML = `<i class="bi bi-person-circle"></i> ${usuarioActual}`;
+
+            if (rolActual === "ADMINISTRADORA") {
+                let ingresosEl = document.getElementById('monto-ingresos');
+                ingresosEl.innerText = "$****";
+                ingresosEl.classList.remove('text-cyan-neon');
+                ingresosEl.style.color = "#888";
+            }
+        }, 2500);
     }
 
     // ==========================================
@@ -486,6 +564,7 @@
     let pagosKardexTemporal = [];
 
     function abrirKardex(btn) {
+        reproducirClick();
         const id = btn.getAttribute('data-id');
         const nombre = btn.getAttribute('data-nombre');
 
@@ -510,15 +589,19 @@
         new bootstrap.Modal(document.getElementById('modalKardex')).show();
     }
 
-    // --- LÓGICA: DESCUENTO Y REGISTRO AUTOMÁTICO (CON FIRMA DEL USUARIO) ---
-    function registrarVisitaRapida(inputId, nombreProcedimiento, descInputId = null) {
+    // --- LÓGICA: DESCUENTO Y REGISTRO AUTOMÁTICO ---
+    function registrarVisitaRapida(event, inputId, nombreProcedimiento, descInputId = null) {
         let inputContador = document.getElementById(inputId);
         let sesionesActuales = parseInt(inputContador.value) || 0;
 
         if(sesionesActuales <= 0) {
+            reproducirError();
             alert(`⚠️ El cliente ya no tiene sesiones disponibles de ${nombreProcedimiento}.`);
             return;
         }
+
+        // EFECTO MÁGICO AL DESCONTAR
+        activarEfectoWaooo(event);
 
         let detalle = nombreProcedimiento;
         if(descInputId) {
@@ -537,6 +620,7 @@
     }
 
     function borrarRegistroVisita(idVisita) {
+        reproducirError(); // Suena la burbuja/error al borrar
         if(confirm("¿Borrar este registro del historial?")){
             visitasKardexTemporal = visitasKardexTemporal.filter(v => v.id !== idVisita);
             dibujarTablaVisitas();
@@ -559,15 +643,15 @@
         });
     }
 
-    // --- LÓGICA: FINANZAS Y ABONOS (CON FIRMA DEL USUARIO) ---
-    function registrarPago() {
+    // --- LÓGICA: FINANZAS Y ABONOS ---
+    function registrarPago(event) {
         const monto = parseFloat(document.getElementById('f-monto-pago').value);
-        if(!monto || monto <= 0) return alert("Ingrese un monto válido");
+        if(!monto || monto <= 0) { reproducirError(); return alert("Ingrese un monto válido"); }
+
+        activarEfectoWaooo(event);
 
         const fecha = document.getElementById('f-fecha-pago').value || new Date().toISOString().split('T')[0];
         let nota = document.getElementById('f-nota-pago').value || 'Abono General';
-
-        // FIRMA DIGITAL DEL USUARIO
         nota += ` (Recibió: ${usuarioActual})`;
 
         pagosKardexTemporal.push({ id: Date.now(), fecha: fecha, monto: monto, nota: nota });
@@ -578,6 +662,7 @@
     }
 
     function borrarPago(id) {
+        reproducirError();
         if(confirm("¿Eliminar este pago del historial?")) {
             pagosKardexTemporal = pagosKardexTemporal.filter(p => p.id !== id);
             dibujarTablaPagos();
@@ -616,8 +701,9 @@
     }
 
     // --- LÓGICA: GUARDAR EN BASE DE DATOS ---
-    function guardarKardex() {
+    function guardarKardex(event) {
         const id = document.getElementById('k-cli-id').value; if(!id) return;
+        activarEfectoWaooo(event);
 
         const kardexData = {
             vitales: {
@@ -686,7 +772,10 @@
             kardexJson: JSON.stringify(kardexData)
         };
 
-        fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payloadCliente) }).then(()=>window.location.reload());
+        // Espera un poco para que se vea el efecto antes de recargar
+        setTimeout(() => {
+            fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payloadCliente) }).then(()=>window.location.reload());
+        }, 800);
     }
 
     function llenarFormKardex(data) {
@@ -778,20 +867,20 @@
     // LÓGICA RESTANTE (CITAS, SERVICIOS, CLIENTES BASE)
     // ==========================================
     let modalReagendar;
-    function abrirModalReagendar(id) { document.getElementById('reagendarCitaId').value = id; modalReagendar = new bootstrap.Modal(document.getElementById('modalReagendar')); modalReagendar.show(); }
-    function ejecutarReagendamiento() { const id = document.getElementById('reagendarCitaId').value; const fecha = document.getElementById('nuevaFechaInput').value; if(!fecha) return alert("Selecciona fecha"); fetch(`/api/admin/citas/reagendar/${id}?nuevaFecha=${fecha}`, {method:'POST'}).then(res => { if(res.ok) window.location.reload(); else alert("Error al reagendar"); }); }
-    function confirmarCita(id) { if(confirm("¿Confirmar pago y aprobar?")) { fetch('/api/admin/citas/confirmar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
-    function cancelarCita(id) { if(confirm("¿Eliminar cita definitivamente?")) { fetch('/api/admin/citas/cancelar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
+    function abrirModalReagendar(id) { reproducirClick(); document.getElementById('reagendarCitaId').value = id; modalReagendar = new bootstrap.Modal(document.getElementById('modalReagendar')); modalReagendar.show(); }
+    function ejecutarReagendamiento(event) { activarEfectoWaooo(event); const id = document.getElementById('reagendarCitaId').value; const fecha = document.getElementById('nuevaFechaInput').value; if(!fecha) return alert("Selecciona fecha"); setTimeout(() => fetch(`/api/admin/citas/reagendar/${id}?nuevaFecha=${fecha}`, {method:'POST'}).then(res => { if(res.ok) window.location.reload(); else alert("Error al reagendar"); }), 800); }
+    function confirmarCita(id) { sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{}); if(confirm("¿Confirmar pago y aprobar?")) { fetch('/api/admin/citas/confirmar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
+    function cancelarCita(id) { reproducirError(); if(confirm("¿Eliminar cita definitivamente?")) { fetch('/api/admin/citas/cancelar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
 
-    function abrirModalTratamiento() { document.getElementById('formTratamiento').reset(); document.getElementById('tratamientoId').value = ""; document.getElementById('tituloModalTratamiento').innerText = "Nuevo Servicio"; new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
-    function editarServicio(btn) { document.getElementById('tratamientoId').value = btn.getAttribute('data-id'); document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre'); document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio'); document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad'); document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen'); document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion'); new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
-    function guardarTratamiento() { const payload = { nombre: document.getElementById('nombreTratamiento').value, precio: parseInt(document.getElementById('precioTratamiento').value), cantidad: document.getElementById('cantidadTratamiento').value, imagen: document.getElementById('imagenTratamiento').value, descripcion: document.getElementById('descripcionTratamiento').value }; const id = document.getElementById('tratamientoId').value; if(id) payload.id = id; fetch('/api/tratamientos/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()); }
-    function borrarServicio(id) { if(confirm("¿Eliminar servicio?")) { fetch('/api/tratamientos/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
+    function abrirModalTratamiento(event) { reproducirClick(); document.getElementById('formTratamiento').reset(); document.getElementById('tratamientoId').value = ""; document.getElementById('tituloModalTratamiento').innerText = "Nuevo Servicio"; new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
+    function editarServicio(btn) { reproducirClick(); document.getElementById('tratamientoId').value = btn.getAttribute('data-id'); document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre'); document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio'); document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad'); document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen'); document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion'); new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
+    function guardarTratamiento(event) { activarEfectoWaooo(event); const payload = { nombre: document.getElementById('nombreTratamiento').value, precio: parseInt(document.getElementById('precioTratamiento').value), cantidad: document.getElementById('cantidadTratamiento').value, imagen: document.getElementById('imagenTratamiento').value, descripcion: document.getElementById('descripcionTratamiento').value }; const id = document.getElementById('tratamientoId').value; if(id) payload.id = id; setTimeout(() => fetch('/api/tratamientos/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()), 800); }
+    function borrarServicio(id) { reproducirError(); if(confirm("¿Eliminar servicio?")) { fetch('/api/tratamientos/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
 
-    function abrirModalCliente() { document.getElementById('formCliente').reset(); document.getElementById('clienteId').value = ""; new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
-    function editarCliente(btn) { document.getElementById('clienteId').value = btn.getAttribute('data-id'); document.getElementById('cliNombre').value = btn.getAttribute('data-nombre'); document.getElementById('cliTelefono').value = btn.getAttribute('data-telefono'); document.getElementById('cliCorreo').value = btn.getAttribute('data-correo'); document.getElementById('cliCumple').value = btn.getAttribute('data-cumpleanos'); document.getElementById('cliNotas').value = btn.getAttribute('data-notas'); new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
-    function guardarCliente() { const payload = { nombre: document.getElementById('cliNombre').value, telefono: document.getElementById('cliTelefono').value, correo: document.getElementById('cliCorreo').value, cumpleanos: document.getElementById('cliCumple').value, notasMedicas: document.getElementById('cliNotas').value }; const id = document.getElementById('clienteId').value; if(id) payload.id = id; fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()); }
-    function borrarCliente(id) { if(confirm("¿Eliminar cliente?")) { fetch('/api/clientes/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
+    function abrirModalCliente(event) { reproducirClick(); document.getElementById('formCliente').reset(); document.getElementById('clienteId').value = ""; new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
+    function editarCliente(btn) { reproducirClick(); document.getElementById('clienteId').value = btn.getAttribute('data-id'); document.getElementById('cliNombre').value = btn.getAttribute('data-nombre'); document.getElementById('cliTelefono').value = btn.getAttribute('data-telefono'); document.getElementById('cliCorreo').value = btn.getAttribute('data-correo'); document.getElementById('cliCumple').value = btn.getAttribute('data-cumpleanos'); document.getElementById('cliNotas').value = btn.getAttribute('data-notas'); new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
+    function guardarCliente(event) { activarEfectoWaooo(event); const payload = { nombre: document.getElementById('cliNombre').value, telefono: document.getElementById('cliTelefono').value, correo: document.getElementById('cliCorreo').value, cumpleanos: document.getElementById('cliCumple').value, notasMedicas: document.getElementById('cliNotas').value }; const id = document.getElementById('clienteId').value; if(id) payload.id = id; setTimeout(() => fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()), 800); }
+    function borrarCliente(id) { reproducirError(); if(confirm("¿Eliminar cliente?")) { fetch('/api/clientes/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
 </script>
 </body>
 </html>
