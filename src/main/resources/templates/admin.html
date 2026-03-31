@@ -86,16 +86,16 @@
         .finanzas-total { font-size: 2rem; font-weight: 900; text-shadow: 0 0 15px rgba(0,229,255,0.5); }
 
         @media (max-width: 768px) {
-            .navbar-brand { font-size: 1.1rem; }
-            .btn-nav-top { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
-            .card-stat { padding: 1.5rem !important; }
-            .stat-icon { font-size: 2rem; }
-            .card-stat h2 { font-size: 1.8rem; }
-            .header-tab { flex-direction: column; gap: 10px; align-items: stretch !important; text-align: center; }
-            .btn-fucsia { width: 100%; }
-            .table-responsive { border-radius: 10px; border: 1px solid rgba(255,0,255,0.2); }
-            td.acciones-col { white-space: nowrap; }
-            .welcome-text { font-size: 2.2rem; }
+        .navbar-brand { font-size: 1.1rem; }
+        .btn-nav-top { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
+        .card-stat { padding: 1.5rem !important; }
+        .stat-icon { font-size: 2rem; }
+        .card-stat h2 { font-size: 1.8rem; }
+        .header-tab { flex-direction: column; gap: 10px; align-items: stretch !important; text-align: center; }
+        .btn-fucsia { width: 100%; }
+        .table-responsive { border-radius: 10px; border: 1px solid rgba(255,0,255,0.2); }
+        td.acciones-col { white-space: nowrap; }
+        .welcome-text { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -159,8 +159,36 @@
             </div>
 
             <div class="tab-pane fade" id="catalogo" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-3 header-tab"><h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4><button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento(event)"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button></div>
-                <div class="table-responsive"><table class="table table-cyber text-center align-middle"><thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead><tbody><tr th:each="t : ${tratamientos}"><td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td><td class="fw-bold text-start" th:text="${t.nombre}">Nombre</td><td class="fw-bold text-info" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</td><td class="acciones-col"><button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0" th:data-id="${t.id}" th:data-nombre="${t.nombre}" th:data-precio="${t.precio}" th:data-cantidad="${t.cantidad}" th:data-imagen="${t.imagen}" th:data-descripcion="${t.descripcion}" onclick="editarServicio(this)"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarServicio(' + ${t.id} + ')'"><i class="bi bi-trash"></i></button></td></tr></tbody></table></div>
+                <div class="d-flex justify-content-between align-items-center mb-3 header-tab">
+                    <h4 class="fw-bold m-0" style="color: var(--cyan-neon);">Gestor de Servicios</h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-warning px-3 fw-bold" onclick="abrirModalPromo(event)"><i class="bi bi-tag-fill me-2"></i>Nueva Promo</button>
+                        <button class="btn btn-fucsia px-4" onclick="abrirModalTratamiento(event)"><i class="bi bi-plus-lg me-2"></i>Nuevo Servicio</button>
+                    </div>
+                </div>
+                <div class="table-responsive"><table class="table table-cyber text-center align-middle"><thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead><tbody><tr th:each="t : ${tratamientos}"><td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td>
+                    <td class="fw-bold text-start">
+                        <span th:text="${t.nombre}">Nombre</span>
+                        <span th:if="${t.isPromoActiva()}" class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem; box-shadow: 0 0 5px rgba(255,193,7,0.5);">OFERTA</span>
+                    </td>
+                    <td class="fw-bold text-info">
+                        <th:block th:if="${t.isPromoActiva()}">
+                            <del class="text-white-50 small" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}"></del><br>
+                            <span class="text-warning" th:text="'$' + ${#numbers.formatDecimal(t.precioPromo, 0, 'POINT', 0, 'POINT')}"></span>
+                        </th:block>
+                        <th:block th:unless="${t.isPromoActiva()}">
+                            <span th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</span>
+                        </th:block>
+                    </td>
+                    <td class="acciones-col">
+                        <button class="btn btn-sm btn-cyan me-1 mb-1 mb-md-0"
+                                th:data-id="${t.id}" th:data-nombre="${t.nombre}" th:data-precio="${t.precio}"
+                                th:data-cantidad="${t.cantidad}" th:data-imagen="${t.imagen}" th:data-descripcion="${t.descripcion}"
+                                th:data-en-promocion="${t.enPromocion}" th:data-precio-promo="${t.precioPromo}"
+                                th:data-inicio-promo="${t.fechaInicioPromo}" th:data-fin-promo="${t.fechaFinPromo}"
+                                onclick="editarServicio(this)"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger mb-1 mb-md-0" th:onclick="'borrarServicio(' + ${t.id} + ')'"><i class="bi bi-trash"></i></button>
+                    </td></tr></tbody></table></div>
             </div>
 
             <div class="tab-pane fade" id="citas" role="tabpanel">
@@ -464,7 +492,58 @@
     </div>
 
     <div class="modal fade" id="modalReagendar" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-sm modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);">Reagendar Cita</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="reagendarCitaId"><label class="form-label text-info fw-bold">Nueva Fecha y Hora:</label><input type="datetime-local" id="nuevaFechaInput" class="form-control"></div><div class="modal-footer"><button type="button" class="btn btn-cyan w-100 fw-bold" onclick="ejecutarReagendamiento(event)">Confirmar Cambio</button></div></div></div></div>
-    <div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formTratamiento"><input type="hidden" id="tratamientoId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div><div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarTratamiento(event)">Guardar Servicio</button></div></div></div></div>
+
+    <div class="modal fade" id="modalTratamiento" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalTratamiento">Añadir Servicio</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formTratamiento" onsubmit="guardarTratamiento(event)">
+                    <div class="modal-body">
+                        <input type="hidden" id="tratamientoId">
+                        <div class="mb-3"><label class="form-label text-info fw-bold">Nombre</label><input type="text" class="form-control" id="nombreTratamiento" required></div>
+                        <div class="row">
+                            <div class="col-6 mb-3"><label class="form-label text-info fw-bold">Precio Regular ($)</label><input type="number" class="form-control" id="precioTratamiento" required></div>
+                            <div class="col-6 mb-3"><label class="form-label text-info fw-bold">Sesiones</label><input type="text" class="form-control" id="cantidadTratamiento"></div>
+                        </div>
+
+                        <div class="border border-warning rounded p-3 mb-3" style="background: rgba(255, 193, 7, 0.05);">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="text-warning fw-bold m-0"><i class="bi bi-tag-fill"></i> Promoción (Opcional)</h6>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enPromocionCheck">
+                                    <label class="form-check-label text-warning small fw-bold" for="enPromocionCheck">Activar</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <label class="form-label text-warning small fw-bold">Precio Promo ($)</label>
+                                    <input type="number" class="form-control border-warning text-warning" id="precioPromoTratamiento">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-warning small fw-bold">Inicio Promo</label>
+                                    <input type="date" class="form-control border-warning text-warning" id="fechaInicioPromoTratamiento">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-warning small fw-bold">Fin Promo</label>
+                                    <input type="date" class="form-control border-warning text-warning" id="fechaFinPromoTratamiento">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3"><label class="form-label text-info fw-bold">URL Imagen</label><input type="url" class="form-control" id="imagenTratamiento"></div>
+                        <div class="mb-3"><label class="form-label text-info fw-bold">Descripción Corta</label><textarea class="form-control" id="descripcionTratamiento" rows="3"></textarea></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-fucsia w-100">Guardar Datos</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold" style="color: var(--cyan-neon);" id="tituloModalCliente">Perfil Cliente Básico</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="formCliente"><input type="hidden" id="clienteId"><div class="mb-3"><label class="form-label text-info fw-bold">Nombre Completo</label><input type="text" class="form-control" id="cliNombre" required></div><div class="row"><div class="col-6 mb-3"><label class="form-label text-info fw-bold">WhatsApp</label><input type="text" class="form-control" id="cliTelefono"></div><div class="col-6 mb-3"><label class="form-label text-info fw-bold">Cumpleaños</label><input type="date" class="form-control" id="cliCumple"></div></div><div class="mb-3"><label class="form-label text-info fw-bold">Email</label><input type="email" class="form-control" id="cliCorreo"></div><div class="mb-3"><label class="form-label text-info fw-bold">Notas de Recepción</label><textarea class="form-control" id="cliNotas" rows="2"></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-fucsia w-100" onclick="guardarCliente(event)">Guardar Básico</button></div></div></div></div>
 
 </div>
@@ -478,23 +557,23 @@
     const sfxClick = document.getElementById('sfx-click');
 
     function reproducirClick() {
-        sfxClick.currentTime = 0;
-        sfxClick.play().catch(()=>{});
+    sfxClick.currentTime = 0;
+    sfxClick.play().catch(()=>{});
     }
 
     function activarEfectoWaooo(botonEvent) {
-        if(botonEvent && botonEvent.currentTarget) {
-            let btn = botonEvent.currentTarget;
-            btn.classList.add('efecto-waooo');
-            setTimeout(() => btn.classList.remove('efecto-waooo'), 600);
-        }
-        sfxWaooo.currentTime = 0;
-        sfxWaooo.play().catch(()=>{});
+    if(botonEvent && botonEvent.currentTarget) {
+    let btn = botonEvent.currentTarget;
+    btn.classList.add('efecto-waooo');
+    setTimeout(() => btn.classList.remove('efecto-waooo'), 600);
+    }
+    sfxWaooo.currentTime = 0;
+    sfxWaooo.play().catch(()=>{});
     }
 
     function reproducirError() {
-        sfxFail.currentTime = 0;
-        sfxFail.play().catch(()=>{});
+    sfxFail.currentTime = 0;
+    sfxFail.play().catch(()=>{});
     }
 
     // ==========================================
@@ -504,57 +583,57 @@
     let rolActual = "";
 
     function validarAcceso(event) {
-        const pin = document.getElementById('input-pin').value.trim();
+    const pin = document.getElementById('input-pin').value.trim();
 
-        if (pin === '7777') {
-            usuarioActual = "Crisley Paredes";
-            rolActual = "PROPIETARIA";
-        } else if (pin === '1010') {
-            usuarioActual = "Janet";
-            rolActual = "ADMINISTRADORA";
-        } else {
-            // Error visual y sonoro
-            reproducirError();
-            const loginBox = document.getElementById('login-box');
-            loginBox.classList.add('shake-error');
-            setTimeout(() => loginBox.classList.remove('shake-error'), 400);
-            return;
-        }
+    if (pin === '7777') {
+    usuarioActual = "Crisley Paredes";
+    rolActual = "PROPIETARIA";
+    } else if (pin === '1010') {
+    usuarioActual = "Janneth";
+    rolActual = "ADMINISTRADORA";
+    } else {
+    // Error visual y sonoro
+    reproducirError();
+    const loginBox = document.getElementById('login-box');
+    loginBox.classList.add('shake-error');
+    setTimeout(() => loginBox.classList.remove('shake-error'), 400);
+    return;
+    }
 
-        // Éxito en el login
-        sfxOk.currentTime = 0; sfxOk.play().catch(()=>{});
-        localStorage.setItem('spa_usuario', usuarioActual);
+    // Éxito en el login
+    sfxOk.currentTime = 0; sfxOk.play().catch(()=>{});
+    localStorage.setItem('spa_usuario', usuarioActual);
 
-        // Pantalla de Bienvenida Waooo
-        document.getElementById('login-screen').style.display = 'none';
-        const welcomeScreen = document.getElementById('welcome-screen');
-        welcomeScreen.style.display = 'flex';
+    // Pantalla de Bienvenida Waooo
+    document.getElementById('login-screen').style.display = 'none';
+    const welcomeScreen = document.getElementById('welcome-screen');
+    welcomeScreen.style.display = 'flex';
 
-        const primerNombre = usuarioActual.split(' ')[0];
-        document.getElementById('welcome-message').innerText = "¡Bienvenida " + primerNombre + "!";
+    const primerNombre = usuarioActual.split(' ')[0];
+    document.getElementById('welcome-message').innerText = "¡Bienvenida " + primerNombre + "!";
 
-        // SALUDO DE VOZ (SÍNTESIS DE VOZ NATIVA)
-        if ('speechSynthesis' in window) {
-            const mensajeVoz = new SpeechSynthesisUtterance("Bienvenida " + primerNombre + ". Iniciando panel de administración.");
-            mensajeVoz.lang = 'es-ES'; // Idioma español
-            mensajeVoz.rate = 1.0;     // Velocidad normal
-            window.speechSynthesis.speak(mensajeVoz);
-        }
+    // SALUDO DE VOZ (SÍNTESIS DE VOZ NATIVA)
+    if ('speechSynthesis' in window) {
+    const mensajeVoz = new SpeechSynthesisUtterance("Bienvenida " + primerNombre + ". Iniciando panel de administración.");
+    mensajeVoz.lang = 'es-ES'; // Idioma español
+    mensajeVoz.rate = 1.0; // Velocidad normal
+    window.speechSynthesis.speak(mensajeVoz);
+    }
 
-        // Transición automática al panel en 2.5 segundos
-        setTimeout(() => {
-            sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{}); // Suena mágico al entrar
-            welcomeScreen.style.display = 'none';
-            document.getElementById('app-dashboard').style.display = 'block';
-            document.getElementById('etiqueta-usuario').innerHTML = `<i class="bi bi-person-circle"></i> ${usuarioActual}`;
+    // Transición automática al panel en 2.5 segundos
+    setTimeout(() => {
+    sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{}); // Suena mágico al entrar
+    welcomeScreen.style.display = 'none';
+    document.getElementById('app-dashboard').style.display = 'block';
+    document.getElementById('etiqueta-usuario').innerHTML = `<i class="bi bi-person-circle"></i> ${usuarioActual}`;
 
-            if (rolActual === "ADMINISTRADORA") {
-                let ingresosEl = document.getElementById('monto-ingresos');
-                ingresosEl.innerText = "$****";
-                ingresosEl.classList.remove('text-cyan-neon');
-                ingresosEl.style.color = "#888";
-            }
-        }, 2500);
+    if (rolActual === "ADMINISTRADORA") {
+    let ingresosEl = document.getElementById('monto-ingresos');
+    ingresosEl.innerText = "$****";
+    ingresosEl.classList.remove('text-cyan-neon');
+    ingresosEl.style.color = "#888";
+    }
+    }, 2500);
     }
 
     // ==========================================
@@ -564,303 +643,303 @@
     let pagosKardexTemporal = [];
 
     function abrirKardex(btn) {
-        reproducirClick();
-        const id = btn.getAttribute('data-id');
-        const nombre = btn.getAttribute('data-nombre');
+    reproducirClick();
+    const id = btn.getAttribute('data-id');
+    const nombre = btn.getAttribute('data-nombre');
 
-        document.getElementById('k-cli-id').value = id; document.getElementById('k-cli-nombre').value = nombre;
-        document.getElementById('k-cli-telefono').value = btn.getAttribute('data-telefono') || '';
-        document.getElementById('k-cli-correo').value = btn.getAttribute('data-correo') || '';
-        document.getElementById('k-cli-cumple').value = btn.getAttribute('data-cumpleanos') || '';
-        document.getElementById('k-cli-notas').value = btn.getAttribute('data-notas') || '';
-        document.getElementById('k-cli-hist').value = btn.getAttribute('data-historial') || '';
+    document.getElementById('k-cli-id').value = id; document.getElementById('k-cli-nombre').value = nombre;
+    document.getElementById('k-cli-telefono').value = btn.getAttribute('data-telefono') || '';
+    document.getElementById('k-cli-correo').value = btn.getAttribute('data-correo') || '';
+    document.getElementById('k-cli-cumple').value = btn.getAttribute('data-cumpleanos') || '';
+    document.getElementById('k-cli-notas').value = btn.getAttribute('data-notas') || '';
+    document.getElementById('k-cli-hist').value = btn.getAttribute('data-historial') || '';
 
-        document.getElementById('lblKardexNombre').innerText = "Cliente: " + nombre;
+    document.getElementById('lblKardexNombre').innerText = "Cliente: " + nombre;
 
-        limpiarFormKardex();
+    limpiarFormKardex();
 
-        const jsonStr = document.getElementById('kjson-' + id).value;
-        if(jsonStr && jsonStr.trim() !== '') {
-            try { llenarFormKardex(JSON.parse(jsonStr)); } catch(e) { console.error("Error JSON:", e); }
-        }
+    const jsonStr = document.getElementById('kjson-' + id).value;
+    if(jsonStr && jsonStr.trim() !== '') {
+    try { llenarFormKardex(JSON.parse(jsonStr)); } catch(e) { console.error("Error JSON:", e); }
+    }
 
-        dibujarTablaVisitas();
-        dibujarTablaPagos();
-        new bootstrap.Modal(document.getElementById('modalKardex')).show();
+    dibujarTablaVisitas();
+    dibujarTablaPagos();
+    new bootstrap.Modal(document.getElementById('modalKardex')).show();
     }
 
     // --- LÓGICA: DESCUENTO Y REGISTRO AUTOMÁTICO ---
     function registrarVisitaRapida(event, inputId, nombreProcedimiento, descInputId = null) {
-        let inputContador = document.getElementById(inputId);
-        let sesionesActuales = parseInt(inputContador.value) || 0;
+    let inputContador = document.getElementById(inputId);
+    let sesionesActuales = parseInt(inputContador.value) || 0;
 
-        if(sesionesActuales <= 0) {
-            reproducirError();
-            alert(`⚠️ El cliente ya no tiene sesiones disponibles de ${nombreProcedimiento}.`);
-            return;
-        }
+    if(sesionesActuales <= 0) {
+    reproducirError();
+    alert(`⚠️ El cliente ya no tiene sesiones disponibles de ${nombreProcedimiento}.`);
+    return;
+    }
 
-        // EFECTO MÁGICO AL DESCONTAR
-        activarEfectoWaooo(event);
+    // EFECTO MÁGICO AL DESCONTAR
+    activarEfectoWaooo(event);
 
-        let detalle = nombreProcedimiento;
-        if(descInputId) {
-            let extra = document.getElementById(descInputId).value;
-            if(extra) detalle += ` (${extra})`;
-        }
+    let detalle = nombreProcedimiento;
+    if(descInputId) {
+    let extra = document.getElementById(descInputId).value;
+    if(extra) detalle += ` (${extra})`;
+    }
 
-        // FIRMA DIGITAL DEL USUARIO
-        detalle += ` (Aplicó: ${usuarioActual})`;
+    // FIRMA DIGITAL DEL USUARIO
+    detalle += ` (Aplicó: ${usuarioActual})`;
 
-        inputContador.value = sesionesActuales - 1;
-        const hoy = new Date().toLocaleDateString('es-CL');
-        const nuevaVisita = { id: Date.now(), fecha: hoy, proc: detalle };
-        visitasKardexTemporal.unshift(nuevaVisita);
-        dibujarTablaVisitas();
+    inputContador.value = sesionesActuales - 1;
+    const hoy = new Date().toLocaleDateString('es-CL');
+    const nuevaVisita = { id: Date.now(), fecha: hoy, proc: detalle };
+    visitasKardexTemporal.unshift(nuevaVisita);
+    dibujarTablaVisitas();
     }
 
     function borrarRegistroVisita(idVisita) {
-        reproducirError(); // Suena la burbuja/error al borrar
-        if(confirm("¿Borrar este registro del historial?")){
-            visitasKardexTemporal = visitasKardexTemporal.filter(v => v.id !== idVisita);
-            dibujarTablaVisitas();
-        }
+    reproducirError(); // Suena la burbuja/error al borrar
+    if(confirm("¿Borrar este registro del historial?")){
+    visitasKardexTemporal = visitasKardexTemporal.filter(v => v.id !== idVisita);
+    dibujarTablaVisitas();
+    }
     }
 
     function dibujarTablaVisitas() {
-        const tbody = document.getElementById('tabla-visitas');
-        tbody.innerHTML = '';
-        if(visitasKardexTemporal.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-muted small">No hay visitas registradas</td></tr>';
-            return;
-        }
-        visitasKardexTemporal.forEach(v => {
-            tbody.innerHTML += `<tr>
-                <td class="small text-info">${v.fecha}</td>
-                <td class="fw-bold small">${v.proc}</td>
-                <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarRegistroVisita(${v.id})"><i class="bi bi-trash"></i></button></td>
-            </tr>`;
-        });
+    const tbody = document.getElementById('tabla-visitas');
+    tbody.innerHTML = '';
+    if(visitasKardexTemporal.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" class="text-muted small">No hay visitas registradas</td></tr>';
+    return;
+    }
+    visitasKardexTemporal.forEach(v => {
+    tbody.innerHTML += `<tr>
+    <td class="small text-info">${v.fecha}</td>
+    <td class="fw-bold small">${v.proc}</td>
+    <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarRegistroVisita(${v.id})"><i class="bi bi-trash"></i></button></td>
+    </tr>`;
+    });
     }
 
     // --- LÓGICA: FINANZAS Y ABONOS ---
     function registrarPago(event) {
-        const monto = parseFloat(document.getElementById('f-monto-pago').value);
-        if(!monto || monto <= 0) { reproducirError(); return alert("Ingrese un monto válido"); }
+    const monto = parseFloat(document.getElementById('f-monto-pago').value);
+    if(!monto || monto <= 0) { reproducirError(); return alert("Ingrese un monto válido"); }
 
-        activarEfectoWaooo(event);
+    activarEfectoWaooo(event);
 
-        const fecha = document.getElementById('f-fecha-pago').value || new Date().toISOString().split('T')[0];
-        let nota = document.getElementById('f-nota-pago').value || 'Abono General';
-        nota += ` (Recibió: ${usuarioActual})`;
+    const fecha = document.getElementById('f-fecha-pago').value || new Date().toISOString().split('T')[0];
+    let nota = document.getElementById('f-nota-pago').value || 'Abono General';
+    nota += ` (Recibió: ${usuarioActual})`;
 
-        pagosKardexTemporal.push({ id: Date.now(), fecha: fecha, monto: monto, nota: nota });
+    pagosKardexTemporal.push({ id: Date.now(), fecha: fecha, monto: monto, nota: nota });
 
-        document.getElementById('f-monto-pago').value = '';
-        document.getElementById('f-nota-pago').value = '';
-        dibujarTablaPagos();
+    document.getElementById('f-monto-pago').value = '';
+    document.getElementById('f-nota-pago').value = '';
+    dibujarTablaPagos();
     }
 
     function borrarPago(id) {
-        reproducirError();
-        if(confirm("¿Eliminar este pago del historial?")) {
-            pagosKardexTemporal = pagosKardexTemporal.filter(p => p.id !== id);
-            dibujarTablaPagos();
-        }
+    reproducirError();
+    if(confirm("¿Eliminar este pago del historial?")) {
+    pagosKardexTemporal = pagosKardexTemporal.filter(p => p.id !== id);
+    dibujarTablaPagos();
+    }
     }
 
     function dibujarTablaPagos() {
-        const tbody = document.getElementById('tabla-pagos');
-        tbody.innerHTML = '';
-        let totalAbonado = 0;
+    const tbody = document.getElementById('tabla-pagos');
+    tbody.innerHTML = '';
+    let totalAbonado = 0;
 
-        if(pagosKardexTemporal.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-muted small">No hay pagos registrados</td></tr>';
-        } else {
-            pagosKardexTemporal.forEach(p => {
-                totalAbonado += p.monto;
-                tbody.innerHTML += `<tr>
-                    <td class="small">${p.fecha}</td>
-                    <td class="fw-bold text-success">$${p.monto.toLocaleString('es-CL')}</td>
-                    <td class="small">${p.nota}</td>
-                    <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarPago(${p.id})"><i class="bi bi-trash"></i></button></td>
-                </tr>`;
-            });
-        }
+    if(pagosKardexTemporal.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-muted small">No hay pagos registrados</td></tr>';
+    } else {
+    pagosKardexTemporal.forEach(p => {
+    totalAbonado += p.monto;
+    tbody.innerHTML += `<tr>
+    <td class="small">${p.fecha}</td>
+    <td class="fw-bold text-success">$${p.monto.toLocaleString('es-CL')}</td>
+    <td class="small">${p.nota}</td>
+    <td><button class="btn btn-sm text-danger py-0 px-1" onclick="borrarPago(${p.id})"><i class="bi bi-trash"></i></button></td>
+    </tr>`;
+    });
+    }
 
-        const totalPack = parseFloat(document.getElementById('f-total-pack').value) || 0;
-        const deuda = totalPack - totalAbonado;
+    const totalPack = parseFloat(document.getElementById('f-total-pack').value) || 0;
+    const deuda = totalPack - totalAbonado;
 
-        document.getElementById('f-lbl-abonado').innerText = '$' + totalAbonado.toLocaleString('es-CL');
-        const lblDeuda = document.getElementById('f-lbl-deuda');
-        lblDeuda.innerText = '$' + deuda.toLocaleString('es-CL');
+    document.getElementById('f-lbl-abonado').innerText = '$' + totalAbonado.toLocaleString('es-CL');
+    const lblDeuda = document.getElementById('f-lbl-deuda');
+    lblDeuda.innerText = '$' + deuda.toLocaleString('es-CL');
 
-        if(deuda > 0) lblDeuda.className = "fs-5 fw-bold text-danger";
-        else if (deuda === 0 && totalPack > 0) lblDeuda.className = "fs-5 fw-bold text-success";
-        else lblDeuda.className = "fs-5 fw-bold text-info";
+    if(deuda > 0) lblDeuda.className = "fs-5 fw-bold text-danger";
+    else if (deuda === 0 && totalPack > 0) lblDeuda.className = "fs-5 fw-bold text-success";
+    else lblDeuda.className = "fs-5 fw-bold text-info";
     }
 
     // --- LÓGICA: GUARDAR EN BASE DE DATOS ---
     function guardarKardex(event) {
-        const id = document.getElementById('k-cli-id').value; if(!id) return;
-        activarEfectoWaooo(event);
+    const id = document.getElementById('k-cli-id').value; if(!id) return;
+    activarEfectoWaooo(event);
 
-        const kardexData = {
-            vitales: {
-                fechaCreacion: document.getElementById('k-fecha-creacion').value, fechaNac: document.getElementById('k-fecha-nac').value,
-                estatura: document.getElementById('k-estatura').value, edad: document.getElementById('k-edad').value,
-                profesion: document.getElementById('k-profesion').value, estadoCivil: document.getElementById('k-estado-civil').value,
-                embarazos: document.getElementById('k-embarazos').value, partos: document.getElementById('k-partos').value,
-                edadHijo: document.getElementById('k-edad-hijo').value, mca: document.getElementById('k-mca').value
-            },
-            habitos: {
-                desayuno: document.getElementById('hab-desayuno').checked, almuerzo: document.getElementById('hab-almuerzo').checked,
-                once: document.getElementById('hab-once').checked, cena: document.getElementById('hab-cena').checked,
-                colacion: document.getElementById('hab-colacion').checked, tabaco: document.getElementById('hab-tabaco').checked,
-                alcohol: document.getElementById('hab-alcohol').checked, marihuana: document.getElementById('hab-marihuana').checked,
-                agua: document.getElementById('hab-agua').checked, actFisica: document.getElementById('hab-act-fisica').checked
-            },
-            historial: {
-                enfermedades: document.getElementById('hist-enfermedades').value, cirugias: document.getElementById('hist-cirugias').value,
-                digestion: document.getElementById('hist-digestion').value, energia: document.getElementById('hist-energia').value
-            },
-            medidas: {
-                fechas: { i: document.getElementById('m-fecha-i').value, m1: document.getElementById('m-fecha-1').value, f: document.getElementById('m-fecha-f').value },
-                peso: { i: document.getElementById('m-peso-i').value, m1: document.getElementById('m-peso-1').value, f: document.getElementById('m-peso-f').value },
-                imc: { i: document.getElementById('m-imc-i').value, m1: document.getElementById('m-imc-1').value, f: document.getElementById('m-imc-f').value },
-                grasaCor: { i: document.getElementById('m-grac-i').value, m1: document.getElementById('m-grac-1').value, f: document.getElementById('m-grac-f').value },
-                grasaVis: { i: document.getElementById('m-grav-i').value, m1: document.getElementById('m-grav-1').value, f: document.getElementById('m-grav-f').value },
-                masaMus: { i: document.getElementById('m-masm-i').value, m1: document.getElementById('m-masm-1').value, f: document.getElementById('m-masm-f').value },
-                calorias: { i: document.getElementById('m-cal-i').value, m1: document.getElementById('m-cal-1').value, f: document.getElementById('m-cal-f').value },
-                edadMet: { i: document.getElementById('m-edmet-i').value, m1: document.getElementById('m-edmet-1').value, f: document.getElementById('m-edmet-f').value },
-                axilar: { i: document.getElementById('m-axi-i').value, m1: document.getElementById('m-axi-1').value, f: document.getElementById('m-axi-f').value },
-                busto: { i: document.getElementById('m-bus-i').value, m1: document.getElementById('m-bus-1').value, f: document.getElementById('m-bus-f').value },
-                cintura: { i: document.getElementById('m-cin-i').value, m1: document.getElementById('m-cin-1').value, f: document.getElementById('m-cin-f').value },
-                sobCintura: { i: document.getElementById('m-sbc-i').value, m1: document.getElementById('m-sbc-1').value, f: document.getElementById('m-sbc-f').value },
-                cadera: { i: document.getElementById('m-cad-i').value, m1: document.getElementById('m-cad-1').value, f: document.getElementById('m-cad-f').value },
-                gluteos: { i: document.getElementById('m-glu-i').value, m1: document.getElementById('m-glu-1').value, f: document.getElementById('m-glu-f').value },
-                brazoD: { i: document.getElementById('m-brd-i').value, m1: document.getElementById('m-brd-1').value, f: document.getElementById('m-brd-f').value },
-                brazoI: { i: document.getElementById('m-bri-i').value, m1: document.getElementById('m-bri-1').value, f: document.getElementById('m-bri-f').value },
-                piernaD: { i: document.getElementById('m-pid-i').value, m1: document.getElementById('m-pid-1').value, f: document.getElementById('m-pid-f').value },
-                piernaI: { i: document.getElementById('m-pii-i').value, m1: document.getElementById('m-pii-1').value, f: document.getElementById('m-pii-f').value }
-            },
-            tratamiento: {
-                senos: document.getElementById('pack-senos').value, abd: document.getElementById('pack-abd').value,
-                brazos: document.getElementById('pack-brazos').value, piernas: document.getElementById('pack-piernas').value,
-                papada: document.getElementById('pack-papada').value, gluteos: document.getElementById('pack-gluteos').value,
-                masaje: document.getElementById('pack-masaje').value, facial: document.getElementById('pack-facial').value,
-                lipo: document.getElementById('pack-lipo').value, plat: document.getElementById('pack-plat').value,
-                aplic: document.getElementById('pack-aplic').value, pulpas: document.getElementById('pack-pulpas').value,
-                electro: document.getElementById('pack-electro').value, vacum: document.getElementById('pack-vacum').value,
-                crio: document.getElementById('pack-crio').value, galva: document.getElementById('pack-galva').value,
-                radio: document.getElementById('pack-radio').value, carboxi: document.getElementById('pack-carboxi').value,
-                compProdNombre: document.getElementById('comp-prod-nombre').value, compProdCant: document.getElementById('comp-prod-cant').value,
-                compAmpNombre: document.getElementById('comp-amp-nombre').value, compAmpCant: document.getElementById('comp-amp-cant').value,
-                compGalvaCant: document.getElementById('comp-galva-cant').value
-            },
-            visitas: visitasKardexTemporal,
-            finanzas: {
-                totalPack: document.getElementById('f-total-pack').value,
-                pagos: pagosKardexTemporal
-            }
-        };
+    const kardexData = {
+    vitales: {
+    fechaCreacion: document.getElementById('k-fecha-creacion').value, fechaNac: document.getElementById('k-fecha-nac').value,
+    estatura: document.getElementById('k-estatura').value, edad: document.getElementById('k-edad').value,
+    profesion: document.getElementById('k-profesion').value, estadoCivil: document.getElementById('k-estado-civil').value,
+    embarazos: document.getElementById('k-embarazos').value, partos: document.getElementById('k-partos').value,
+    edadHijo: document.getElementById('k-edad-hijo').value, mca: document.getElementById('k-mca').value
+    },
+    habitos: {
+    desayuno: document.getElementById('hab-desayuno').checked, almuerzo: document.getElementById('hab-almuerzo').checked,
+    once: document.getElementById('hab-once').checked, cena: document.getElementById('hab-cena').checked,
+    colacion: document.getElementById('hab-colacion').checked, tabaco: document.getElementById('hab-tabaco').checked,
+    alcohol: document.getElementById('hab-alcohol').checked, marihuana: document.getElementById('hab-marihuana').checked,
+    agua: document.getElementById('hab-agua').checked, actFisica: document.getElementById('hab-act-fisica').checked
+    },
+    historial: {
+    enfermedades: document.getElementById('hist-enfermedades').value, cirugias: document.getElementById('hist-cirugias').value,
+    digestion: document.getElementById('hist-digestion').value, energia: document.getElementById('hist-energia').value
+    },
+    medidas: {
+    fechas: { i: document.getElementById('m-fecha-i').value, m1: document.getElementById('m-fecha-1').value, f: document.getElementById('m-fecha-f').value },
+    peso: { i: document.getElementById('m-peso-i').value, m1: document.getElementById('m-peso-1').value, f: document.getElementById('m-peso-f').value },
+    imc: { i: document.getElementById('m-imc-i').value, m1: document.getElementById('m-imc-1').value, f: document.getElementById('m-imc-f').value },
+    grasaCor: { i: document.getElementById('m-grac-i').value, m1: document.getElementById('m-grac-1').value, f: document.getElementById('m-grac-f').value },
+    grasaVis: { i: document.getElementById('m-grav-i').value, m1: document.getElementById('m-grav-1').value, f: document.getElementById('m-grav-f').value },
+    masaMus: { i: document.getElementById('m-masm-i').value, m1: document.getElementById('m-masm-1').value, f: document.getElementById('m-masm-f').value },
+    calorias: { i: document.getElementById('m-cal-i').value, m1: document.getElementById('m-cal-1').value, f: document.getElementById('m-cal-f').value },
+    edadMet: { i: document.getElementById('m-edmet-i').value, m1: document.getElementById('m-edmet-1').value, f: document.getElementById('m-edmet-f').value },
+    axilar: { i: document.getElementById('m-axi-i').value, m1: document.getElementById('m-axi-1').value, f: document.getElementById('m-axi-f').value },
+    busto: { i: document.getElementById('m-bus-i').value, m1: document.getElementById('m-bus-1').value, f: document.getElementById('m-bus-f').value },
+    cintura: { i: document.getElementById('m-cin-i').value, m1: document.getElementById('m-cin-1').value, f: document.getElementById('m-cin-f').value },
+    sobCintura: { i: document.getElementById('m-sbc-i').value, m1: document.getElementById('m-sbc-1').value, f: document.getElementById('m-sbc-f').value },
+    cadera: { i: document.getElementById('m-cad-i').value, m1: document.getElementById('m-cad-1').value, f: document.getElementById('m-cad-f').value },
+    gluteos: { i: document.getElementById('m-glu-i').value, m1: document.getElementById('m-glu-1').value, f: document.getElementById('m-glu-f').value },
+    brazoD: { i: document.getElementById('m-brd-i').value, m1: document.getElementById('m-brd-1').value, f: document.getElementById('m-brd-f').value },
+    brazoI: { i: document.getElementById('m-bri-i').value, m1: document.getElementById('m-bri-1').value, f: document.getElementById('m-bri-f').value },
+    piernaD: { i: document.getElementById('m-pid-i').value, m1: document.getElementById('m-pid-1').value, f: document.getElementById('m-pid-f').value },
+    piernaI: { i: document.getElementById('m-pii-i').value, m1: document.getElementById('m-pii-1').value, f: document.getElementById('m-pii-f').value }
+    },
+    tratamiento: {
+    senos: document.getElementById('pack-senos').value, abd: document.getElementById('pack-abd').value,
+    brazos: document.getElementById('pack-brazos').value, piernas: document.getElementById('pack-piernas').value,
+    papada: document.getElementById('pack-papada').value, gluteos: document.getElementById('pack-gluteos').value,
+    masaje: document.getElementById('pack-masaje').value, facial: document.getElementById('pack-facial').value,
+    lipo: document.getElementById('pack-lipo').value, plat: document.getElementById('pack-plat').value,
+    aplic: document.getElementById('pack-aplic').value, pulpas: document.getElementById('pack-pulpas').value,
+    electro: document.getElementById('pack-electro').value, vacum: document.getElementById('pack-vacum').value,
+    crio: document.getElementById('pack-crio').value, galva: document.getElementById('pack-galva').value,
+    radio: document.getElementById('pack-radio').value, carboxi: document.getElementById('pack-carboxi').value,
+    compProdNombre: document.getElementById('comp-prod-nombre').value, compProdCant: document.getElementById('comp-prod-cant').value,
+    compAmpNombre: document.getElementById('comp-amp-nombre').value, compAmpCant: document.getElementById('comp-amp-cant').value,
+    compGalvaCant: document.getElementById('comp-galva-cant').value
+    },
+    visitas: visitasKardexTemporal,
+    finanzas: {
+    totalPack: document.getElementById('f-total-pack').value,
+    pagos: pagosKardexTemporal
+    }
+    };
 
-        const payloadCliente = {
-            id: id, nombre: document.getElementById('k-cli-nombre').value, telefono: document.getElementById('k-cli-telefono').value,
-            correo: document.getElementById('k-cli-correo').value, cumpleanos: document.getElementById('k-cli-cumple').value,
-            notasMedicas: document.getElementById('k-cli-notas').value, historialCompras: document.getElementById('k-cli-hist').value,
-            kardexJson: JSON.stringify(kardexData)
-        };
+    const payloadCliente = {
+    id: id, nombre: document.getElementById('k-cli-nombre').value, telefono: document.getElementById('k-cli-telefono').value,
+    correo: document.getElementById('k-cli-correo').value, cumpleanos: document.getElementById('k-cli-cumple').value,
+    notasMedicas: document.getElementById('k-cli-notas').value, historialCompras: document.getElementById('k-cli-hist').value,
+    kardexJson: JSON.stringify(kardexData)
+    };
 
-        // Espera un poco para que se vea el efecto antes de recargar
-        setTimeout(() => {
-            fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payloadCliente) }).then(()=>window.location.reload());
-        }, 800);
+    // Espera un poco para que se vea el efecto antes de recargar
+    setTimeout(() => {
+    fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payloadCliente) }).then(()=>window.location.reload());
+    }, 800);
     }
 
     function llenarFormKardex(data) {
-        if(!data) return;
+    if(!data) return;
 
-        if(data.vitales) {
-            document.getElementById('k-fecha-creacion').value = data.vitales.fechaCreacion || ''; document.getElementById('k-fecha-nac').value = data.vitales.fechaNac || '';
-            document.getElementById('k-estatura').value = data.vitales.estatura || ''; document.getElementById('k-edad').value = data.vitales.edad || '';
-            document.getElementById('k-profesion').value = data.vitales.profesion || ''; document.getElementById('k-estado-civil').value = data.vitales.estadoCivil || 'Soltera(o)';
-            document.getElementById('k-embarazos').value = data.vitales.embarazos || ''; document.getElementById('k-partos').value = data.vitales.partos || '';
-            document.getElementById('k-edad-hijo').value = data.vitales.edadHijo || ''; document.getElementById('k-mca').value = data.vitales.mca || '';
-        }
+    if(data.vitales) {
+    document.getElementById('k-fecha-creacion').value = data.vitales.fechaCreacion || ''; document.getElementById('k-fecha-nac').value = data.vitales.fechaNac || '';
+    document.getElementById('k-estatura').value = data.vitales.estatura || ''; document.getElementById('k-edad').value = data.vitales.edad || '';
+    document.getElementById('k-profesion').value = data.vitales.profesion || ''; document.getElementById('k-estado-civil').value = data.vitales.estadoCivil || 'Soltera(o)';
+    document.getElementById('k-embarazos').value = data.vitales.embarazos || ''; document.getElementById('k-partos').value = data.vitales.partos || '';
+    document.getElementById('k-edad-hijo').value = data.vitales.edadHijo || ''; document.getElementById('k-mca').value = data.vitales.mca || '';
+    }
 
-        if(data.habitos) {
-            document.getElementById('hab-desayuno').checked = data.habitos.desayuno; document.getElementById('hab-almuerzo').checked = data.habitos.almuerzo;
-            document.getElementById('hab-once').checked = data.habitos.once; document.getElementById('hab-cena').checked = data.habitos.cena;
-            document.getElementById('hab-colacion').checked = data.habitos.colacion; document.getElementById('hab-tabaco').checked = data.habitos.tabaco;
-            document.getElementById('hab-alcohol').checked = data.habitos.alcohol; document.getElementById('hab-marihuana').checked = data.habitos.marihuana;
-            document.getElementById('hab-agua').checked = data.habitos.agua; document.getElementById('hab-act-fisica').checked = data.habitos.actFisica;
-        }
+    if(data.habitos) {
+    document.getElementById('hab-desayuno').checked = data.habitos.desayuno; document.getElementById('hab-almuerzo').checked = data.habitos.almuerzo;
+    document.getElementById('hab-once').checked = data.habitos.once; document.getElementById('hab-cena').checked = data.habitos.cena;
+    document.getElementById('hab-colacion').checked = data.habitos.colacion; document.getElementById('hab-tabaco').checked = data.habitos.tabaco;
+    document.getElementById('hab-alcohol').checked = data.habitos.alcohol; document.getElementById('hab-marihuana').checked = data.habitos.marihuana;
+    document.getElementById('hab-agua').checked = data.habitos.agua; document.getElementById('hab-act-fisica').checked = data.habitos.actFisica;
+    }
 
-        if(data.historial) {
-            document.getElementById('hist-enfermedades').value = data.historial.enfermedades || ''; document.getElementById('hist-cirugias').value = data.historial.cirugias || '';
-            document.getElementById('hist-digestion').value = data.historial.digestion || 'Normal'; document.getElementById('hist-energia').value = data.historial.energia || 'Normal';
-        }
+    if(data.historial) {
+    document.getElementById('hist-enfermedades').value = data.historial.enfermedades || ''; document.getElementById('hist-cirugias').value = data.historial.cirugias || '';
+    document.getElementById('hist-digestion').value = data.historial.digestion || 'Normal'; document.getElementById('hist-energia').value = data.historial.energia || 'Normal';
+    }
 
-        if(data.medidas) {
-            if(data.medidas.fechas) {
-                document.getElementById('m-fecha-i').value = data.medidas.fechas.i || '';
-                document.getElementById('m-fecha-1').value = data.medidas.fechas.m1 || '';
-                document.getElementById('m-fecha-f').value = data.medidas.fechas.f || '';
-            }
+    if(data.medidas) {
+    if(data.medidas.fechas) {
+    document.getElementById('m-fecha-i').value = data.medidas.fechas.i || '';
+    document.getElementById('m-fecha-1').value = data.medidas.fechas.m1 || '';
+    document.getElementById('m-fecha-f').value = data.medidas.fechas.f || '';
+    }
 
-            ['peso', 'imc', 'grac', 'grav', 'masm', 'cal', 'edmet', 'axi', 'bus', 'cin', 'sbc', 'cad', 'glu', 'brd', 'bri', 'pid', 'pii'].forEach(prefix => {
-                let mapKey = prefix;
-                if(prefix === 'cin') mapKey = 'cintura'; if(prefix === 'cad') mapKey = 'cadera'; if(prefix === 'glu') mapKey = 'gluteos';
-                if(prefix === 'brd') mapKey = 'brazoD'; if(prefix === 'pid') mapKey = 'piernaD'; if(prefix === 'grac') mapKey = 'grasaCor';
-                if(prefix === 'grav') mapKey = 'grasaVis'; if(prefix === 'masm') mapKey = 'masaMus'; if(prefix === 'cal') mapKey = 'calorias';
-                if(prefix === 'edmet') mapKey = 'edadMet'; if(prefix === 'axi') mapKey = 'axilar'; if(prefix === 'bus') mapKey = 'busto';
-                if(prefix === 'sbc') mapKey = 'sobCintura'; if(prefix === 'bri') mapKey = 'brazoI'; if(prefix === 'pii') mapKey = 'piernaI';
+    ['peso', 'imc', 'grac', 'grav', 'masm', 'cal', 'edmet', 'axi', 'bus', 'cin', 'sbc', 'cad', 'glu', 'brd', 'bri', 'pid', 'pii'].forEach(prefix => {
+    let mapKey = prefix;
+    if(prefix === 'cin') mapKey = 'cintura'; if(prefix === 'cad') mapKey = 'cadera'; if(prefix === 'glu') mapKey = 'gluteos';
+    if(prefix === 'brd') mapKey = 'brazoD'; if(prefix === 'pid') mapKey = 'piernaD'; if(prefix === 'grac') mapKey = 'grasaCor';
+    if(prefix === 'grav') mapKey = 'grasaVis'; if(prefix === 'masm') mapKey = 'masaMus'; if(prefix === 'cal') mapKey = 'calorias';
+    if(prefix === 'edmet') mapKey = 'edadMet'; if(prefix === 'axi') mapKey = 'axilar'; if(prefix === 'bus') mapKey = 'busto';
+    if(prefix === 'sbc') mapKey = 'sobCintura'; if(prefix === 'bri') mapKey = 'brazoI'; if(prefix === 'pii') mapKey = 'piernaI';
 
-                if(data.medidas[mapKey]) {
-                    if(document.getElementById(`m-${prefix}-i`)) document.getElementById(`m-${prefix}-i`).value = data.medidas[mapKey].i || '';
-                    if(document.getElementById(`m-${prefix}-1`)) document.getElementById(`m-${prefix}-1`).value = data.medidas[mapKey].m1 || '';
-                    if(document.getElementById(`m-${prefix}-f`)) document.getElementById(`m-${prefix}-f`).value = data.medidas[mapKey].f || '';
-                }
-            });
-        }
+    if(data.medidas[mapKey]) {
+    if(document.getElementById(`m-${prefix}-i`)) document.getElementById(`m-${prefix}-i`).value = data.medidas[mapKey].i || '';
+    if(document.getElementById(`m-${prefix}-1`)) document.getElementById(`m-${prefix}-1`).value = data.medidas[mapKey].m1 || '';
+    if(document.getElementById(`m-${prefix}-f`)) document.getElementById(`m-${prefix}-f`).value = data.medidas[mapKey].f || '';
+    }
+    });
+    }
 
-        if(data.tratamiento) {
-            document.getElementById('pack-senos').value = data.tratamiento.senos || 0; document.getElementById('pack-abd').value = data.tratamiento.abd || 0;
-            document.getElementById('pack-brazos').value = data.tratamiento.brazos || 0; document.getElementById('pack-piernas').value = data.tratamiento.piernas || 0;
-            document.getElementById('pack-papada').value = data.tratamiento.papada || 0; document.getElementById('pack-gluteos').value = data.tratamiento.gluteos || 0;
-            document.getElementById('pack-masaje').value = data.tratamiento.masaje || 0; document.getElementById('pack-facial').value = data.tratamiento.facial || 0;
-            document.getElementById('pack-lipo').value = data.tratamiento.lipo || 0; document.getElementById('pack-plat').value = data.tratamiento.plat || 0;
-            document.getElementById('pack-aplic').value = data.tratamiento.aplic || 0; document.getElementById('pack-pulpas').value = data.tratamiento.pulpas || 0;
-            document.getElementById('pack-electro').value = data.tratamiento.electro || 0; document.getElementById('pack-vacum').value = data.tratamiento.vacum || 0;
-            document.getElementById('pack-crio').value = data.tratamiento.crio || 0; document.getElementById('pack-galva').value = data.tratamiento.galva || 0;
-            document.getElementById('pack-radio').value = data.tratamiento.radio || 0; document.getElementById('pack-carboxi').value = data.tratamiento.carboxi || 0;
+    if(data.tratamiento) {
+    document.getElementById('pack-senos').value = data.tratamiento.senos || 0; document.getElementById('pack-abd').value = data.tratamiento.abd || 0;
+    document.getElementById('pack-brazos').value = data.tratamiento.brazos || 0; document.getElementById('pack-piernas').value = data.tratamiento.piernas || 0;
+    document.getElementById('pack-papada').value = data.tratamiento.papada || 0; document.getElementById('pack-gluteos').value = data.tratamiento.gluteos || 0;
+    document.getElementById('pack-masaje').value = data.tratamiento.masaje || 0; document.getElementById('pack-facial').value = data.tratamiento.facial || 0;
+    document.getElementById('pack-lipo').value = data.tratamiento.lipo || 0; document.getElementById('pack-plat').value = data.tratamiento.plat || 0;
+    document.getElementById('pack-aplic').value = data.tratamiento.aplic || 0; document.getElementById('pack-pulpas').value = data.tratamiento.pulpas || 0;
+    document.getElementById('pack-electro').value = data.tratamiento.electro || 0; document.getElementById('pack-vacum').value = data.tratamiento.vacum || 0;
+    document.getElementById('pack-crio').value = data.tratamiento.crio || 0; document.getElementById('pack-galva').value = data.tratamiento.galva || 0;
+    document.getElementById('pack-radio').value = data.tratamiento.radio || 0; document.getElementById('pack-carboxi').value = data.tratamiento.carboxi || 0;
 
-            document.getElementById('comp-prod-nombre').value = data.tratamiento.compProdNombre || ''; document.getElementById('comp-prod-cant').value = data.tratamiento.compProdCant || 0;
-            document.getElementById('comp-amp-nombre').value = data.tratamiento.compAmpNombre || ''; document.getElementById('comp-amp-cant').value = data.tratamiento.compAmpCant || 0;
-            document.getElementById('comp-galva-cant').value = data.tratamiento.compGalvaCant || 0;
-        }
+    document.getElementById('comp-prod-nombre').value = data.tratamiento.compProdNombre || ''; document.getElementById('comp-prod-cant').value = data.tratamiento.compProdCant || 0;
+    document.getElementById('comp-amp-nombre').value = data.tratamiento.compAmpNombre || ''; document.getElementById('comp-amp-cant').value = data.tratamiento.compAmpCant || 0;
+    document.getElementById('comp-galva-cant').value = data.tratamiento.compGalvaCant || 0;
+    }
 
-        if(data.visitas) visitasKardexTemporal = data.visitas;
+    if(data.visitas) visitasKardexTemporal = data.visitas;
 
-        if(data.finanzas) {
-            document.getElementById('f-total-pack').value = data.finanzas.totalPack || '';
-            if(data.finanzas.pagos) pagosKardexTemporal = data.finanzas.pagos;
-        }
+    if(data.finanzas) {
+    document.getElementById('f-total-pack').value = data.finanzas.totalPack || '';
+    if(data.finanzas.pagos) pagosKardexTemporal = data.finanzas.pagos;
+    }
     }
 
     function limpiarFormKardex() {
-        visitasKardexTemporal = [];
-        pagosKardexTemporal = [];
+    visitasKardexTemporal = [];
+    pagosKardexTemporal = [];
 
-        document.querySelectorAll('#modalKardex input[type="text"], #modalKardex input[type="number"], #modalKardex input[type="date"], #modalKardex textarea').forEach(i => {
-            if(i.id.startsWith('pack-') || i.id.startsWith('comp-') && i.id.endsWith('cant')) i.value = 0;
-            else i.value = '';
-        });
-        document.querySelectorAll('#modalKardex input[type="checkbox"]').forEach(c => c.checked = false);
+    document.querySelectorAll('#modalKardex input[type="text"], #modalKardex input[type="number"], #modalKardex input[type="date"], #modalKardex textarea').forEach(i => {
+    if(i.id.startsWith('pack-') || i.id.startsWith('comp-') && i.id.endsWith('cant')) i.value = 0;
+    else i.value = '';
+    });
+    document.querySelectorAll('#modalKardex input[type="checkbox"]').forEach(c => c.checked = false);
 
-        document.getElementById('k-fecha-creacion').value = new Date().toISOString().split('T')[0];
-        document.getElementById('f-fecha-pago').value = new Date().toISOString().split('T')[0];
+    document.getElementById('k-fecha-creacion').value = new Date().toISOString().split('T')[0];
+    document.getElementById('f-fecha-pago').value = new Date().toISOString().split('T')[0];
     }
 
     // ==========================================
@@ -872,9 +951,96 @@
     function confirmarCita(id) { sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{}); if(confirm("¿Confirmar pago y aprobar?")) { fetch('/api/admin/citas/confirmar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
     function cancelarCita(id) { reproducirError(); if(confirm("¿Eliminar cita definitivamente?")) { fetch('/api/admin/citas/cancelar/'+id, {method:'POST'}).then(()=>window.location.reload()); } }
 
-    function abrirModalTratamiento(event) { reproducirClick(); document.getElementById('formTratamiento').reset(); document.getElementById('tratamientoId').value = ""; document.getElementById('tituloModalTratamiento').innerText = "Nuevo Servicio"; new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
-    function editarServicio(btn) { reproducirClick(); document.getElementById('tratamientoId').value = btn.getAttribute('data-id'); document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre'); document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio'); document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad'); document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen'); document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion'); new bootstrap.Modal(document.getElementById('modalTratamiento')).show(); }
-    function guardarTratamiento(event) { activarEfectoWaooo(event); const payload = { nombre: document.getElementById('nombreTratamiento').value, precio: parseInt(document.getElementById('precioTratamiento').value), cantidad: document.getElementById('cantidadTratamiento').value, imagen: document.getElementById('imagenTratamiento').value, descripcion: document.getElementById('descripcionTratamiento').value }; const id = document.getElementById('tratamientoId').value; if(id) payload.id = id; setTimeout(() => fetch('/api/tratamientos/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()), 800); }
+    // --- MODIFICACIONES DEL CATÁLOGO (SERVICIOS Y PROMOS) ---
+    function abrirModalTratamiento(event) {
+        reproducirClick();
+        document.getElementById('formTratamiento').reset();
+        document.getElementById('tratamientoId').value = "";
+        document.getElementById('tituloModalTratamiento').innerText = "Nuevo Servicio";
+        document.getElementById('enPromocionCheck').checked = false;
+        new bootstrap.Modal(document.getElementById('modalTratamiento')).show();
+    }
+
+    function abrirModalPromo(event) {
+        reproducirClick();
+        document.getElementById('formTratamiento').reset();
+        document.getElementById('tratamientoId').value = "";
+        document.getElementById('tituloModalTratamiento').innerText = "Nueva Promoción";
+        document.getElementById('enPromocionCheck').checked = true; // Activa el switch por defecto
+        new bootstrap.Modal(document.getElementById('modalTratamiento')).show();
+        setTimeout(() => document.getElementById('precioPromoTratamiento').focus(), 500);
+    }
+
+    function editarServicio(btn) {
+        reproducirClick();
+        document.getElementById('tratamientoId').value = btn.getAttribute('data-id');
+        document.getElementById('nombreTratamiento').value = btn.getAttribute('data-nombre');
+        document.getElementById('precioTratamiento').value = btn.getAttribute('data-precio');
+        document.getElementById('cantidadTratamiento').value = btn.getAttribute('data-cantidad');
+        document.getElementById('imagenTratamiento').value = btn.getAttribute('data-imagen');
+        document.getElementById('descripcionTratamiento').value = btn.getAttribute('data-descripcion');
+
+        // Extracción de datos de promoción EXACTOS A TU JAVA
+        const enPromo = btn.getAttribute('data-en-promocion') === 'true';
+        const pPromo = btn.getAttribute('data-precio-promo');
+        const fInicio = btn.getAttribute('data-inicio-promo');
+        const fFin = btn.getAttribute('data-fin-promo');
+
+        document.getElementById('enPromocionCheck').checked = enPromo;
+        document.getElementById('precioPromoTratamiento').value = (pPromo && pPromo !== 'null') ? pPromo : '';
+        document.getElementById('fechaInicioPromoTratamiento').value = (fInicio && fInicio !== 'null') ? fInicio : '';
+        document.getElementById('fechaFinPromoTratamiento').value = (fFin && fFin !== 'null') ? fFin : '';
+
+        document.getElementById('tituloModalTratamiento').innerText = "Editar Servicio / Promoción";
+        new bootstrap.Modal(document.getElementById('modalTratamiento')).show();
+    }
+
+    // 🔥 FUNCIÓN GUARDAR A PRUEBA DE FALLOS Y BLOQUEO DE NAVEGADOR 🔥
+    function guardarTratamiento(event) {
+        if(event) event.preventDefault(); // <-- ESTO BLOQUEA LA RECARGA ACCIDENTAL DEL NAVEGADOR
+        activarEfectoWaooo(event);
+
+        const valPromo = document.getElementById('precioPromoTratamiento').value;
+        const valInicio = document.getElementById('fechaInicioPromoTratamiento').value;
+        const valFin = document.getElementById('fechaFinPromoTratamiento').value;
+        const isPromo = document.getElementById('enPromocionCheck').checked;
+
+        const payload = {
+            nombre: document.getElementById('nombreTratamiento').value,
+            precio: parseInt(document.getElementById('precioTratamiento').value) || 0,
+            cantidad: document.getElementById('cantidadTratamiento').value,
+            imagen: document.getElementById('imagenTratamiento').value,
+            descripcion: document.getElementById('descripcionTratamiento').value,
+
+            enPromocion: isPromo,
+            precioPromo: valPromo ? parseInt(valPromo) : null,
+            fechaInicioPromo: valInicio ? valInicio : null,
+            fechaFinPromo: valFin ? valFin : null
+        };
+
+        const id = document.getElementById('tratamientoId').value;
+        if(id) payload.id = parseInt(id);
+
+        // Enviamos sin demoras a tu Java
+        fetch('/api/tratamientos/guardar', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+        })
+        .then(async res => {
+            if(res.ok) {
+                alert("✅ Servicio guardado correctamente en la Base de Datos.");
+                window.location.reload();
+            } else {
+                // Si tu Java rechaza el guardado por la base de datos, te avisará aquí.
+                const errorTexto = await res.text();
+                alert("⚠️ Java no lo guardó. Motivo:\n" + errorTexto);
+            }
+        })
+        .catch(err => {
+            alert("❌ Error de comunicación con tu servidor local.");
+        });
+    }
     function borrarServicio(id) { reproducirError(); if(confirm("¿Eliminar servicio?")) { fetch('/api/tratamientos/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
 
     function abrirModalCliente(event) { reproducirClick(); document.getElementById('formCliente').reset(); document.getElementById('clienteId').value = ""; new bootstrap.Modal(document.getElementById('modalCliente')).show(); }

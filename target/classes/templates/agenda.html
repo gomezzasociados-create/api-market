@@ -19,6 +19,7 @@
             --cyan-neon: #00e5ff;
             --cyan-brillo: rgba(0, 229, 255, 0.6);
             --mp-blue: #009ee3;
+            --transfer-green: #00d28a;
             --blanco-puro: #ffffff;
         }
         body { background-color: var(--violeta-profundo); font-family: 'Poppins', sans-serif; color: var(--blanco-puro); padding: 30px 20px; margin: 0; overflow-x: hidden;}
@@ -37,14 +38,18 @@
         .fc-button-primary { background: linear-gradient(135deg, var(--fucsia-neon) 0%, #c01a7c 100%) !important; border: none !important; font-weight: 700 !important; text-transform: uppercase !important; box-shadow: 0 0 10px var(--fucsia-brillo); transition: 0.3s !important; }
         .fc-toolbar-title { color: var(--cyan-neon); font-weight: 800 !important; text-shadow: 0 0 10px rgba(0,229,255,0.4); text-transform: uppercase; }
 
-        /* Estilo de los bloques de eventos (Modo Público) */
-        .fc-event { border: 1px solid #ff0055 !important; background-color: rgba(255, 0, 85, 0.1) !important; color: #ff0055 !important; font-weight: 800; padding: 4px; border-radius: 6px; font-size: 0.9rem; text-align: center; pointer-events: none; /* Evita que le den clic a una hora ocupada */ }
+        .fc-event { border: 1px solid #ff0055 !important; background-color: rgba(255, 0, 85, 0.1) !important; color: #ff0055 !important; font-weight: 800; padding: 4px; border-radius: 6px; font-size: 0.9rem; text-align: center; pointer-events: none; }
         .fc-event-main { white-space: normal !important; display: flex; align-items: center; justify-content: center; height: 100%;}
 
         .spinner-mp { width: 1.5rem; height: 1.5rem; border-width: 0.2em; display: none; margin-right: 10px; }
         @keyframes latido { 0% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.2); } 50% { box-shadow: 0 0 25px rgba(255, 0, 85, 0.6); } 100% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.2); } }
 
-        /* 🔥 AJUSTES PARA CELULAR 🔥 */
+        /* Estilos Medios de Pago */
+        .payment-card { border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; background: rgba(0,0,0,0.3); }
+        .payment-card:hover { border-color: var(--cyan-neon); background: rgba(0,229,255,0.1); }
+        .payment-card.active { border-color: var(--cyan-neon); background: rgba(0,229,255,0.15); box-shadow: 0 0 15px rgba(0,229,255,0.3); }
+        .payment-radio { display: none; }
+
         @media (max-width: 768px) {
             body { padding: 15px 10px; }
             .header-agenda { flex-direction: column; gap: 15px; text-align: center; }
@@ -85,27 +90,50 @@
                 <div class="mb-3 text-center">
                     <h5 id="resumen-fecha" style="color: #ff00ff; font-weight: 800; text-transform: capitalize;">...</h5>
                 </div>
-                <div class="p-3 mb-4 text-center" style="background: rgba(255, 0, 85, 0.1); border: 2px solid #ff0055; border-radius: 10px; animation: latido 2s infinite;">
-                    <i class="bi bi-stopwatch" style="color: #ff0055; font-size: 1.8rem;"></i>
-                    <span style="color: white; font-weight: 700; font-size: 0.95rem; margin-left: 10px;">
-                        Bloquearemos tu hora por <span style="color: #ff0055;">10 minutos</span> para el pago.
-                    </span>
-                </div>
+
                 <div class="mb-3">
                     <ul id="resumen-carrito-agenda" class="list-group list-group-flush rounded mb-2" style="background: rgba(0,0,0,0.4);"></ul>
                     <h4 class="text-end fw-bold">Total: <span id="resumen-total-agenda" style="color: #ff00ff;">$0</span></h4>
                 </div>
+
                 <div class="p-3 mb-3" style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 10px;">
-                    <label class="form-label fw-bold mb-3" style="color: #00e5ff;"><i class="bi bi-wallet2 me-2"></i>¿Cómo deseas pagar?</label>
+                    <label class="form-label fw-bold mb-3" style="color: #00e5ff;"><i class="bi bi-wallet2 me-2"></i>Monto a Pagar Hoy</label>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="opcionPago" id="pagoTotal" value="total" checked>
+                        <input class="form-check-input" type="radio" name="opcionAbono" id="pagoTotal" value="total" checked>
                         <label class="form-check-label text-white fw-bold" for="pagoTotal">Pagar Total (<span id="txt-pago-total">$0</span>)</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="opcionPago" id="pagoAbono" value="abono">
-                        <label class="form-check-label text-white fw-bold" for="pagoAbono">Abono 20% (<span id="txt-pago-abono">$0</span>)</label>
+                        <input class="form-check-input" type="radio" name="opcionAbono" id="pagoAbono" value="abono">
+                        <label class="form-check-label text-white fw-bold" for="pagoAbono">Abonar 20% (<span id="txt-pago-abono">$0</span>)</label>
                     </div>
                 </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold mb-2" style="color: #00e5ff;"><i class="bi bi-credit-card-2-front me-2"></i>¿Cómo deseas pagar?</label>
+
+                    <label class="payment-card d-block w-100 active" id="card-transferencia">
+                        <input type="radio" class="payment-radio" name="metodoPago" value="transferencia" checked onchange="actualizarBotonPago()">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-bank fs-3 me-3" style="color: var(--transfer-green);"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold text-white">Transferencia Bancaria</h6>
+                                <small class="text-white-50">Reserva rápida, sin comisiones.</small>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="payment-card d-block w-100" id="card-mercadopago">
+                        <input type="radio" class="payment-radio" name="metodoPago" value="mercadopago" onchange="actualizarBotonPago()">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-credit-card-fill fs-3 me-3" style="color: var(--mp-blue);"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold text-white">Tarjetas (MercadoPago)</h6>
+                                <small class="text-white-50">Débito, Crédito o Prepago.</small>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
                 <form id="form-cliente">
                     <div class="mb-3">
                         <label class="form-label fw-bold" style="color: #00e5ff;">Tu Nombre</label>
@@ -115,14 +143,46 @@
                         <label class="form-label fw-bold" style="color: #00e5ff;">Tu WhatsApp</label>
                         <input type="tel" class="form-control bg-dark text-white border-info" id="cliente-telefono" required placeholder="+56 9...">
                     </div>
+                    <div class="mb-3" id="campo-email" style="display: none;">
+                        <label class="form-label fw-bold" style="color: #00e5ff;">Tu Correo (Opcional)</label>
+                        <input type="email" class="form-control bg-dark text-white border-info" id="cliente-email" placeholder="Para un pago más rápido">
+                    </div>
                     <input type="hidden" id="fecha-iso-oculta">
                 </form>
             </div>
             <div class="modal-footer" style="border-top: 1px solid rgba(0,229,255,0.3);">
                 <button type="button" class="btn btn-outline-light w-100 mb-2 d-md-none" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn d-flex align-items-center justify-content-center w-100 w-md-auto" id="btn-procesar-reserva" style="background: linear-gradient(135deg, var(--mp-blue) 0%, #005f8f 100%); color: white; font-weight: 800; padding: 12px;">
-                    <div class="spinner-border spinner-mp text-light" role="status" id="spinner-pago"></div>
-                    <span id="texto-btn-pago"><i class="bi bi-credit-card me-2"></i> Pagar Seguro</span>
+                <button type="button" class="btn d-flex align-items-center justify-content-center w-100 w-md-auto" id="btn-procesar-reserva" style="background: var(--transfer-green); color: black; font-weight: 800; padding: 12px; transition: 0.3s;">
+                    <div class="spinner-border spinner-mp text-dark" role="status" id="spinner-pago"></div>
+                    <span id="texto-btn-pago"><i class="bi bi-bank me-2"></i> Generar Reserva</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTransferencia" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #100118; border: 2px solid var(--transfer-green); box-shadow: 0 0 30px rgba(0, 210, 138, 0.4); color: white; border-radius: 15px;">
+            <div class="modal-header border-0 pb-0 justify-content-center pt-4">
+                <i class="bi bi-check-circle-fill" style="font-size: 4rem; color: var(--transfer-green); text-shadow: 0 0 20px var(--transfer-green);"></i>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <h3 class="fw-bold mb-2" style="color: var(--transfer-green);">¡Cita Reservada!</h3>
+                <p class="text-white-50 mb-4">Para confirmar tu hora, por favor realiza la transferencia del monto acordado.</p>
+
+                <div class="text-start p-4 mb-4" style="background: rgba(0,0,0,0.5); border-radius: 10px; border: 1px dashed var(--transfer-green);">
+                    <h5 class="fw-bold mb-3 border-bottom border-secondary pb-2">Datos de Transferencia</h5>
+                    <p class="mb-1"><span class="text-white-50">Banco:</span> <strong>Banco Santander</strong></p>
+                    <p class="mb-1"><span class="text-white-50">Tipo:</span> <strong>Cuenta Corriente</strong></p>
+                    <p class="mb-1"><span class="text-white-50">N° Cuenta:</span> <strong>000094066425</strong></p>
+                    <p class="mb-1"><span class="text-white-50">RUT:</span> <strong>77.912.907-1</strong></p>
+                    <p class="mb-1"><span class="text-white-50">Nombre:</span> <strong>Linda Mamá Spa</strong></p>
+                    <p class="mb-0"><span class="text-white-50">Monto:</span> <strong style="color: var(--fucsia-neon); font-size: 1.2rem;" id="monto-transferencia">$0</strong></p>
+                </div>
+
+                <button id="btn-whatsapp-comprobante" class="btn w-100 fw-bold py-3" style="background: #25D366; color: white; border-radius: 10px; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);">
+                    <i class="bi bi-whatsapp fs-5 me-2"></i> Enviar Comprobante
                 </button>
             </div>
         </div>
@@ -131,18 +191,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Detectar si es un celular
         var isMobile = window.innerWidth < 768;
-
         var calendarEl = document.getElementById('calendario');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            // Si es celular, muestra solo un día. Si es PC, muestra la semana.
             initialView: isMobile ? 'timeGridDay' : 'timeGridWeek',
             locale: 'es',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                // Cambiar botones según la pantalla
                 right: isMobile ? 'timeGridDay' : 'timeGridWeek,timeGridDay'
             },
             slotMinTime: '08:00:00',
@@ -151,19 +207,13 @@
             nowIndicator: true,
             buttonText: { today: 'Hoy', week: 'Semana', day: 'Día' },
 
-            // LÓGICA DE EVENTOS (CENSURADO PARA PÚBLICO)
             events: function(info, successCallback, failureCallback) {
                 fetch('/api/citas')
                     .then(res => res.json())
                     .then(data => {
                         let eventos = data.map(c => {
                             if (!c.fechaHora) return null;
-                            // A la clienta no le importa quién va, solo que está ocupado.
-                            return {
-                                title: '⛔ OCUPADO',
-                                start: c.fechaHora,
-                                display: 'block' // Hace que se vea como un bloque sólido
-                            };
+                            return { title: '⛔ OCUPADO', start: c.fechaHora, display: 'block' };
                         }).filter(e => e !== null);
                         successCallback(eventos);
                     })
@@ -173,6 +223,31 @@
         });
         calendar.render();
     });
+
+    let montoAEnviar = 0;
+
+    function actualizarBotonPago() {
+        const metodo = document.querySelector('input[name="metodoPago"]:checked').value;
+        const btn = document.getElementById('btn-procesar-reserva');
+        const txt = document.getElementById('texto-btn-pago');
+        const emailField = document.getElementById('campo-email');
+
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+
+        if(metodo === 'transferencia') {
+            document.getElementById('card-transferencia').classList.add('active');
+            btn.style.background = 'var(--transfer-green)';
+            btn.style.color = 'black';
+            txt.innerHTML = '<i class="bi bi-bank me-2"></i> Generar Reserva';
+            emailField.style.display = 'none';
+        } else {
+            document.getElementById('card-mercadopago').classList.add('active');
+            btn.style.background = 'linear-gradient(135deg, var(--mp-blue) 0%, #005f8f 100%)';
+            btn.style.color = 'white';
+            txt.innerHTML = '<i class="bi bi-credit-card me-2"></i> Pagar Seguro';
+            emailField.style.display = 'block';
+        }
+    }
 
     function abrirFormularioReserva(fechaIso) {
         document.getElementById('fecha-iso-oculta').value = fechaIso;
@@ -203,9 +278,11 @@
     document.getElementById('btn-procesar-reserva').addEventListener('click', function() {
         const nombre = document.getElementById('cliente-nombre').value.trim();
         const telefono = document.getElementById('cliente-telefono').value.trim();
+        const email = document.getElementById('cliente-email').value.trim();
         let fecha = document.getElementById('fecha-iso-oculta').value;
         const carrito = JSON.parse(localStorage.getItem('spaCarrito')) || [];
-        const opcion = document.querySelector('input[name="opcionPago"]:checked').value;
+        const opcionAbono = document.querySelector('input[name="opcionAbono"]:checked').value;
+        const metodoPago = document.querySelector('input[name="metodoPago"]:checked').value;
 
         if(!nombre || !telefono) return alert("Por favor, ingresa tu Nombre y WhatsApp");
         if(carrito.length === 0) return alert("El catálogo está vacío. Elige un servicio primero.");
@@ -214,7 +291,7 @@
 
         let total = 0;
         carrito.forEach(i => total += parseFloat(i.precio));
-        let monto = Math.floor(opcion === 'total' ? total : total * 0.2);
+        montoAEnviar = Math.floor(opcionAbono === 'total' ? total : total * 0.2);
 
         document.getElementById('btn-procesar-reserva').disabled = true;
         document.getElementById('spinner-pago').style.display = 'inline-block';
@@ -225,31 +302,56 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 titulo: "Reserva - " + (carrito.map(i => i.nombre).join(", ")),
-                precio: monto,
+                precio: montoAEnviar,
                 nombre: nombre,
                 telefono: telefono,
-                fechaAgendamiento: fecha
+                email: email,
+                fechaAgendamiento: fecha,
+                metodoPago: metodoPago
             })
         })
         .then(res => res.text())
-        .then(url => {
-            if(url.startsWith("http")) {
+        .then(respuesta => {
+            if(respuesta.startsWith("TRANSFERENCIA_OK")) {
+                // Flujo Transferencia
                 localStorage.removeItem('spaCarrito');
-                window.location.href = url;
+                bootstrap.Modal.getInstance(document.getElementById('modalReserva')).hide();
+                document.getElementById('monto-transferencia').innerText = "$" + montoAEnviar.toLocaleString('es-CL');
+
+                const idCita = respuesta.split("|")[1];
+                const fObj = new Date(fecha);
+                const fechaText = fObj.toLocaleString('es-CL', { weekday: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const msj = `¡Hola Linda Mamá Spa! 👋%0AAcabo de reservar para el *${fechaText}*.%0AMi nombre es *${nombre}*.%0A%0AAquí te envío mi comprobante de transferencia por *$${montoAEnviar.toLocaleString('es-CL')}*. (Ref: #${idCita})`;
+
+                document.getElementById('btn-whatsapp-comprobante').onclick = () => {
+                    // CAMBIA AQUÍ TU NÚMERO DE RECEPCIÓN
+                    window.open(`https://wa.me/569XXXXXXXX?text=${msj}`, '_blank');
+                    window.location.href = '/catalogo'; // Redirige al finalizar
+                };
+
+                new bootstrap.Modal(document.getElementById('modalTransferencia')).show();
+
+            } else if(respuesta.startsWith("http")) {
+                // Flujo Mercado Pago
+                localStorage.removeItem('spaCarrito');
+                window.location.href = respuesta;
             } else {
-                alert("Error del Servidor: " + url);
-                document.getElementById('btn-procesar-reserva').disabled = false;
-                document.getElementById('spinner-pago').style.display = 'none';
-                document.getElementById('texto-btn-pago').innerHTML = '<i class="bi bi-credit-card me-2"></i> Pagar Seguro';
+                alert("Error del Servidor: " + respuesta);
+                restaurarBoton();
             }
         })
         .catch(err => {
             alert("Error de conexión. Revisa que el servidor esté corriendo.");
             console.error(err);
-            document.getElementById('btn-procesar-reserva').disabled = false;
-            document.getElementById('spinner-pago').style.display = 'none';
+            restaurarBoton();
         });
     });
+
+    function restaurarBoton() {
+        document.getElementById('btn-procesar-reserva').disabled = false;
+        document.getElementById('spinner-pago').style.display = 'none';
+        actualizarBotonPago();
+    }
 </script>
 </body>
 </html>

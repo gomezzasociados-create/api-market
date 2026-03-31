@@ -8,6 +8,7 @@ import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
+import com.mercadopago.client.preference.PreferencePayerRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.resources.preference.Preference;
 import com.mercadopago.exceptions.MPApiException;
@@ -32,7 +33,7 @@ public class PagoRestController {
     @PostMapping("/crear-preferencia")
     public String crearPreferencia(@RequestBody Map<String, Object> datos) {
         try {
-            // 1. CONFIGURACIÓN TOKEN
+            // 1. CONFIGURACIÓN TOKEN (Tu token actual)
             MercadoPagoConfig.setAccessToken("APP_USR-5751871946510432-080417-64053e5e178846a2dff9e962057f1032-735099817");
 
             // 2. EXTRACCIÓN DE DATOS
@@ -41,15 +42,19 @@ public class PagoRestController {
             BigDecimal precio = new BigDecimal(precioStr);
             String fechaAgendamientoStr = (String) datos.get("fechaAgendamiento");
 
-            // Datos de la clienta (Vienen del modal de la agenda)
+            // Datos del cliente
             String nombreCli = (String) datos.get("nombre");
             String telefonoCli = (String) datos.get("telefono");
+            String emailCli = (String) datos.get("email");
+            String metodoPago = (String) datos.get("metodoPago");
 
             // 3. REGISTRO DE CLIENTA EN CRM
             Cliente clienteVenta = new Cliente();
             clienteVenta.setNombre(nombreCli);
             clienteVenta.setTelefono(telefonoCli);
-            // Guardamos la clienta primero para tener su ID
+            if (emailCli != null && !emailCli.isEmpty()) {
+                clienteVenta.setCorreo(emailCli);
+            }
             clienteVenta = clienteRepository.save(clienteVenta);
 
             // 4. CREACIÓN DE LA CITA
@@ -57,25 +62,34 @@ public class PagoRestController {
             nuevaCita.setCliente(clienteVenta);
             nuevaCita.setNombreTratamiento(titulo);
             nuevaCita.setTotalPagado(precio.intValue());
-            nuevaCita.setEstado("RESERVADO");
+            nuevaCita.setEstado("RESERVADO"); // Queda pendiente de pago/confirmación
             nuevaCita.setFechaCreacion(LocalDateTime.now());
 
-            // 🔥 LIMPIEZA DE FECHA (Mata el error de "unparsed text")
             if (fechaAgendamientoStr != null && !fechaAgendamientoStr.isEmpty()) {
-                // Tomamos solo los primeros 19 caracteres: YYYY-MM-DDTHH:mm:ss
                 String fechaLimpia = fechaAgendamientoStr.substring(0, 19);
                 nuevaCita.setFechaHora(LocalDateTime.parse(fechaLimpia));
             }
 
-            // Guardamos la cita asociada a la clienta
             Cita citaGuardada = citaRepository.save(nuevaCita);
 
-            // 5. MERCADO PAGO PREFERENCE
+            // 🔥 5. LÓGICA DE RUTEO DE PAGO 🔥
+            if ("transferencia".equals(metodoPago)) {
+                // Si es transferencia, devolvemos una bandera al frontend para que muestre el modal del banco
+                return "TRANSFERENCIA_OK|" + citaGuardada.getId();
+            }
+
+            // 6. SI ES MERCADO PAGO, CREAMOS LA PREFERENCIA
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                     .title(titulo)
                     .quantity(1)
                     .unitPrice(precio)
                     .currencyId("CLP")
+                    .build();
+
+            // Pasarle el email a MP hace que se salte la pantalla de inicio de sesión inicial
+            PreferencePayerRequest payer = PreferencePayerRequest.builder()
+                    .email(emailCli != null && !emailCli.isEmpty() ? emailCli : "cliente@lindamama.cl")
+                    .name(nombreCli)
                     .build();
 
             PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
@@ -86,6 +100,7 @@ public class PagoRestController {
 
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                     .items(Collections.singletonList(itemRequest))
+                    .payer(payer)
                     .backUrls(backUrls)
                     .externalReference(String.valueOf(citaGuardada.getId()))
                     .build();
@@ -93,7 +108,6 @@ public class PagoRestController {
             PreferenceClient client = new PreferenceClient();
             Preference preference = client.create(preferenceRequest);
 
-            // Devolvemos el link para que el frontend redirija
             return preference.getInitPoint();
 
         } catch (MPApiException apiException) {
@@ -118,7 +132,7 @@ public class PagoRestController {
 
                 if (citaOpt.isPresent()) {
                     Cita cita = citaOpt.get();
-                    cita.setEstado("CONFIRMADO"); // Pasa a verde/cyan
+                    cita.setEstado("CONFIRMADO");
                     citaRepository.save(cita);
                 }
             } catch (Exception e) {
