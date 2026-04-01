@@ -149,22 +149,24 @@
 
                 <div class="row contenedor-servicios pe-2 mx-0" id="grid-servicios">
                     <div class="col-6 col-md-6 col-lg-4 mb-3 px-2 item-grid-servicio" th:each="s : ${servicios}" th:data-nombre-lower="${#strings.toLowerCase(s.nombre)}">
-                        <div class="card card-servicio" th:classappend="${s.isPromoActiva()} ? 'border-warning' : ''"
+
+                        <div class="card card-servicio" th:classappend="${s.enPromocion} ? 'border-warning' : ''"
                              th:data-id="${s.id}" th:data-nombre="${s.nombre}"
-                             th:data-precio="${s.isPromoActiva() ? s.precioPromo : s.precio}"
+                             th:data-precio="${s.enPromocion and s.precioPromo != null ? s.precioPromo : s.precio}"
                              onclick="capturarServicio(event, this)">
 
-                            <th:block th:if="${s.isPromoActiva()}">
+                            <th:block th:if="${s.enPromocion}">
                                 <div class="etiqueta-promo">OFERTA</div>
                             </th:block>
 
                             <h5 th:text="${s.nombre}">Tratamiento</h5>
 
-                            <div class="precio mt-auto" th:classappend="${s.isPromoActiva()} ? 'precio-oferta' : ''">
-                                <span th:if="${s.isPromoActiva()}" class="precio-viejo" th:text="'$' + ${#numbers.formatInteger(s.precio, 0, 'POINT')}"></span>
-                                $<span th:text="${s.isPromoActiva() ? #numbers.formatInteger(s.precioPromo, 0, 'POINT') : #numbers.formatInteger(s.precio, 0, 'POINT')}">$0</span>
+                            <div class="precio mt-auto" th:classappend="${s.enPromocion} ? 'precio-oferta' : ''">
+                                <span th:if="${s.enPromocion}" class="precio-viejo" th:text="'$' + ${s.precio != null ? #numbers.formatInteger(s.precio, 0, 'POINT') : '0'}"></span>
+                                $<span th:text="${s.enPromocion and s.precioPromo != null ? #numbers.formatInteger(s.precioPromo, 0, 'POINT') : (s.precio != null ? #numbers.formatInteger(s.precio, 0, 'POINT') : '0')}">$0</span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -231,7 +233,7 @@
                         </label>
                     </div>
 
-                    <button class="btn btn-fucsia w-100 py-3 rounded text-uppercase fs-5 mt-2" id="btn-procesar" onclick="confirmarVenta(event)">
+                    <button class="btn btn-fucsia w-100 py-3 rounded text-uppercase fs-5" id="btn-procesar" onclick="confirmarVenta(event)">
                         <i class="bi bi-check2-circle me-1"></i> Procesar Venta
                     </button>
                 </div>
@@ -309,7 +311,6 @@
     function buscarMixto() {
         const query = document.getElementById('input-buscador').value.toLowerCase();
 
-        // 1. Filtrar Servicios en la grilla visual
         const itemsGrid = document.querySelectorAll('.item-grid-servicio');
         itemsGrid.forEach(item => {
             const nombreServicio = item.getAttribute('data-nombre-lower');
@@ -320,7 +321,6 @@
             }
         });
 
-        // 2. Buscar Clientes en BD
         if (query.length < 3) { document.getElementById('lista-busqueda').innerHTML = ''; return; }
 
         fetch(`/api/pos/buscar-cliente?query=${query}`)

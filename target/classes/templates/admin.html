@@ -169,14 +169,14 @@
                 <div class="table-responsive"><table class="table table-cyber text-center align-middle"><thead><tr><th>IMG</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead><tbody><tr th:each="t : ${tratamientos}"><td><img th:src="${t.imagen}" width="45" height="45" style="border-radius:5px; object-fit: cover;"></td>
                     <td class="fw-bold text-start">
                         <span th:text="${t.nombre}">Nombre</span>
-                        <span th:if="${t.isPromoActiva()}" class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem; box-shadow: 0 0 5px rgba(255,193,7,0.5);">OFERTA</span>
+                        <span th:if="${t.enPromocion}" class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem; box-shadow: 0 0 5px rgba(255,193,7,0.5); animation: latido 1.5s infinite;">OFERTA</span>
                     </td>
                     <td class="fw-bold text-info">
-                        <th:block th:if="${t.isPromoActiva()}">
+                        <th:block th:if="${t.enPromocion}">
                             <del class="text-white-50 small" th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}"></del><br>
                             <span class="text-warning" th:text="'$' + ${#numbers.formatDecimal(t.precioPromo, 0, 'POINT', 0, 'POINT')}"></span>
                         </th:block>
-                        <th:block th:unless="${t.isPromoActiva()}">
+                        <th:block th:unless="${t.enPromocion}">
                             <span th:text="'$' + ${#numbers.formatDecimal(t.precio, 0, 'POINT', 0, 'POINT')}">$0</span>
                         </th:block>
                     </td>
@@ -193,7 +193,20 @@
 
             <div class="tab-pane fade" id="citas" role="tabpanel">
                 <h4 class="fw-bold mb-3 text-center text-md-start" style="color: var(--cyan-neon);">Últimas Reservas</h4>
-                <div class="table-responsive"><table class="table table-cyber align-middle"><thead><tr><th>Cliente</th><th>Fecha Cita</th><th>Servicio</th><th>Monto</th><th>Estado</th><th>Acciones</th></tr></thead><tbody><tr th:each="c : ${citas}" th:style="${c.estado == 'RESERVADO'} ? 'background-color: rgba(255, 152, 0, 0.08);' : ''"><td class="text-nowrap"><span class="fw-bold" th:text="${c.cliente != null ? c.cliente.nombre : 'Cliente Web'}">Nombre</span><br><small><i class="bi bi-whatsapp text-success"></i> <span th:text="${c.cliente != null ? c.cliente.telefono : '---'}">Tel</span></small></td><td class="text-white text-nowrap" th:text="${c.fechaHora != null ? #temporals.format(c.fechaHora, 'dd/MM HH:mm') : 'Por definir'}">Fecha</td><td th:text="${c.nombreTratamiento}">Servicio</td><td class="fw-bold" style="color: var(--fucsia-neon);" th:text="'$' + ${#numbers.formatInteger(c.totalPagado, 0, 'POINT')}">$0</td><td><span class="badge" th:classappend="${c.estado == 'RESERVADO'} ? 'badge-reservado' : 'badge-confirmado'" th:text="${c.estado == 'RESERVADO'} ? 'PENDIENTE' : 'PAGADO'">Estado</span></td><td class="acciones-col"><button class="btn btn-sm btn-success me-1 mb-1 mb-md-0" title="Aprobar" th:onclick="'confirmarCita(' + ${c.id} + ')'"><i class="bi bi-check-lg"></i></button><button class="btn btn-sm btn-primary me-1 mb-1 mb-md-0" title="Reagendar" th:onclick="'abrirModalReagendar(' + ${c.id} + ')'"><i class="bi bi-clock-history"></i></button><button class="btn btn-sm btn-danger mb-1 mb-md-0" title="Cancelar" th:onclick="'cancelarCita(' + ${c.id} + ')'"><i class="bi bi-x-lg"></i></button></td></tr></tbody></table></div>
+                <div class="table-responsive"><table class="table table-cyber align-middle"><thead><tr><th>Cliente</th><th>Fecha Cita</th><th>Servicio</th><th>Monto</th><th>Estado</th><th>Acciones</th></tr></thead><tbody><tr th:each="c : ${citas}" th:style="${c.estado == 'RESERVADO'} ? 'background-color: rgba(255, 152, 0, 0.08);' : ''"><td class="text-nowrap"><span class="fw-bold" th:text="${c.cliente != null ? c.cliente.nombre : 'Cliente Web'}">Nombre</span><br><small><i class="bi bi-whatsapp text-success"></i> <span th:text="${c.cliente != null ? c.cliente.telefono : '---'}">Tel</span></small></td><td class="text-white text-nowrap" th:text="${c.fechaHora != null ? #temporals.format(c.fechaHora, 'dd/MM HH:mm') : 'Por definir'}">Fecha</td><td th:text="${c.nombreTratamiento}">Servicio</td><td class="fw-bold" style="color: var(--fucsia-neon);" th:text="'$' + ${#numbers.formatInteger(c.totalPagado, 0, 'POINT')}">$0</td><td><span class="badge" th:classappend="${c.estado == 'RESERVADO'} ? 'badge-reservado' : 'badge-confirmado'" th:text="${c.estado == 'RESERVADO'} ? 'PENDIENTE' : 'PAGADO'">Estado</span></td>
+
+                    <td class="acciones-col">
+                        <button class="btn btn-sm btn-success me-1 mb-1 mb-md-0" title="Aprobar" th:onclick="'confirmarCita(' + ${c.id} + ')'"><i class="bi bi-check-lg"></i></button>
+                        <button class="btn btn-sm btn-primary me-1 mb-1 mb-md-0" title="Reagendar" th:onclick="'abrirModalReagendar(' + ${c.id} + ')'"><i class="bi bi-clock-history"></i></button>
+
+                        <button th:if="${c.cliente != null}" class="btn btn-sm me-1 mb-1 mb-md-0 text-dark fw-bold" style="background-color: #25D366; border-color: #25D366; box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);" title="Confirmar por WhatsApp" th:data-telefono="${c.cliente.telefono}" th:data-nombre="${c.cliente.nombre}" th:data-fecha="${c.fechaHora != null ? #temporals.format(c.fechaHora, 'dd/MM HH:mm') : 'Por definir'}" th:data-servicio="${c.nombreTratamiento}" onclick="enviarWhatsAppConfirmacion(this)">
+                            <i class="bi bi-whatsapp"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-danger mb-1 mb-md-0" title="Cancelar" th:onclick="'cancelarCita(' + ${c.id} + ')'"><i class="bi bi-x-lg"></i></button>
+                    </td>
+
+                </tr></tbody></table></div>
             </div>
 
             <div class="tab-pane fade" id="crm" role="tabpanel">
@@ -475,17 +488,24 @@
 
                     </div>
                 </div>
-                <div class="modal-footer border-top border-info" style="background-color: var(--violeta-tarjeta);">
-                    <input type="hidden" id="k-cli-id">
-                    <input type="hidden" id="k-cli-nombre">
-                    <input type="hidden" id="k-cli-telefono">
-                    <input type="hidden" id="k-cli-correo">
-                    <input type="hidden" id="k-cli-cumple">
-                    <input type="hidden" id="k-cli-notas">
-                    <input type="hidden" id="k-cli-hist">
+                <div class="modal-footer border-top border-info" style="background-color: var(--violeta-tarjeta); justify-content: space-between;">
 
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar sin Guardar</button>
-                    <button type="button" class="btn btn-fucsia px-5" onclick="guardarKardex(event)"><i class="bi bi-cloud-arrow-up"></i> Guardar Ficha Completa</button>
+                    <div>
+                        <button type="button" class="btn btn-success fw-bold px-4" onclick="enviarReporteKardexWhatsApp()"><i class="bi bi-whatsapp"></i> Enviar Ficha al Paciente</button>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <input type="hidden" id="k-cli-id">
+                        <input type="hidden" id="k-cli-nombre">
+                        <input type="hidden" id="k-cli-telefono">
+                        <input type="hidden" id="k-cli-correo">
+                        <input type="hidden" id="k-cli-cumple">
+                        <input type="hidden" id="k-cli-notas">
+                        <input type="hidden" id="k-cli-hist">
+
+                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-fucsia px-5" onclick="guardarKardex(event)"><i class="bi bi-cloud-arrow-up"></i> Guardar Ficha Completa</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -995,9 +1015,8 @@
         new bootstrap.Modal(document.getElementById('modalTratamiento')).show();
     }
 
-    // 🔥 FUNCIÓN GUARDAR A PRUEBA DE FALLOS Y BLOQUEO DE NAVEGADOR 🔥
     function guardarTratamiento(event) {
-        if(event) event.preventDefault(); // <-- ESTO BLOQUEA LA RECARGA ACCIDENTAL DEL NAVEGADOR
+        if(event) event.preventDefault();
         activarEfectoWaooo(event);
 
         const valPromo = document.getElementById('precioPromoTratamiento').value;
@@ -1021,7 +1040,6 @@
         const id = document.getElementById('tratamientoId').value;
         if(id) payload.id = parseInt(id);
 
-        // Enviamos sin demoras a tu Java
         fetch('/api/tratamientos/guardar', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -1032,7 +1050,6 @@
                 alert("✅ Servicio guardado correctamente en la Base de Datos.");
                 window.location.reload();
             } else {
-                // Si tu Java rechaza el guardado por la base de datos, te avisará aquí.
                 const errorTexto = await res.text();
                 alert("⚠️ Java no lo guardó. Motivo:\n" + errorTexto);
             }
@@ -1047,6 +1064,80 @@
     function editarCliente(btn) { reproducirClick(); document.getElementById('clienteId').value = btn.getAttribute('data-id'); document.getElementById('cliNombre').value = btn.getAttribute('data-nombre'); document.getElementById('cliTelefono').value = btn.getAttribute('data-telefono'); document.getElementById('cliCorreo').value = btn.getAttribute('data-correo'); document.getElementById('cliCumple').value = btn.getAttribute('data-cumpleanos'); document.getElementById('cliNotas').value = btn.getAttribute('data-notas'); new bootstrap.Modal(document.getElementById('modalCliente')).show(); }
     function guardarCliente(event) { activarEfectoWaooo(event); const payload = { nombre: document.getElementById('cliNombre').value, telefono: document.getElementById('cliTelefono').value, correo: document.getElementById('cliCorreo').value, cumpleanos: document.getElementById('cliCumple').value, notasMedicas: document.getElementById('cliNotas').value }; const id = document.getElementById('clienteId').value; if(id) payload.id = id; setTimeout(() => fetch('/api/clientes/guardar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).then(()=>window.location.reload()), 800); }
     function borrarCliente(id) { reproducirError(); if(confirm("¿Eliminar cliente?")) { fetch('/api/clientes/borrar/'+id, {method:'DELETE'}).then(()=>window.location.reload()); } }
+
+    function enviarWhatsAppConfirmacion(btn) {
+        reproducirClick();
+        const telefono = btn.getAttribute('data-telefono');
+        const nombre = btn.getAttribute('data-nombre');
+        const fecha = btn.getAttribute('data-fecha');
+        const servicio = btn.getAttribute('data-servicio');
+
+        if (!telefono || telefono === '---' || telefono.trim() === '') {
+            alert("⚠️ Este cliente no tiene un número de teléfono registrado.");
+            return;
+        }
+
+        let numeroLimpio = telefono.replace(/\D/g, '');
+        if (numeroLimpio.length === 9) { numeroLimpio = '56' + numeroLimpio; }
+
+        const mensaje = `🌸 ¡Hola ${nombre}! Te escribimos con mucho cariño de *Linda Mamá Spa* ✨.\n\nQueremos confirmar tu cita para tu sesión de *${servicio}* agendada para el *${fecha}*.\n\n¡Te esperamos para consentirte! Por favor confírmanos tu asistencia con un "Sí". 💕`;
+        const url = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+    }
+
+    // ==========================================
+    // FUNCIÓN NIVEL DIOS: ENVIAR FICHA CLÍNICA
+    // ==========================================
+    function enviarReporteKardexWhatsApp() {
+        reproducirClick();
+
+        const telefono = document.getElementById('k-cli-telefono').value;
+        const nombre = document.getElementById('k-cli-nombre').value;
+
+        if (!telefono || telefono === '---' || telefono.trim() === '') {
+            alert("⚠️ Este paciente no tiene un número de teléfono registrado en el sistema.");
+            return;
+        }
+
+        // Limpieza de número
+        let numeroLimpio = telefono.replace(/\D/g, '');
+        if (numeroLimpio.length === 9) { numeroLimpio = '56' + numeroLimpio; }
+
+        // Función de ayuda para extraer valores o poner guiones si están vacíos
+        const val = (id) => {
+            let v = document.getElementById(id).value;
+            return (v && v.trim() !== '') ? v : '--';
+        };
+
+        // Obtenemos la fecha actual
+        const hoy = new Date().toLocaleDateString('es-CL');
+
+        // Construcción del mensaje clínico nivel Dios
+        const mensaje = `📋 *REPORTE CLÍNICO DE EVOLUCIÓN* 📋
+*Linda Mamá Spa* 🌸
+
+👤 *Paciente:* ${nombre}
+📅 *Fecha de Emisión:* ${hoy}
+
+📊 *EVOLUCIÓN ANTROPOMÉTRICA*
+⚖️ *Peso:* ${val('m-peso-i')} kg ➡️ *${val('m-peso-f')} kg*
+📉 *IMC:* ${val('m-imc-i')} ➡️ *${val('m-imc-f')}*
+🔥 *Grasa Corp:* ${val('m-grac-i')}% ➡️ *${val('m-grac-f')}%*
+
+📏 *REDUCCIÓN DE MEDIDAS*
+🔸 *Cintura:* ${val('m-cin-i')} cm ➡️ *${val('m-cin-f')} cm*
+🔸 *Abdomen:* ${val('m-sbc-i')} cm ➡️ *${val('m-sbc-f')} cm*
+🔸 *Cadera:* ${val('m-cad-i')} cm ➡️ *${val('m-cad-f')} cm*
+🔸 *Brazos (D/I):* ${val('m-brd-i')} / ${val('m-bri-i')} ➡️ *${val('m-brd-f')} / ${val('m-bri-f')}*
+🔸 *Piernas (D/I):* ${val('m-pid-i')} / ${val('m-pii-i')} ➡️ *${val('m-pid-f')} / ${val('m-pii-f')}*
+
+✨ _¡Felicidades por tu progreso! Nos enorgullece acompañarte en este proceso._
+👩‍⚕️ *Atte: Equipo Clínico - Linda Mamá Spa*`;
+
+        // Codificamos y abrimos
+        const url = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+    }
 </script>
 </body>
 </html>
