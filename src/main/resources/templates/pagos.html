@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Mensualidades - GOMEZ GYM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root { --violeta-profundo: #100118; --violeta-tarjeta: #1c0229; --fucsia-neon: #39ff14; --cyan-neon: #00e5ff; --blanco-puro: #ffffff; }
+        body { background-color: var(--violeta-profundo); font-family: 'Poppins', sans-serif; color: var(--blanco-puro); padding-bottom: 50px; }
+
+        @keyframes latidoRojo { 0% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px red; } 50% { opacity: 0.7; transform: scale(1.05); box-shadow: 0 0 30px red; } 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px red; } }
+        @keyframes glowVerde { 0% { box-shadow: 0 0 10px var(--fucsia-neon); } 50% { box-shadow: 0 0 25px var(--fucsia-neon); } 100% { box-shadow: 0 0 10px var(--fucsia-neon); } }
+
+        .navbar-cyber { background: rgba(28, 2, 41, 0.95); border-bottom: 2px solid var(--fucsia-neon); box-shadow: 0 0 20px rgba(57, 255, 20, 0.4); backdrop-filter: blur(10px); }
+        .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; color: var(--blanco-puro) !important; text-shadow: 0 0 10px var(--fucsia-neon); letter-spacing: 1px; }
+
+        .btn-verde { background: var(--fucsia-neon); color: black !important; font-weight: bold; font-family: 'Poppins'; text-transform: uppercase; border: none; transition: 0.3s; box-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+        .btn-verde:hover { background: white; color: black; box-shadow: 0 0 25px var(--fucsia-neon); transform: scale(1.05); }
+
+        .table-cyber { background-color: var(--violeta-tarjeta); color: white; border-radius: 10px; overflow: hidden; margin-bottom: 0; min-width: 600px; }
+        .table-cyber th { background-color: #2a0342; color: var(--cyan-neon); border-bottom: 2px solid var(--fucsia-neon); text-transform: uppercase; font-size: 0.9rem; }
+        .table-cyber td { border-color: rgba(255, 255, 255, 0.1); vertical-align: middle; background: transparent; color: white; }
+
+        .badge-activa { background-color: #111; border: 2px solid var(--fucsia-neon); color: var(--fucsia-neon); font-weight: 800; padding: 5px 15px; animation: glowVerde 2s infinite; }
+        .badge-vencida { background-color: #300; border: 2px solid red; color: white; font-weight: 800; padding: 5px 15px; animation: latidoRojo 1s infinite; letter-spacing: 1px;}
+        .vencido-row { background: rgba(255,0,0,0.1) !important; border-left: 4px solid red; }
+
+        .nav-tabs { border-bottom: 1px solid rgba(0, 229, 255, 0.3); }
+        .nav-tabs .nav-link { color: #cccccc; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding: 10px 20px; }
+        .nav-tabs .nav-link:hover { color: var(--cyan-neon); }
+        .nav-tabs .nav-link.active { background-color: transparent; color: var(--cyan-neon); border-bottom: 3px solid var(--cyan-neon); text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+
+        .modal-content { background-color: #1c0229; border: 2px solid var(--fucsia-neon); box-shadow: 0 0 30px rgba(57, 255, 20, 0.4); color: white; border-radius: 15px; }
+        .form-control, .form-select { background: #100118; border: 1px solid var(--fucsia-neon); color: white; }
+        .form-control:focus, .form-select:focus { background: #100118; color: white; border-color: var(--cyan-neon); box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+
+        .tab-cyber-vencido.active { color: red !important; border-bottom: 3px solid red !important; text-shadow: 0 0 20px red !important; }
+        .tab-cyber-vencido { color: #ff5555 !important; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand navbar-cyber sticky-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="#"><i class="bi bi-lightning-charge-fill me-1"></i>GOMEZ GYM <span style="font-family: 'Poppins'; font-size: 1rem; color: var(--cyan-neon);">| MENSUALIDADES</span></a>
+        <div class="d-flex align-items-center gap-2">
+            <a href="/admin" class="btn btn-sm btn-outline-light"><i class="bi bi-speedometer2"></i> ADMIN</a>
+            <a href="/pos" class="btn btn-sm btn-outline-light"><i class="bi bi-calculator"></i> POS</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid px-3 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+        <h3 class="fw-bold mb-0" style="color: var(--cyan-neon);">Centro de Cobros</h3>
+        <button class="btn btn-verde px-4 py-2" data-bs-toggle="modal" data-bs-target="#modalRegistroPago">
+            <i class="bi bi-currency-dollar fs-5 align-middle"></i> REGISTRAR PAGO
+        </button>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" id="pagosTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#todas" type="button">Todas Registradas</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" style="color:var(--fucsia-neon);" data-bs-toggle="tab" data-bs-target="#activas" type="button">SOCIOS ACTIVOS</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link tab-cyber-vencido" data-bs-toggle="tab" data-bs-target="#vencidas" type="button">⚠️ VENCIDAS (ALERTA ROJA)</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="todas" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-cyber align-middle text-center">
+                    <thead>
+                    <tr>
+                        <th>Socio / Cliente</th>
+                        <th>Fecha de Pago</th>
+                        <th>Fecha Vence</th>
+                        <th>Monto Pagado</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="m : ${mensualidades}" th:classappend="${m.estado == 'VENCIDA'} ? 'vencido-row' : ''">
+                        <td class="fw-bold text-start ps-3" th:text="${m.socio != null ? m.socio.nombre : 'Socio Eliminado'}">Socio Name</td>
+                        <td th:text="${m.fechaPago != null ? #temporals.format(m.fechaPago, 'dd/MM/yyyy') : '-'}">01/01/2026</td>
+                        <td class="fw-bold fs-6" th:text="${m.fechaVencimiento != null ? #temporals.format(m.fechaVencimiento, 'dd/MM/yyyy') : '-'}">01/02/2026</td>
+                        <td class="fw-bold text-info" th:text="'$' + ${#numbers.formatInteger(m.montoPagado, 0, 'POINT')}">$30.000</td>
+                        <td>
+                            <span th:class="${m.estado == 'ACTIVA'} ? 'badge rounded-pill badge-activa' : 'badge rounded-pill badge-vencida'" th:text="${m.estado}">ACTIVA</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(mensualidades)}">
+                        <td colspan="5" class="py-4 text-muted">No hay registros de mensualidades guardados.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="activas" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-cyber align-middle text-center">
+                    <thead>
+                    <tr>
+                        <th>Socio / Cliente</th>
+                        <th>Fecha de Pago</th>
+                        <th>Fecha Vence</th>
+                        <th>Monto Pagado</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="m : ${mensualidades}" th:if="${m.estado == 'ACTIVA'}">
+                        <td class="fw-bold text-start ps-3" th:text="${m.socio != null ? m.socio.nombre : 'Socio Eliminado'}">Socio Name</td>
+                        <td th:text="${m.fechaPago != null ? #temporals.format(m.fechaPago, 'dd/MM/yyyy') : '-'}">01/01/2026</td>
+                        <td class="fw-bold fs-6" style="color:var(--fucsia-neon);" th:text="${m.fechaVencimiento != null ? #temporals.format(m.fechaVencimiento, 'dd/MM/yyyy') : '-'}">01/02/2026</td>
+                        <td class="fw-bold text-info" th:text="'$' + ${#numbers.formatInteger(m.montoPagado, 0, 'POINT')}">$30.000</td>
+                        <td><span class="badge rounded-pill badge-activa">ACTIVA</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="vencidas" role="tabpanel">
+            <div class="alert text-center fw-bold" style="background: rgba(255,0,0,0.1); border: 1px solid red; color: red; text-shadow: 0 0 10px red;">
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i> LISTA DE SOCIOS CON MENSUALIDAD EXPIRADA. ¡COBRAR ACCESO!
+            </div>
+            <div class="table-responsive">
+                <table class="table table-cyber align-middle text-center">
+                    <thead>
+                    <tr style="background-color: #500;">
+                        <th style="border-bottom: 2px solid red; color: white;">Socio / Cliente</th>
+                        <th style="border-bottom: 2px solid red; color: white;">Fecha Vencimiento</th>
+                        <th style="border-bottom: 2px solid red; color: white;">Estado</th>
+                        <th style="border-bottom: 2px solid red; color: white;">Acción Rápida</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="m : ${mensualidades}" th:if="${m.estado == 'VENCIDA'}" class="vencido-row">
+                        <td class="fw-bold text-start ps-3" th:text="${m.socio != null ? m.socio.nombre : 'Socio Eliminado'}">Socio Name</td>
+                        <td class="fw-bold fs-6 text-danger" th:text="${m.fechaVencimiento != null ? #temporals.format(m.fechaVencimiento, 'dd/MM/yyyy') : '-'}">01/02/2026</td>
+                        <td><span class="badge rounded-pill badge-vencida">VENCIDA</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-verde fw-bold" th:onclick="'abrirRenovacion(' + ${m.socio.id} + ')'">
+                                RENOVAR AHORA
+                            </button>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.size(mensualidades.?[estado == 'VENCIDA']) == 0}">
+                        <td colspan="4" class="py-4 text-success fw-bold"><i class="bi bi-check-circle"></i> Todos los socios están al día. Ningún vencimiento.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRegistroPago" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title fw-bold" style="color: var(--fucsia-neon);"><i class="bi bi-credit-card-fill me-2"></i> REGISTRAR MENSUALIDAD</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/api/mensualidades/registrar" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-info fw-bold">Seleccionar Socio (Cliente)</label>
+                        <select class="form-select" name="socioId" id="selectSocio" required>
+                            <option value="" disabled selected>-- Elige un Socio del CRM --</option>
+                            <option th:each="s : ${socios}" th:value="${s.id}" th:text="${s.nombre} + ' (' + ${s.telefono} + ')'"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-info fw-bold">Monto del Plan ($)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark text-white border-success">$</span>
+                            <input type="number" class="form-control" name="monto" required min="1" placeholder="Ej: 35000">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label text-warning fw-bold small">Fecha de Inicio</label>
+                            <input type="date" class="form-control border-warning" name="fechaInicio" id="fechaInicioPago" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label text-warning fw-bold small">Fecha de Vencimiento</label>
+                            <input type="date" class="form-control border-warning" name="fechaVencimiento" id="fechaVencimientoPago" required>
+                        </div>
+                    </div>
+
+                    <div class="alert mt-2 mb-0 fw-bold border-0" style="background: rgba(255, 193, 7, 0.1); color: #ffc107; font-size: 0.80rem;">
+                        <i class="bi bi-info-circle"></i> Por defecto se calculan 30 días automáticamente, pero puedes editar las fechas si es un registro histórico.
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-verde px-5">APLICAR COBRO</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirRenovacion(socioId) {
+        let selectSocio = document.getElementById('selectSocio');
+        if (selectSocio) {
+            selectSocio.value = socioId;
+        }
+        let modal = new bootstrap.Modal(document.getElementById('modalRegistroPago'));
+        modal.show();
+    }
+
+    // 🔥 SCRIPT PARA EL CÁLCULO MÁGICO DE LAS FECHAS 🔥
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputInicio = document.getElementById("fechaInicioPago");
+        const inputVencimiento = document.getElementById("fechaVencimientoPago");
+
+        if(inputInicio && inputVencimiento) {
+            // Truco para obtener la fecha local correcta evitando desfases de TimeZone
+            let hoy = new Date();
+            let tzOffset = hoy.getTimezoneOffset() * 60000;
+            let hoyLocal = new Date(hoy.getTime() - tzOffset);
+
+            // 1. Setear HOY por defecto en Inicio
+            inputInicio.value = hoyLocal.toISOString().split('T')[0];
+
+            // 2. Calcular +30 días para Vencimiento
+            let vencimiento = new Date(hoyLocal);
+            vencimiento.setDate(vencimiento.getDate() + 30);
+            inputVencimiento.value = vencimiento.toISOString().split('T')[0];
+
+            // 3. Escuchar si el usuario cambia el Inicio para recalcular
+            inputInicio.addEventListener("change", function() {
+                if(this.value) {
+                    let nuevaFecha = new Date(this.value);
+                    // Ajustar la zona horaria para que no quite un día
+                    nuevaFecha.setMinutes(nuevaFecha.getMinutes() + nuevaFecha.getTimezoneOffset());
+                    // Sumar 30 días
+                    nuevaFecha.setDate(nuevaFecha.getDate() + 30);
+                    inputVencimiento.value = nuevaFecha.toISOString().split('T')[0];
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.gomezsystems.minierp.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "clientes")
@@ -12,22 +13,36 @@ public class Cliente {
 
     private String nombre;
     private String telefono;
-    private String correo;
-    private String cumpleanos;
-
+    private String email;
+    private String dni;
+    private String direccion;
+    
+    // Para control CRM o créditos en el Market
+    private String etiqueta; // Ej: "NUEVO", "CREDITO", "DEUDOR"
+    private LocalDate fechaRegistro;
+    
+    private Double deudaActiva;
+    
+    // Para Cobranza Asistida
+    private LocalDate fechaLimitePago;
+    
+    // Cupo dinámico del VIP
+    private Double cupoMaximo;
+    
+    // Plantillas WhatsApp Personalizadas para el cliente
     @Column(columnDefinition = "TEXT")
-    private String notasMedicas;
-
+    private String plantillaMsgCompra;
+    
     @Column(columnDefinition = "TEXT")
-    private String historialCompras;
+    private String plantillaMsgAbono;
 
-    // NUEVO: Aquí guardaremos la Ficha Antropométrica completa comprimida
-    @Column(columnDefinition = "LONGTEXT")
-    private String kardexJson;
+    public Cliente() {
+        this.fechaRegistro = LocalDate.now();
+        this.deudaActiva = 0.0;
+        this.cupoMaximo = 100000.0;
+    }
 
-    public Cliente() {}
-
-    // --- GETTERS Y SETTERS ---
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -37,18 +52,33 @@ public class Cliente {
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getCumpleanos() { return cumpleanos; }
-    public void setCumpleanos(String cumpleanos) { this.cumpleanos = cumpleanos; }
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
 
-    public String getNotasMedicas() { return notasMedicas; }
-    public void setNotasMedicas(String notasMedicas) { this.notasMedicas = notasMedicas; }
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public String getHistorialCompras() { return historialCompras; }
-    public void setHistorialCompras(String historialCompras) { this.historialCompras = historialCompras; }
+    public String getEtiqueta() { return etiqueta; }
+    public void setEtiqueta(String etiqueta) { this.etiqueta = etiqueta; }
 
-    public String getKardexJson() { return kardexJson; }
-    public void setKardexJson(String kardexJson) { this.kardexJson = kardexJson; }
+    public LocalDate getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+
+    public Double getDeudaActiva() { return deudaActiva; }
+    public void setDeudaActiva(Double deudaActiva) { this.deudaActiva = deudaActiva; }
+
+    public LocalDate getFechaLimitePago() { return fechaLimitePago; }
+    public void setFechaLimitePago(LocalDate fechaLimitePago) { this.fechaLimitePago = fechaLimitePago; }
+
+    public Double getCupoMaximo() { return cupoMaximo; }
+    public void setCupoMaximo(Double cupoMaximo) { this.cupoMaximo = cupoMaximo; }
+
+    public String getPlantillaMsgCompra() { return plantillaMsgCompra; }
+    public void setPlantillaMsgCompra(String plantillaMsgCompra) { this.plantillaMsgCompra = plantillaMsgCompra; }
+
+    public String getPlantillaMsgAbono() { return plantillaMsgAbono; }
+    public void setPlantillaMsgAbono(String plantillaMsgAbono) { this.plantillaMsgAbono = plantillaMsgAbono; }
 }

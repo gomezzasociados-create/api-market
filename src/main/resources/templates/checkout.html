@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - GOMEZ GYM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --fondo-base: #050505;
+            --tarjeta-bg: rgba(15, 15, 20, 0.85);
+            --neon-primario: #39ff14;
+            --neon-secundario: #00e5ff;
+            --blanco: #ffffff;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #0a1118 0%, #000000 100%);
+            color: var(--blanco);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .checkout-container {
+            background: var(--tarjeta-bg);
+            border: 2px solid var(--neon-primario);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Resplandor superior */
+        .checkout-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--neon-primario), var(--neon-secundario));
+        }
+
+        .titulo-checkout {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--blanco);
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .resumen-caja {
+            background: rgba(0,0,0,0.6);
+            border: 1px dashed var(--neon-secundario);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .item-nombre { font-size: 1.5rem; font-weight: 800; color: var(--neon-secundario); margin: 0; text-transform: uppercase;}
+        .item-precio { font-size: 2.5rem; font-family: 'Oswald', sans-serif; font-weight: 900; color: var(--neon-primario); margin: 10px 0 0 0; text-shadow: 0 0 15px rgba(57,255,20,0.4);}
+
+        .form-label { font-weight: 600; color: #aaa; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+        .form-control {
+            background: #000; border: 1px solid #333; color: white; padding: 15px; border-radius: 8px;
+        }
+        .form-control:focus {
+            background: #111; border-color: var(--neon-primario); box-shadow: 0 0 15px rgba(57, 255, 20, 0.3); color: white;
+        }
+
+        .btn-pagar {
+            background: var(--neon-primario);
+            color: black;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        .btn-pagar:hover {
+            transform: scale(1.05); box-shadow: 0 0 40px rgba(57, 255, 20, 0.6);
+        }
+
+        #loader { display: none; text-align: center; margin-top: 15px; color: var(--neon-primario); font-weight: bold;}
+    </style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <h2 class="titulo-checkout"><i class="bi bi-shield-lock-fill"></i> Checkout</h2>
+
+    <div class="resumen-caja">
+        <p class="text-white-50 mb-1 fw-bold" th:text="'TIPO: ' + ${tipo}">TIPO: PLAN</p>
+        <h3 class="item-nombre" th:text="${item.nombre}">Nombre del Ítem</h3>
+        <p class="item-precio">$<span th:text="${#numbers.formatDecimal(precioFinal, 0, 'COMMA', 0, 'POINT')}"></span></p>
+    </div>
+
+    <form id="formCheckout">
+        <input type="hidden" id="tituloItem" th:value="${item.nombre}">
+        <input type="hidden" id="precioItem" th:value="${precioFinal}">
+
+        <div class="mb-3">
+            <label class="form-label">Nombre y Apellido</label>
+            <input type="text" id="cliNombre" class="form-control" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">WhatsApp</label>
+            <input type="tel" id="cliTelefono" class="form-control" placeholder="Ej: +56912345678" required>
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" id="cliEmail" class="form-control" placeholder="Para enviarte el comprobante" required>
+        </div>
+
+        <button type="submit" class="btn-pagar" id="btnSubmit">
+            PAGAR AHORA <i class="bi bi-wallet2"></i>
+        </button>
+        <div id="loader"><i class="bi bi-arrow-repeat spin"></i> Conectando con Mercado Pago...</div>
+    </form>
+
+    <div class="text-center mt-4">
+        <a href="/catalogo" class="text-white-50 text-decoration-none small"><i class="bi bi-arrow-left"></i> Volver al catálogo</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('formCheckout').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Bloqueamos el botón y mostramos el texto de carga
+        const btn = document.getElementById('btnSubmit');
+        const loader = document.getElementById('loader');
+        btn.style.display = 'none';
+        loader.style.display = 'block';
+
+        // Armamos el paquete de datos para tu PagoRestController
+        const payload = {
+            titulo: document.getElementById('tituloItem').value,
+            precio: document.getElementById('precioItem').value,
+            nombre: document.getElementById('cliNombre').value,
+            telefono: document.getElementById('cliTelefono').value,
+            email: document.getElementById('cliEmail').value,
+            metodoPago: "MERCADO_PAGO",
+            fechaAgendamiento: null // Como es un plan/producto directo, no hay fecha de agenda
+        };
+
+        // Llamamos al endpoint de Mercado Pago que hicimos
+        fetch('/api/pagos/crear-preferencia', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.text())
+        .then(url => {
+            if(url.startsWith("http")) {
+                // Si todo sale bien, Mercado Pago nos devuelve un link y redirigimos
+                window.location.href = url;
+            } else {
+                alert("Error al procesar el pago: " + url);
+                btn.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        })
+        .catch(err => {
+            alert("Error de conexión");
+            btn.style.display = 'block';
+            loader.style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

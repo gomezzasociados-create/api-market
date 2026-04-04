@@ -1,485 +1,1297 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linda Mamá Spa - POS Neón</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>MARKET LIMBER - POS Premium IA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <link rel="manifest" href="/manifest-pos.json">
+    <meta name="theme-color" content="#00d2ff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5753/5753905.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('PWA ServiceWorker registrado en POS.', reg.scope);
+                }).catch(err => {
+                    console.log('Fallo el ServiceWorker: ', err);
+                });
+            });
+        }
+    </script>
 
     <style>
-        :root { --violeta-profundo: #100118; --violeta-tarjeta: #1c0229; --fucsia-neon: #ff00ff; --cyan-neon: #00e5ff; --blanco-puro: #ffffff; --verde-neon: #00ff00; --naranja-neon: #ff9900;}
-        body { background-color: var(--violeta-profundo); color: var(--blanco-puro); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-
-        /* EFECTOS WAOOO Y ANIMACIONES */
-        .efecto-waooo { animation: estallidoNeon 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: var(--cyan-neon) !important; color: black !important; box-shadow: 0 0 40px var(--cyan-neon), inset 0 0 10px white !important; border-color: var(--cyan-neon) !important; }
-        @keyframes estallidoNeon { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 50px var(--cyan-neon); } 100% { transform: scale(1); } }
-        @keyframes latido { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } }
-        .shake-error { animation: shake 0.4s ease-in-out; border-color: red !important; box-shadow: 0 0 30px rgba(255,0,0,0.8) !important; }
-
-        /* PANTALLA DE LOGIN */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--violeta-profundo); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .login-box { background: rgba(28, 2, 41, 0.9); border: 2px solid var(--cyan-neon); padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 420px; box-shadow: 0 0 30px rgba(0,229,255,0.2); transition: 0.3s; }
-        .pin-input { background: #100118; color: var(--fucsia-neon); font-size: 2.5rem; text-align: center; letter-spacing: 20px; border: 1px solid var(--fucsia-neon); border-radius: 10px; width: 100%; margin-bottom: 20px; padding: 10px; font-weight: bold;}
-        .pin-input:focus { outline: none; box-shadow: 0 0 15px rgba(255,0,255,0.5); }
-
-        /* PANTALLA DE BIENVENIDA VIP */
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(42, 3, 66, 0.95) 0%, rgba(16, 1, 24, 1) 100%); z-index: 10005; display: none; justify-content: center; align-items: center; flex-direction: column; }
-        .welcome-text { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: #fff; text-align: center; text-shadow: 0 0 20px var(--fucsia-neon), 0 0 40px var(--cyan-neon); animation: zoomInBounce 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .welcome-sub { color: var(--cyan-neon); font-family: 'Poppins'; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; animation: latido 1.5s infinite; }
-        @keyframes zoomInBounce { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* HEADER POS */
-        #app-pos { display: none; animation: fadeIn 1s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .navbar-cyber { background: rgba(28, 2, 41, 0.95); border-bottom: 2px solid var(--cyan-neon); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); margin-bottom: 20px;}
-        .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; color: var(--blanco-puro) !important; text-shadow: 0 0 10px var(--cyan-neon); letter-spacing: 1px; }
-
-        .pos-container { height: calc(100vh - 80px); padding: 0 20px; }
-        .contenedor-servicios { max-height: 75vh; overflow-y: auto; overflow-x: hidden; padding-right: 10px; }
-
-        /* Tarjetas de Tratamiento con Oferta */
-        .card-servicio {
-            background: linear-gradient(145deg, var(--violeta-tarjeta), #2a0342); border: 1px solid rgba(0, 229, 255, 0.2);
-            border-radius: 15px; cursor: pointer; transition: all 0.3s ease-in-out; height: 150px; display: flex;
-            flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+        :root {
+            --bg-dark: #0a0a0f;
+            --panel-bg: rgba(15, 15, 20, 0.85);
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff003c;
+            --neon-green: #39ff14;
+            --neon-cyan: #00f3ff;
+            --neon-yellow: #fcee0a;
+            --text-light: #ffffff;
         }
-        .card-servicio:hover, .card-servicio:active { border-color: var(--cyan-neon); transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4); background: #2a0342; }
-        .card-servicio h5 { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; color: var(--blanco-puro); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; z-index: 2;}
-        .card-servicio .precio { color: var(--cyan-neon); font-weight: 800; font-size: 1.2rem; text-shadow: 0 0 10px rgba(0,229,255,0.3); z-index: 2;}
 
-        .etiqueta-promo { position: absolute; top: 10px; right: -30px; background: var(--fucsia-neon); color: white; font-weight: 900; font-size: 0.7rem; padding: 3px 30px; transform: rotate(45deg); box-shadow: 0 0 10px var(--fucsia-neon); letter-spacing: 1px; z-index: 1;}
-        .precio-viejo { font-size: 0.8rem; color: #888; text-decoration: line-through; display: block; margin-bottom: -5px;}
-        .precio-oferta { color: var(--fucsia-neon) !important; font-size: 1.4rem !important; text-shadow: 0 0 15px var(--fucsia-neon) !important; }
+        /* --- FONDO DINÁMICO --- */
+        .market-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; opacity: 0.8; pointer-events: none;
+            background-color: #000;
+            background-image: url('https://res.cloudinary.com/doi0o3hlr/image/upload/v1775196208/mk_bbslzj.png');
+            background-size: cover; background-position: center;
+            background-attachment: fixed;
+            animation: softPulse 15s infinite alternate ease-in-out;
+            will-change: transform;
+        }
 
-        /* Barra Lateral del Carrito */
-        .carrito { background: rgba(28, 2, 41, 0.85); backdrop-filter: blur(15px); border-radius: 20px; padding: 25px; height: 85vh; border: 1px solid var(--fucsia-neon); box-shadow: 0 0 30px rgba(255, 0, 255, 0.15); position: sticky; top: 20px; display: flex; flex-direction: column; }
-        .btn-fucsia { background: var(--fucsia-neon); border: none; color: white; font-weight: 800; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,0,255,0.3); letter-spacing: 1px;}
-        .btn-fucsia:hover, .btn-fucsia:active { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255,0,255,0.6); background: #d000d0; color: white;}
-        .item-carrito { display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,0,255,0.3); padding: 12px 0; font-size: 0.95rem; animation: fadeIn 0.3s ease-in-out;}
+        @keyframes softPulse {
+            0% { transform: scale(1); filter: brightness(0.6) contrast(1.2); }
+            100% { transform: scale(1.05); filter: brightness(0.7) contrast(1.3); }
+        }
 
-        #lista-busqueda { position: absolute; z-index: 1000; width: 100%; background: var(--violeta-tarjeta); border: 1px solid var(--cyan-neon); border-top: none; border-radius: 0 0 10px 10px; box-shadow: 0 5px 15px rgba(0,229,255,0.2); }
-        .cliente-opcion { padding: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); transition: 0.2s;}
-        .cliente-opcion:hover { background: rgba(0,229,255,0.2); color: var(--cyan-neon); padding-left: 18px;}
+        .overlay-futurist {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, rgba(0,240,255,0.05) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1; pointer-events: none;
+        }
 
-        .input-dark { background-color: #100118; border: 1px solid rgba(255,255,255,0.2); color: white; }
-        .input-dark:focus { background-color: #100118; color: white; border-color: var(--fucsia-neon); box-shadow: 0 0 10px rgba(255,0,255,0.4); }
-        .input-dark:disabled { background-color: rgba(255,255,255,0.05); color: #888; border-color: transparent; }
+        body {
+            background-color: transparent;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden; /* Evita doble scroll */
+        }
 
-        /* Botones de Método de Pago Neón */
-        .pay-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .pay-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px; border-radius: 10px; cursor: pointer; text-align: center; transition: 0.3s; font-size: 0.85rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        .pay-btn i { font-size: 1.5rem; margin-bottom: 5px; }
+        /* --- TÍTULO ÉPICO NIVEL DIOS --- */
+        .pos-header {
+            height: 90px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+            position: relative;
+        }
 
-        .pay-btn input { display: none; }
-        .pay-btn:has(input:checked) { transform: translateY(-3px); }
+        .epic-title-wrapper {
+            display: flex; align-items: baseline; gap: 10px;
+        }
+        .epic-market {
+            font-size: 3rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; margin: 0;
+            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8));
+        }
+        .epic-limber {
+            font-size: 2.8rem; font-weight: 900; letter-spacing: 15px; margin: 0; text-transform: uppercase;
+            color: var(--neon-cyan);
+            animation: limberGodMode 2.5s ease-in-out infinite alternate;
+        }
 
-        .pay-efectivo:has(input:checked) { border-color: var(--verde-neon); background: rgba(0, 255, 0, 0.1); color: var(--verde-neon); box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); }
-        .pay-tarjeta:has(input:checked) { border-color: var(--cyan-neon); background: rgba(0, 229, 255, 0.1); color: var(--cyan-neon); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
-        .pay-transfer:has(input:checked) { border-color: var(--fucsia-neon); background: rgba(255, 0, 255, 0.1); color: var(--fucsia-neon); box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); }
-        .pay-mercadopago:has(input:checked) { border-color: var(--naranja-neon); background: rgba(255, 153, 0, 0.1); color: var(--naranja-neon); box-shadow: 0 0 15px rgba(255, 153, 0, 0.4); }
+        @keyframes limberGodMode {
+            0% { text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan); transform: scale(1); }
+            100% { text-shadow: 0 0 15px #fff, 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan); transform: scale(1.02); color: #ffffff; }
+        }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--violeta-profundo); }
-        ::-webkit-scrollbar-thumb { background: var(--cyan-neon); border-radius: 10px; }
+        /* --- GUÍA G.O.M.E.Z. --- */
+        .gomez-guide-box {
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px);
+            border-left: 3px solid var(--neon-cyan); border-radius: 15px;
+            padding: 10px 20px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1); margin-bottom: 20px;
+        }
+        .btn-speak-guide {
+            background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
+            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s; flex-shrink: 0;
+        }
+        .btn-speak-guide:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.1); }
 
-        @media (max-width: 768px) {
-            body { padding-bottom: 20px; }
-            .pos-container { height: auto; padding: 10px; }
-            .contenedor-servicios { max-height: 40vh; border-bottom: 1px solid var(--fucsia-neon); padding-bottom: 15px; }
-            .card-servicio { height: auto; min-height: 120px; padding: 8px; }
-            .card-servicio h5 { font-size: 0.85rem; }
-            .card-servicio .precio { font-size: 1rem; }
-            .carrito { height: auto; position: relative; top: 0; margin-top: 20px; padding: 15px; }
-            #items-pos { max-height: 200px; }
-            .welcome-text { font-size: 2.2rem; }
+        /* --- LAYOUT PRINCIPAL --- */
+        .pos-layout { display: flex; height: calc(100vh - 90px); }
+        .products-area { flex: 1; padding: 20px; overflow-y: auto; }
+
+        /* SCROLLBAR */
+        .products-area::-webkit-scrollbar { width: 8px; }
+        .products-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .products-area::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+
+        /* --- CARRITO LATERAL --- */
+        .cart-sidebar {
+            width: 450px; background: rgba(10, 10, 15, 0.95);
+            border-left: 1px solid rgba(0, 243, 255, 0.3); display: flex; flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+        }
+        .cart-header { padding: 25px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); text-align: center; }
+        .cart-items-container { flex: 1; overflow-y: auto; padding: 15px; }
+
+        .cart-item {
+            background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 15px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 3px solid var(--neon-green); transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .cart-item:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); border-color: var(--neon-cyan); }
+
+        .cart-footer { padding: 25px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 243, 255, 0.3); }
+        .total-display { font-size: 3rem; font-weight: 900; color: var(--neon-green); text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: right; margin-bottom: 20px; line-height: 1; }
+
+        /* Botones de Pago */
+        .btn-pay {
+            font-weight: 800; border: none; padding: 15px; border-radius: 15px;
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .btn-contado { background: var(--neon-green); color: #000; }
+        .btn-contado:hover { box-shadow: 0 0 25px rgba(57,255,20,0.5); }
+        .btn-transfer { background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); }
+        .btn-transfer:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 25px rgba(0,243,255,0.5); }
+        .btn-vip { background: var(--neon-yellow); color: #000; }
+        .btn-vip:hover { box-shadow: 0 0 25px rgba(252,238,10,0.5); }
+        .btn-mp { background: linear-gradient(90deg, #009ee3, #00b4d8); color: #fff; }
+
+        /* --- TARJETAS DE PRODUCTO (3D WAOOO) --- */
+        .tilt-wrapper { perspective: 2000px; }
+        .product-card {
+            background: rgba(20, 20, 25, 0.9); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; position: relative; height: 100%; display: flex; flex-direction: column;
+            transform-style: preserve-3d; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .product-card::before {
+            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 4px;
+            background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan);
+            z-index: 10; pointer-events: none;
+        }
+        .product-card:hover::before { animation: neonScan 1.2s linear infinite; }
+        .product-card:hover { border-color: var(--neon-cyan); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2); }
+
+        .product-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s; background: #000;}
+        .product-card:hover .product-img { transform: scale(1.1) translateZ(30px); filter: brightness(1.2); }
+
+        .producto-pesable-badge {
+            position: absolute; top: 10px; right: 10px; background: var(--neon-pink); color: white;
+            font-size: 0.75rem; font-weight: 800; padding: 5px 10px; border-radius: 12px; box-shadow: 0 0 15px var(--neon-pink); z-index: 5;
+        }
+        .promo-badge {
+            position: absolute; top: 10px; left: 10px; background: var(--neon-yellow); color: #000;
+            font-size: 0.75rem; font-weight: 800; padding: 5px 10px; border-radius: 12px; box-shadow: 0 0 15px var(--neon-yellow); z-index: 5;
+        }
+
+        .product-info { padding: 20px; transform: translateZ(40px); display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 5px; text-transform: capitalize; }
+        .product-price { font-size: 1.8rem; font-weight: 900; color: var(--neon-green); margin-top: auto; }
+
+        /* Buscador */
+        .form-control-neon {
+            background-color: rgba(0,0,0,0.7); border: 1px solid var(--neon-cyan); color: #fff;
+            font-size: 1.2rem; font-weight: bold; border-radius: 15px; padding: 15px 20px;
+        }
+        .form-control-neon:focus { background-color: rgba(0,0,0,0.9); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+
+        /* --- BOTÓN FLOTANTE G.O.M.E.Z. MICRÓFONO --- */
+        .gomez-assistant { position: fixed; bottom: 30px; left: 30px; width: 70px; height: 70px; z-index: 1000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .gomez-core { width: 100%; height: 100%; background: var(--neon-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; box-shadow: 0 0 20px rgba(0,240,255,0.6); position: relative; z-index: 2; transition: 0.3s; }
+        .gomez-assistant:hover .gomez-core { transform: scale(1.1); box-shadow: 0 0 30px var(--neon-blue), 0 0 15px #fff; }
+        .gomez-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--neon-blue); z-index: 1; animation: gomezPing 2s infinite ease-out; }
+        .listening-pulse .gomez-core { background: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); animation: micBreathe 1s infinite alternate;}
+        .listening-pulse .gomez-ring { border-color: var(--neon-red); animation: gomezPingFast 0.8s infinite ease-out; }
+
+        @keyframes gomezPing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+        @keyframes gomezPingFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        @keyframes micBreathe { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+        /* Modal Personalizado Oscuro */
+        .modal-content.dark-neon { background-color: rgba(15,15,20,0.95); backdrop-filter: blur(20px); border: 1px solid var(--neon-cyan); color: white; border-radius: 25px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
+        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .modal-footer { border-top: 1px solid rgba(255,255,255,0.1); }
+
+        @media print {
+            @page { size: 80mm auto; margin: 0; }
+            body * { visibility: hidden; }
+            body { background: white !important; color: black !important; }
+            #area-impresion, #area-impresion * { visibility: visible; color: black !important; font-family: 'Courier New', Courier, monospace; }
+            #area-impresion { position: absolute; left: 0; top: 0; width: 100%; max-width: 80mm; padding: 5mm; }
+        }
+
+        @media (max-width: 991px) {
+            .pos-header { flex-direction: column; align-items: center; padding: 10px; height: auto; }
+            .pos-layout { flex-direction: column; overflow-y: auto; overflow-x: hidden; height: auto; }
+            .cart-sidebar { width: 100%; border-left: none; border-top: 2px solid var(--neon-cyan); height: auto; min-height: 50vh;}
+            .products-area { height: auto; min-height: 50vh; }
+            .cart-items-container { min-height: 250px; }
+            .total-display { font-size: 2.5rem; text-align: center; }
+            #hud-caja-indicadores { flex-wrap: wrap; justify-content: center; margin-top: 15px; margin-left: 0 !important; }
+            #hud-efectivo, #hud-tarjeta, #hud-fiado { font-size: 1.2rem !important; }
+            .gomez-assistant { width: 60px; height: 60px; bottom: 15px; left: 15px; }
+            .ms-auto.flex-nowrap { flex-wrap: wrap !important; justify-content: center; gap: 10px; margin-top: 15px; margin-left: 0 !important; width:100%;}
         }
     </style>
 </head>
 <body>
 
-<audio id="sfx-login-ok" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=success-1-6297.mp3"></audio>
-<audio id="sfx-login-fail" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=error-126627.mp3"></audio>
-<audio id="sfx-waooo" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7314742eaf.mp3?filename=magic-strike-6098.mp3"></audio>
-<audio id="sfx-click" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=bubble-sound-43207.mp3"></audio>
-<audio id="sfx-delete" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=error-126627.mp3"></audio>
+<div class="market-bg"></div>
+<div class="overlay-futurist"></div>
 
-<div id="login-screen">
-    <div class="login-box" id="login-box">
-        <h2 class="fw-bold mb-1" style="color: var(--cyan-neon); font-family: 'Playfair Display';"><i class="bi bi-cart-check-fill"></i> Caja POS</h2>
-        <p class="text-white mb-4 opacity-75">Control de Venta Directa</p>
-        <input type="password" id="input-pin" class="pin-input" maxlength="4" placeholder="••••" onkeypress="if(event.key === 'Enter') validarAcceso(event)">
-        <button class="btn btn-fucsia w-100 py-3 fs-5 mt-2" onclick="validarAcceso(event)">ABRIR TURNO</button>
+<audio id="sfx-hover" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+<audio id="sfx-beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+<audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3" preload="auto"></audio>
+<audio id="sfx-cash" src="https://actions.google.com/sounds/v1/alarms/cash_register.ogg" preload="auto"></audio>
+
+<div id="gomez-assistant" class="gomez-assistant animate__animated animate__fadeInUp" onclick="GOMEZ.listen()" title="Toca para hablar con G.O.M.E.Z.">
+    <div class="gomez-core"><i class="bi bi-mic-fill"></i></div>
+    <div class="gomez-ring"></div>
+</div>
+
+<div id="securityLock" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(10,10,15,0.95); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; backdrop-filter: blur(20px);">
+    <i class="bi bi-fingerprint text-neon-cyan pop-anim" style="font-size: 6rem; text-shadow: 0 0 40px var(--neon-cyan);"></i>
+    <h2 class="mt-4 text-white fw-bolder" style="letter-spacing: 8px;">G.O.M.E.Z. POS CORE</h2>
+
+    <div class="gomez-guide-box mt-4 mb-4">
+        <i class="bi bi-shield-lock-fill fs-2" style="color: var(--neon-cyan);"></i>
+        <div>
+            <strong class="text-white">Terminal de Caja Protegida:</strong><br>
+            <span class="text-muted small">Por favor, ingrese el PIN de cajero para autorizar el inicio de operaciones comerciales.</span>
+        </div>
+        <button class="btn-speak-guide" onclick="GOMEZ.speak('Terminal de caja protegida. Por favor, ingrese el PIN de cajero para autorizar el inicio de operaciones comerciales.')">
+            <i class="bi bi-volume-up-fill"></i>
+        </button>
+    </div>
+
+    <div class="d-flex gap-3 mt-2">
+        <input type="password" id="pinInput" class="form-control bg-dark text-center text-white fw-bold fs-2 shadow-none" style="width: 180px; letter-spacing: 10px; border: 2px solid var(--neon-cyan); box-shadow: 0 0 20px rgba(0,243,255,0.3);" maxlength="4" placeholder="••••">
+        <button class="btn btn-outline-info fw-bold px-5 fs-5" style="border-width: 2px; border-radius: 15px;" onclick="unlockPOS()"><i class="bi bi-power me-2"></i> INICIAR</button>
+    </div>
+    <h5 class="text-danger mt-4 d-none fw-bold animate__animated animate__headShake" id="pinError">❌ AUTORIZACIÓN DENEGADA.</h5>
+</div>
+
+<div id="mainPosUI" style="display: none;" class="animate__animated animate__fadeIn">
+    <div class="pos-header">
+        <div class="epic-title-wrapper" style="transform: scale(0.8); transform-origin: left center;">
+            <h1 class="epic-market">MARKET</h1>
+            <h1 class="epic-limber">LIMBER</h1>
+        </div>
+        
+        <div class="d-flex ms-4 gap-3 align-items-center" id="hud-caja-indicadores">
+            <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+                <div class="text-success small fw-bold text-uppercase"><i class="bi bi-cash-stack"></i> Efectivo</div>
+                <div class="fs-4 fw-bolder text-white" id="hud-efectivo">$0</div>
+            </div>
+            <div class="bg-dark border border-primary p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+                <div class="text-primary small fw-bold text-uppercase"><i class="bi bi-credit-card"></i> Máquina</div>
+                <div class="fs-4 fw-bolder text-white" id="hud-tarjeta">$0</div>
+            </div>
+            <div class="bg-dark border border-warning p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+                <div class="text-warning small fw-bold text-uppercase"><i class="bi bi-person-vcard text-warning"></i> Fiados</div>
+                <div class="fs-4 fw-bolder text-white" id="hud-fiado">$0</div>
+            </div>
+            <button class="btn btn-dark border-secondary rounded-4 px-3 fw-bold shadow-sm" onclick="abrirLibroCaja()">
+                <i class="bi bi-journal-check fs-4 mb-1 d-block text-info"></i> Libro
+            </button>
+        </div>
+
+        <div class="ms-auto flex-nowrap d-flex align-items-center gap-3">
+            <div class="gomez-guide-box m-0 py-2 px-3 d-none d-xl-flex" style="max-width: 350px;">
+                <i class="bi bi-info-circle-fill text-info"></i>
+                <div class="small lh-sm text-light"><strong>Asistente POS:</strong> Escanea o busca. Micrófono disponible.</div>
+            </div>
+            <span class="badge bg-dark border border-secondary p-2 fs-6"><i class="bi bi-person-badge me-1"></i> Caja 01</span>
+            <button class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="bloquearCaja()"><i class="bi bi-lock-fill me-1"></i> Bloquear</button>
+        </div>
+    </div>
+
+    <div class="pos-layout">
+
+        <div class="products-area">
+            <div class="d-flex mb-4 gap-3 align-items-center">
+                <div class="input-group" style="max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 15px;">
+                    <span class="input-group-text bg-dark border-info text-info fs-4"><i class="bi bi-search"></i></span>
+                    <input type="text" id="buscador" class="form-control form-control-neon border-info shadow-none" placeholder="Escanea código de barras o busca por nombre..." autocomplete="off">
+                </div>
+                <button class="btn btn-outline-info shadow-none fw-bold px-4 py-3" style="border-radius: 15px; border-width: 2px;" onclick="abrirCamara(null)"><i class="bi bi-camera-video-fill me-2 fs-5"></i> OPTIC SCAN</button>
+            </div>
+
+            <div class="row g-4 pb-5" id="grilla-productos">
+            </div>
+        </div>
+
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h3 class="mb-0 fw-900 text-white" style="letter-spacing: 2px;"><i class="bi bi-receipt text-info me-2"></i> TICKET DE VENTA</h3>
+            </div>
+
+            <div class="cart-items-container" id="lista-carrito">
+                <div class="text-center text-muted mt-5 d-flex flex-column align-items-center">
+                    <i class="bi bi-upc-scan fs-1 mb-3 opacity-50"></i>
+                    <h5 class="fw-bold">Bandeja Vacía</h5>
+                    <p class="small">Pistolea un producto para comenzar.</p>
+                </div>
+            </div>
+
+            <div class="cart-footer">
+                <div class="d-flex justify-content-between text-light mb-2 fw-bold fs-5">
+                    <span>SUBTOTAL:</span>
+                    <span id="txt-subtotal">$0</span>
+                </div>
+                <div class="total-display" id="txt-total">$0</div>
+
+                <div class="row g-3">
+                    <div class="col-6">
+                        <button class="btn btn-pay btn-contado w-100" onclick="procesarPago('CONTADO')">
+                            <i class="bi bi-cash-coin fs-4"></i> CONTADO
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-pay btn-transfer w-100" onclick="procesarPago('TRANSFERENCIA')">
+                            <i class="bi bi-bank fs-4"></i> TRANSF.
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-pay btn-vip w-100" onclick="procesarPago('FIADO')">
+                            <i class="bi bi-star-fill fs-4"></i> CRÉDITO VIP
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-pay btn-mp w-100 border-0" onclick="procesarPago('MERCADOPAGO')">
+                            <i class="bi bi-credit-card-fill fs-4"></i> MPAGO
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill" onclick="vaciarCarrito()"><i class="bi bi-trash3-fill me-1"></i> Cancelar Venta</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="welcome-screen">
-    <i class="bi bi-calculator" style="font-size: 5rem; color: var(--cyan-neon); animation: latido 1.5s infinite;"></i>
-    <h1 class="welcome-text" id="welcome-message">¡Bienvenida!</h1>
-    <p class="welcome-sub">Preparando Caja Registradora...</p>
-</div>
-
-<div id="app-pos">
-    <nav class="navbar navbar-expand navbar-cyber">
-        <div class="container-fluid px-3 px-md-4">
-            <a class="navbar-brand m-0" href="/admin"><i class="bi bi-stars me-1"></i>Linda Mamá <span class="text-white fw-light fs-6 ms-2 d-none d-md-inline">| Punto de Venta</span></a>
-            <div class="d-flex align-items-center">
-                <span class="badge border border-info text-info p-2 fs-6" id="badge-vendedor" style="background: rgba(0,229,255,0.1);"><i class="bi bi-person-circle"></i> Cargando...</span>
-                <a href="/admin" class="btn btn-sm btn-outline-light ms-3"><i class="bi bi-arrow-left-circle"></i> Volver</a>
+<div class="modal fade" id="modalPeso" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content dark-neon p-2">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="modal-title font-weight-bold text-info"><i class="bi bi-speedometer2"></i> Ingreso de Báscula</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <h2 id="pesoProductName" class="mb-4 text-white fw-bolder text-capitalize">Producto</h2>
+                <div class="input-group mb-3 px-3">
+                    <input type="number" id="inputPeso" class="form-control form-control-neon py-3 fs-1" step="1" min="1" placeholder="Ej: 500" autocomplete="off">
+                    <span class="input-group-text bg-info text-dark fw-bolder fs-2 border-0 px-4">GR</span>
+                </div>
+                <p class="text-info mt-3 fw-bold"><i class="bi bi-info-circle"></i> Presiona ENTER para confirmar</p>
             </div>
         </div>
-    </nav>
+    </div>
+</div>
 
-    <div class="container-fluid pos-container">
-        <div class="row">
-            <div class="col-md-7 col-lg-8 px-2 px-md-4 position-relative">
-
-                <div class="position-relative mb-4">
-                    <label class="form-label text-info small fw-bold"><i class="bi bi-search"></i> BUSCAR SERVICIO O CLIENTA</label>
-                    <div class="input-group">
-                        <span class="input-group-text border-info text-info" style="background: var(--violeta-tarjeta);"><i class="bi bi-search"></i></span>
-                        <input type="text" id="input-buscador" class="form-control input-dark border-info" placeholder="Escribe el nombre de la clienta o servicio..." onkeyup="buscarMixto()">
-                    </div>
-                    <div id="lista-busqueda"></div>
-                </div>
-
-                <div class="row contenedor-servicios pe-2 mx-0" id="grid-servicios">
-                    <div class="col-6 col-md-6 col-lg-4 mb-3 px-2 item-grid-servicio" th:each="s : ${servicios}" th:data-nombre-lower="${#strings.toLowerCase(s.nombre)}">
-
-                        <div class="card card-servicio" th:classappend="${s.enPromocion} ? 'border-warning' : ''"
-                             th:data-id="${s.id}" th:data-nombre="${s.nombre}"
-                             th:data-precio="${s.enPromocion and s.precioPromo != null ? s.precioPromo : s.precio}"
-                             onclick="capturarServicio(event, this)">
-
-                            <th:block th:if="${s.enPromocion}">
-                                <div class="etiqueta-promo">OFERTA</div>
-                            </th:block>
-
-                            <h5 th:text="${s.nombre}">Tratamiento</h5>
-
-                            <div class="precio mt-auto" th:classappend="${s.enPromocion} ? 'precio-oferta' : ''">
-                                <span th:if="${s.enPromocion}" class="precio-viejo" th:text="'$' + ${s.precio != null ? #numbers.formatInteger(s.precio, 0, 'POINT') : '0'}"></span>
-                                $<span th:text="${s.enPromocion and s.precioPromo != null ? #numbers.formatInteger(s.precioPromo, 0, 'POINT') : (s.precio != null ? #numbers.formatInteger(s.precio, 0, 'POINT') : '0')}">$0</span>
-                            </div>
-                        </div>
-
-                    </div>
+<div class="modal fade" id="modalFiador" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content dark-neon" style="border-color: var(--neon-yellow)">
+            <div class="modal-header border-secondary pb-2">
+                <h4 class="modal-title font-weight-bold" style="color: var(--neon-yellow)"><i class="bi bi-star-fill"></i> Autorizar Crédito VIP</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-dark" style="border-radius: 0 0 25px 25px;">
+                <h3 class="text-center text-light mb-4">Total a Fiar: <span class="fw-bolder" style="color:var(--neon-green)" id="txtMontoFiador">$0</span></h3>
+                <p class="text-info text-center mb-4"><i class="bi bi-info-circle"></i> Seleccione el cliente de la lista VIP para asignar la deuda a su cuenta. Cero fricción.</p>
+                <div id="listaClientesModule" class="row g-3" style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <div class="col-md-5 col-lg-4 mt-3 mt-md-0">
-                <div class="carrito">
-
-                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2">
-                        <h5 class="mb-0 fw-bold" style="color: var(--fucsia-neon);"><i class="bi bi-cart-check-fill"></i> Resumen de Venta</h5>
-                        <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="limpiarCliente()" id="btn-limpiar" style="display:none; font-size: 0.75rem;"><i class="bi bi-x-circle"></i> Soltar Clienta</button>
-                    </div>
-
-                    <div class="p-3 mb-3 border border-secondary rounded" style="background: rgba(255,255,255,0.02);">
-                        <div class="mb-2 position-relative">
-                            <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">NOMBRE DE CLIENTA <span class="text-danger">*</span></label>
-                            <input type="text" id="cliente-nombre" class="form-control form-control-sm input-dark" placeholder="Ej: María Gómez">
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">WHATSAPP</label>
-                                <input type="text" id="cliente-telefono" class="form-control form-control-sm input-dark" placeholder="+569...">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">CORREO</label>
-                                <input type="email" id="cliente-correo" class="form-control form-control-sm input-dark" placeholder="@">
-                            </div>
-                        </div>
-                        <input type="hidden" id="cliente-id" value="">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label small fw-bold mb-1" style="color: var(--cyan-neon);">FECHA DE CITA (MANUAL)</label>
-                        <input type="datetime-local" id="fecha-servicio" class="form-control form-control-sm input-dark text-info">
-                    </div>
-
-                    <div id="items-pos" class="mt-2 mb-2" style="flex-grow: 1; overflow-y: auto;">
-                        <div class="text-center text-muted small mt-4 opacity-50">
-                            <i class="bi bi-hand-index-thumb fs-1 d-block mb-2"></i>
-                            Toca los servicios a la izquierda<br>para agregarlos al carrito
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top border-secondary mb-3">
-                        <span class="h6 mb-0 fw-bold text-white">TOTAL A COBRAR</span>
-                        <span id="total-final" class="h2 mb-0" style="color: var(--cyan-neon); font-weight: 900; text-shadow: 0 0 15px rgba(0,229,255,0.4);">$0</span>
-                    </div>
-
-                    <div class="pay-btn-group">
-                        <label class="pay-btn pay-efectivo">
-                            <input type="radio" name="metodoPago" value="EFECTIVO" checked>
-                            <i class="bi bi-cash-stack"></i> Caja Efectivo
-                        </label>
-                        <label class="pay-btn pay-tarjeta">
-                            <input type="radio" name="metodoPago" value="TARJETA">
-                            <i class="bi bi-credit-card-2-front"></i> Datafono / POS
-                        </label>
-                        <label class="pay-btn pay-transfer">
-                            <input type="radio" name="metodoPago" value="TRANSFERENCIA">
-                            <i class="bi bi-bank"></i> Transferencia
-                        </label>
-                        <label class="pay-btn pay-mercadopago">
-                            <input type="radio" name="metodoPago" value="MERCADO_PAGO">
-                            <i class="bi bi-link-45deg"></i> Link MP
-                        </label>
-                    </div>
-
-                    <button class="btn btn-fucsia w-100 py-3 rounded text-uppercase fs-5" id="btn-procesar" onclick="confirmarVenta(event)">
-                        <i class="bi bi-check2-circle me-1"></i> Procesar Venta
-                    </button>
+<div class="modal fade" id="modalCamara" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="background: rgba(10,5,10,0.9); border: 1px solid var(--neon-blue) !important; box-shadow: 0 0 30px rgba(0,240,255,0.4) !important;">
+            <div class="modal-body p-0 position-relative">
+                <button type="button" class="btn-close btn-close-white position-absolute" onclick="cerrarCamara()" style="top: 15px; right: 15px; z-index: 1000; filter: invert(1); background-color: var(--neon-blue); border-radius: 50%; opacity: 0.8; padding: 10px;" aria-label="Close"></button>
+                <div id="reader-video" style="width: 100%; min-height: 300px; background: #000;"></div>
+                <div class="p-3 text-center bg-transparent text-info fw-bold" style="letter-spacing: 2px;">
+                    <i class="bi bi-upc-scan" style="font-size: 1.5rem; text-shadow: 0 0 15px var(--neon-blue);"></i> ENFOCA EL CÓDIGO DE BARRAS
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="area-impresion" style="display: none; background: white; color: black; font-family: monospace;">
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h2 style="margin: 0; font-size: 1.5rem;">MARKET LIMBER</h2>
+        <p style="margin: 0; font-size: 0.8rem;">Plataforma Inteligente GOMEZ</p>
+        <p style="margin: 0; font-size: 0.8rem;" id="ticket-fecha"></p>
+        <p style="margin: 0; font-size: 0.8rem;">------------------------</p>
+    </div>
+    <table style="width: 100%; font-size: 0.9rem; text-align: left; margin-bottom: 10px;">
+        <thead>
+        <tr>
+            <th style="width: 15%;">Cant</th>
+            <th>Detalle</th>
+            <th style="text-align: right; width: 25%;">Monto</th>
+        </tr>
+        </thead>
+        <tbody id="ticket-items"></tbody>
+    </table>
+    <div style="text-align: right; border-top: 1px dashed black; padding-top: 5px;">
+        <h3 style="margin: 0; font-size: 1.2rem;">TOTAL: $<span id="ticket-total-txt"></span></h3>
+        <p style="margin: 0; font-size: 0.8rem;">PAGO: <span id="ticket-tipo-txt"></span></p>
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+        <p style="margin: 0; font-size: 0.8rem;">¡Gracias por su compra!</p>
+        <p style="margin: 0; font-size: 0.7rem;">Powered by G.O.M.E.Z. Systems</p>
+        <p style="margin: 0; font-size: 0.8rem;">------------------------</p>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCamara" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg overflow-hidden" style="border-radius: 20px;">
+            <div class="modal-body p-0 position-relative bg-dark">
+                <button type="button" class="btn-close btn-close-white position-absolute shadow" onclick="cerrarCamara()" style="top: 15px; right: 15px; z-index: 1000; background-color: rgba(255,255,255,0.2); border-radius: 50%; padding: 12px;"></button>
+                <div id="reader-video" style="width: 100%; min-height: 350px; background: #000;"></div>
+                <div class="p-4 text-center bg-dark text-white fw-bold d-flex flex-column align-items-center">
+                    <i class="bi bi-upc-scan mb-2" style="font-size: 2rem; color: var(--neon-blue);"></i>
+                    <span>CENTRA EL CÓDIGO EN LA LENTE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start dark-neon" tabindex="-1" id="offcanvasLibroCaja" style="width: 500px; max-width: 100vw; background-color: rgba(15,15,20,0.95); border-right: 2px solid var(--neon-cyan);">
+    <div class="offcanvas-header bg-dark border-bottom border-info">
+        <h5 class="offcanvas-title text-info fw-bold"><i class="bi bi-journal-text me-2"></i> Libro de Ventas Diario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0 d-flex flex-column">
+        <div class="p-3 bg-dark border-bottom border-secondary d-flex justify-content-between align-items-center">
+            <span class="text-light fw-bold">Registro de Turno Actual</span>
+            <span class="badge bg-success shadow-sm" id="badge-total-ventas">0 Bts.</span>
+        </div>
+        <div class="list-group list-group-flush flex-grow-1 overflow-auto" id="lista-ventas-historico">
+            <!-- Items del libro inyectados vía JS -->
+        </div>
+        <div class="p-4 bg-dark border-top border-warning text-center mt-auto">
+            <button class="btn btn-danger fw-bolder py-3 w-100 rounded-pill shadow-lg d-flex align-items-center justify-content-center gap-2" style="font-size: 1.2rem; filter: saturate(1.5);" onclick="confirmarCierreCaja()">
+                <i class="bi bi-shield-lock-fill fs-3"></i> EJECUTAR CIERRE DE CAJA
+            </button>
+            <small class="text-muted d-block mt-2 fw-bold">Esto archivará el turno actual y reseteará a $0</small>
         </div>
     </div>
 </div>
 
 <script>
-    // --- EFECTOS DE SONIDO GLOBALES ---
-    const sfxOk = document.getElementById('sfx-login-ok');
-    const sfxFail = document.getElementById('sfx-login-fail');
-    const sfxWaooo = document.getElementById('sfx-waooo');
-    const sfxClick = document.getElementById('sfx-click');
-    const sfxDelete = document.getElementById('sfx-delete');
+    // --- MOTOR DE VOZ G.O.M.E.Z. (CAJA POS) ---
+    const GOMEZ = {
+        synth: window.speechSynthesis,
+        recognition: null,
+        isListening: false,
+        bestVoice: null,
 
-    function activarEfectoWaooo(elementoTarget) {
-        if(elementoTarget) {
-            elementoTarget.classList.add('efecto-waooo');
-            setTimeout(() => elementoTarget.classList.remove('efecto-waooo'), 600);
-        }
-        sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{});
-    }
-
-    // --- LÓGICA DE CAJERO Y SEGURIDAD ---
-    let vendedorActual = 'Caja General';
-
-    function validarAcceso(event) {
-        const pin = document.getElementById('input-pin').value.trim();
-
-        if (pin === '7777') { vendedorActual = "Crisley Paredes"; }
-        else if (pin === '1010') { vendedorActual = "Janneth"; }
-        else if (pin === '2020') { vendedorActual = "Daniela Camacho"; }
-        else if (pin === '3030') { vendedorActual = "Daniela Montaño"; }
-        else {
-            sfxFail.currentTime = 0; sfxFail.play().catch(()=>{});
-            const loginBox = document.getElementById('login-box');
-            loginBox.classList.add('shake-error');
-            setTimeout(() => loginBox.classList.remove('shake-error'), 400);
-            return;
-        }
-
-        sfxOk.currentTime = 0; sfxOk.play().catch(()=>{});
-        localStorage.setItem('spa_usuario', vendedorActual);
-
-        document.getElementById('login-screen').style.display = 'none';
-        const welcomeScreen = document.getElementById('welcome-screen');
-        welcomeScreen.style.display = 'flex';
-
-        const primerNombre = vendedorActual.split(' ')[0];
-        document.getElementById('welcome-message').innerText = "¡Bienvenida " + primerNombre + "!";
-
-        if ('speechSynthesis' in window) {
-            const mensajeVoz = new SpeechSynthesisUtterance("Bienvenida " + primerNombre + ". Iniciando sistema de caja.");
-            mensajeVoz.lang = 'es-ES';
-            mensajeVoz.rate = 1.0;
-            window.speechSynthesis.speak(mensajeVoz);
-        }
-
-        setTimeout(() => {
-            sfxWaooo.currentTime = 0; sfxWaooo.play().catch(()=>{});
-            welcomeScreen.style.display = 'none';
-            document.getElementById('app-pos').style.display = 'block';
-            document.getElementById('badge-vendedor').innerHTML = `<i class="bi bi-person-badge"></i> Atiende: ${vendedorActual}`;
-
-            const ahora = new Date();
-            ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
-            document.getElementById('fecha-servicio').value = ahora.toISOString().slice(0,16);
-        }, 2500);
-    }
-
-    // --- LÓGICA DEL CARRITO Y CLIENTES ---
-    let carrito = [];
-
-    function buscarMixto() {
-        const query = document.getElementById('input-buscador').value.toLowerCase();
-
-        const itemsGrid = document.querySelectorAll('.item-grid-servicio');
-        itemsGrid.forEach(item => {
-            const nombreServicio = item.getAttribute('data-nombre-lower');
-            if(query === '' || nombreServicio.includes(query)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
+        init: function() {
+            const loadVoices = () => {
+                const voices = this.synth.getVoices();
+                if (voices.length > 0) {
+                    this.bestVoice = voices.find(v => (v.name.includes("Google") || v.name.includes("Microsoft") || v.name.includes("Neural") || v.name.includes("Premium") || v.name.includes("Natural")) && v.lang.startsWith("es")) || voices.find(v => v.lang.startsWith("es"));
+                }
+            };
+            loadVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = loadVoices;
             }
-        });
 
-        if (query.length < 3) { document.getElementById('lista-busqueda').innerHTML = ''; return; }
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                this.recognition = new SpeechRecognition();
+                this.recognition.lang = 'es-CL';
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
 
-        fetch(`/api/pos/buscar-cliente?query=${query}`)
-            .then(res => res.json())
-            .then(data => {
-                let html = '';
-                data.forEach(c => {
-                    html += `<div class="cliente-opcion" onclick="seleccionarCliente(${c.id}, '${c.nombre}', '${c.telefono || ''}', '${c.correo || ''}')">
-                                <i class="bi bi-person-check text-info me-2"></i><strong>${c.nombre}</strong> <br>
-                                <small class="text-muted ms-4">${c.telefono || 'Sin teléfono'}</small>
-                             </div>`;
+                this.recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    this.processCommand(transcript);
+                };
+
+                this.recognition.onerror = (event) => {
+                    console.error("Mic error:", event.error);
+                    Swal.fire('Atención', 'Micrófono denegado o inaccesible. Recuerda que los navegadores exigen conexión HTTPS o Localhost para escuchar tu voz.', 'warning');
+                    this.isListening = false;
+                    document.getElementById('gomez-assistant').classList.remove('listening-pulse');
+                };
+
+                this.recognition.onend = () => {
+                    this.isListening = false;
+                    document.getElementById('gomez-assistant').classList.remove('listening-pulse');
+                };
+            }
+        },
+
+        speak: function(text) {
+            if (this.synth.speaking) { this.synth.cancel(); }
+            const utterance = new SpeechSynthesisUtterance(text);
+            if (this.bestVoice) utterance.voice = this.bestVoice;
+            utterance.lang = 'es-CL';
+            utterance.pitch = 1.0;
+            utterance.rate = 1.05;
+            this.synth.speak(utterance);
+        },
+
+        listen: function() {
+            if (!this.recognition) return Swal.fire('Error', 'Micrófono no soportado en este navegador.', 'error');
+            if (this.isListening) { this.recognition.stop(); return; }
+            try {
+                this.recognition.start();
+                this.isListening = true;
+                document.getElementById('gomez-assistant').classList.add('listening-pulse');
+
+                Swal.fire({
+                    title: 'G.O.M.E.Z. Escuchando...',
+                    text: 'Comandos: Cobrar Efectivo, Vaciar Caja, Bloquear.',
+                    toast: true, position: 'bottom-start', showConfirmButton: false, timer: 3000,
+                    icon: 'info', background: '#1a1a1a', color: '#00f3ff'
                 });
-                document.getElementById('lista-busqueda').innerHTML = html;
-            })
-            .catch(e => console.error("Error buscando:", e));
+            } catch(e) { console.error("Error start mic:", e); }
+        },
+
+        processCommand: function(cmd) {
+            if (cmd.includes("limpiar") || cmd.includes("vaciar") || cmd.includes("borrar todo")) {
+                this.speak("Borrando ticket a su orden, administrador.");
+                vaciarCarrito();
+            } else if (cmd.includes("cobrar efectivo") || cmd.includes("pago contado")) {
+                this.speak("Procesando pago al contado. Excelente operación.");
+                procesarPago('CONTADO');
+            } else if (cmd.includes("cobrar transferencia") || cmd.includes("pago transferencia")) {
+                this.speak("Iniciando protocolo de pago por transferencia.");
+                procesarPago('TRANSFERENCIA');
+            } else if (cmd.includes("bloquear") || cmd.includes("cerrar caja")) {
+                bloquearCaja();
+            } else if (cmd.includes("ayuda")) {
+                this.speak("Soy tu asistente financiero. Usa el escáner para registrar artículos y luego dime un método de pago, por ejemplo, cobrar en efectivo. También puedo limpiar la caja actual o bloquear el terminal.");
+            } else {
+                this.speak("Comando no reconocido. Puedes intentar decir 'Cobrar Efectivo' o 'Vaciar Caja'.");
+            }
+        }
+    };
+
+    // Init GOMEZ
+    document.addEventListener('DOMContentLoaded', () => { GOMEZ.init(); });
+
+    // --- EFECTOS DE SONIDO ---
+    const play = (s, v = 0.3) => { try { s.currentTime = 0; s.volume = v; s.play(); } catch(e){} };
+    const sfxH = document.getElementById('sfx-hover');
+    const sfxBeep = document.getElementById('sfx-beep'); // BIP DE ESCÁNER
+    const sfxE = document.getElementById('sfx-error');
+    const sfxCash = document.getElementById('sfx-cash'); // CHA-CHING DE CAJA
+
+    // --- SEGURIDAD POS ---
+    async function unlockPOS() {
+        const pin = document.getElementById('pinInput').value;
+        try {
+            const res = await fetch('/api/auth/unlock', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ pin: pin })
+            });
+
+            if(res.ok) {
+                const data = await res.json();
+                if(data.role === 'CAJERO' || data.role === 'ADMIN') {
+                    document.getElementById('securityLock').style.display = 'none';
+                    document.getElementById('mainPosUI').style.display = 'block';
+                    GOMEZ.speak('Acceso concedido. Sistemas tácticos G.O.M.E.Z. en línea. Operaciones de caja habilitadas.');
+                    cargarCatalogo();
+                    setTimeout(() => document.getElementById('buscador').focus(), 1000);
+                }
+            } else {
+                throw new Error("Pin incorrecto");
+            }
+        } catch(e) {
+            play(sfxE, 0.5);
+            GOMEZ.speak('Autorización denegada. Pin incorrecto o sin conexión.');
+            document.getElementById('pinError').classList.remove('d-none');
+            document.getElementById('pinInput').value = "";
+            setTimeout(() => document.getElementById('pinError').classList.add('d-none'), 3000);
+        }
     }
 
-    function seleccionarCliente(id, nombre, telefono, correo) {
-        sfxClick.currentTime = 0; sfxClick.play().catch(()=>{});
-        document.getElementById('cliente-id').value = id;
-        document.getElementById('cliente-nombre').value = nombre;
-        document.getElementById('cliente-telefono').value = telefono;
-        document.getElementById('cliente-correo').value = correo;
-
-        document.getElementById('cliente-nombre').disabled = true;
-        document.getElementById('cliente-telefono').disabled = true;
-        document.getElementById('cliente-correo').disabled = true;
-
-        document.getElementById('lista-busqueda').innerHTML = '';
-        document.getElementById('input-buscador').value = '';
-
-        document.querySelectorAll('.item-grid-servicio').forEach(i => i.style.display = 'block');
-        document.getElementById('btn-limpiar').style.display = 'block';
+    function bloquearCaja() {
+        GOMEZ.speak("Bloqueando terminal por seguridad. Hasta pronto.");
+        document.getElementById('securityLock').style.display = 'flex';
+        document.getElementById('mainPosUI').style.display = 'none';
+        document.getElementById('pinInput').value = "";
     }
 
-    function limpiarCliente() {
-        sfxDelete.currentTime = 0; sfxDelete.play().catch(()=>{});
-        document.getElementById('cliente-id').value = "";
-        document.getElementById('cliente-nombre').value = "";
-        document.getElementById('cliente-telefono').value = "";
-        document.getElementById('cliente-correo').value = "";
+    document.getElementById('pinInput').addEventListener('keydown', (e) => { if(e.key==='Enter') unlockPOS(); });
 
-        document.getElementById('cliente-nombre').disabled = false;
-        document.getElementById('cliente-telefono').disabled = false;
-        document.getElementById('cliente-correo').disabled = false;
+    let catalogoGlobal = [];
+    let carrito = [];
+    let productoPesableTemporal = null;
+    const modalPesoObj = new bootstrap.Modal(document.getElementById('modalPeso'));
+    const fmt = (n) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n));
 
-        document.getElementById('btn-limpiar').style.display = 'none';
+    async function cargarCatalogo() {
+        try {
+            const response = await fetch('/api/productos');
+            if(!response.ok) throw new Error("Falla API");
+            const crudos = await response.json();
+
+            // Optimizar y limpiar
+            const limpios = []; const vistos = new Set();
+            crudos.forEach(p => {
+                const norm = p.nombre ? p.nombre.trim().toLowerCase() : "sin nombre";
+                if(!vistos.has(norm)) {
+                    vistos.add(norm);
+                    if (!p.imagen || String(p.imagen).trim() === '' || String(p.imagen).includes('placeholder')) {
+                        p.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre || 'P')}&background=1a1a1a&color=00f3ff&size=400&bold=true`;
+                    }
+                    if (!p.categoria) p.categoria = 'General';
+                    limpios.push(p);
+                }
+            });
+            catalogoGlobal = limpios;
+            renderizarGrilla(catalogoGlobal);
+        } catch (error) {
+            document.getElementById('grilla-productos').innerHTML = `<div class="col-12 text-center text-white mt-5"><h5><i class="bi bi-wifi-off text-danger"></i> Error de Red</h5><button class="btn btn-outline-info mt-3" onclick="cargarCatalogo()">Reintentar</button></div>`;
+        }
     }
 
-    function capturarServicio(event, elemento) {
-        sfxClick.currentTime = 0; sfxClick.play().catch(()=>{});
-
-        elemento.classList.add('efecto-waooo');
-        setTimeout(() => elemento.classList.remove('efecto-waooo'), 300);
-
-        const id = elemento.getAttribute('data-id');
-        const nombre = elemento.getAttribute('data-nombre');
-        const precio = parseInt(elemento.getAttribute('data-precio'));
-        carrito.push({ id, nombre, precio });
-
-        document.getElementById('input-buscador').value = '';
-        document.querySelectorAll('.item-grid-servicio').forEach(i => i.style.display = 'block');
-
-        renderizarCarrito();
+    // Auto-sincronización en tiempo real (cada 5 segundos)
+    function verificarDiferenciasReactivo(viejos, nuevos) {
+        if (!viejos || viejos.length !== nuevos.length) return true;
+        for (let i = 0; i < nuevos.length; i++) {
+            let n = nuevos[i];
+            let v = viejos.find(x => x.id === n.id);
+            if (!v) return true;
+            if (v.stock !== n.stock || v.precio !== n.precio || v.precioPorKilo !== n.precioPorKilo || v.promocionActiva !== n.promocionActiva || v.precioPromo !== n.precioPromo) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    function renderizarCarrito() {
-        const div = document.getElementById('items-pos');
-        if (carrito.length === 0) {
-            div.innerHTML = '<div class="text-center text-muted small mt-4 opacity-50"><i class="bi bi-hand-index-thumb fs-1 d-block mb-2"></i>Toca los servicios a la izquierda<br>para agregarlos al carrito</div>';
-            document.getElementById('total-final').innerText = "$0";
+    setInterval(async () => {
+        // Solo sincronizar si la caja está desbloqueada
+        if (document.getElementById('mainPosUI').style.display === 'none') return;
+        
+        try {
+            const res = await fetch('/api/productos');
+            if (res.ok) {
+                const crudos = await res.json();
+                const limpios = []; const vistos = new Set();
+                crudos.forEach(p => {
+                    const norm = p.nombre ? p.nombre.trim().toLowerCase() : "sin nombre";
+                    if(!vistos.has(norm)) {
+                        vistos.add(norm);
+                        if (!p.imagen || String(p.imagen).trim() === '' || String(p.imagen).includes('placeholder')) {
+                            p.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre || 'P')}&background=1a1a1a&color=00f3ff&size=400&bold=true`;
+                        }
+                        if (!p.categoria) p.categoria = 'General';
+                        limpios.push(p);
+                    }
+                });
+                
+                if (verificarDiferenciasReactivo(catalogoGlobal, limpios)) {
+                    catalogoGlobal = limpios;
+                    const termino = document.getElementById('buscador').value.toLowerCase().trim();
+                    const filtrados = catalogoGlobal.filter(p =>
+                        p.nombre.toLowerCase().includes(termino) ||
+                        (p.codigosBarras && p.codigosBarras.some(cb => cb.toLowerCase().includes(termino)))
+                    );
+                    renderizarGrilla(filtrados);
+                }
+            }
+        } catch(e) {}
+    }, 5000);
+
+    function renderizarGrilla(productos) {
+        const grilla = document.getElementById('grilla-productos');
+        grilla.innerHTML = '';
+        if(productos.length === 0) {
+            grilla.innerHTML = `<div class="col-12 text-center text-muted mt-5 fw-bold">No hay coincidencias en bodega.</div>`;
             return;
         }
 
-        div.innerHTML = '';
-        let total = 0;
-        carrito.forEach((item, index) => {
-            total += item.precio;
-            div.innerHTML += `
-                <div class="item-carrito align-items-center">
-                    <span style="flex:1; color: var(--blanco-puro); font-weight:600;"><i class="bi bi-check2 text-info me-1"></i>${item.nombre}</span>
-                    <span class="fw-bold mx-2" style="color: var(--fucsia-neon);">$${item.precio.toLocaleString('es-CL')}</span>
-                    <button class="btn btn-sm btn-outline-danger border-0 p-1 lh-1" onclick="quitar(${index})" title="Quitar"><i class="bi bi-trash-fill"></i></button>
-                </div>`;
+        productos.forEach((p, i) => {
+            let precioActual = p.esPesable ? p.precioPorKilo : p.precio;
+            let original = precioActual;
+
+            let hayPromo = false;
+            if (p.promocionActiva && p.precioPromo > 0) {
+                if (p.fechaInicioPromo && p.fechaFinPromo) {
+                    const hoy = new Date().toISOString().split('T')[0];
+                    if (hoy >= p.fechaInicioPromo && hoy <= p.fechaFinPromo) {
+                        precioActual = p.precioPromo;
+                        hayPromo = true;
+                    }
+                } else {
+                    precioActual = p.precioPromo;
+                    hayPromo = true;
+                }
+            }
+            p.precioFinalApp = precioActual;
+
+            const badge = p.esPesable ? `<span class="producto-pesable-badge"><i class="bi bi-speedometer"></i> GRAMOS</span>` : '';
+            const promoBadge = hayPromo ? `<span class="promo-badge"><i class="bi bi-tag-fill"></i> OFERTA</span>` : '';
+            
+            let stockBadge = '';
+            if (p.stock !== null && p.stock !== undefined) {
+                if (p.stock <= 0) {
+                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 59, 48, 0.95); color: white; padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 0.85rem; letter-spacing: 1px; z-index: 15; box-shadow: 0 0 15px rgba(255, 59, 48, 0.6); backdrop-filter: blur(5px);"><i class="bi bi-exclamation-triangle-fill"></i> AGOTADO</span>`;
+                } else if (p.stock <= 5 && !p.esPesable) {
+                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; z-index: 15; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); backdrop-filter: blur(5px);"><i class="bi bi-clock-history"></i> Quedan ${p.stock}</span>`;
+                } else if (p.stock <= 5 && p.esPesable) {
+                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; z-index: 15; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); backdrop-filter: blur(5px);"><i class="bi bi-clock-history"></i> Quedan ${p.stock} KG</span>`;
+                }
+            }
+
+            let precioHTML = `<span class="product-price">$${precioActual}${p.esPesable?'/KG':''}</span>`;
+            if(hayPromo) {
+                precioHTML = `<span class="product-price text-warning">$${precioActual} <small class="text-muted text-decoration-line-through fs-6">$${original}</small></span>`;
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = `col-6 col-md-4 col-xl-3 tilt-wrapper animate__animated animate__fadeInUp`;
+            wrap.style.animationDelay = `${(i % 12) * 0.05}s`;
+
+            // If out of stock, add visual disabled effects but allow scanning/clicking just in case it's a glitch, or fade it.
+            const filterCss = (p.stock !== null && p.stock <= 0) ? 'filter: grayscale(100%) opacity(0.6);' : '';
+
+            wrap.innerHTML = `
+                <div class="product-card" onclick="clickProducto(${p.id})">
+                    ${badge}
+                    ${promoBadge}
+                    ${stockBadge}
+                    <img src="${p.imagen}" class="product-img" alt="${p.nombre}" loading="lazy" style="${filterCss}">
+                    <div class="product-info">
+                        <h3 class="product-title text-truncate" title="${p.nombre}">${p.nombre}</h3>
+                        ${precioHTML}
+                    </div>
+                </div>
+            `;
+
+            const card = wrap.querySelector('.product-card');
+            card.onmousemove = (e) => {
+                const r = card.getBoundingClientRect();
+                const x = ((e.clientX - r.left) / r.width - 0.5) * 20;
+                const y = ((e.clientY - r.top) / r.height - 0.5) * -20;
+                card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.02)`;
+            };
+            card.onmouseleave = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            card.onmouseenter = () => play(sfxH, 0.1);
+
+            grilla.appendChild(wrap);
         });
-        document.getElementById('total-final').innerText = "$" + total.toLocaleString('es-CL');
     }
 
-    function quitar(index) {
-        sfxDelete.currentTime = 0; sfxDelete.play().catch(()=>{});
-        carrito.splice(index, 1);
-        renderizarCarrito();
+    // Buscador instántaneo y Motor de Extracción Láser
+    const buscadorEl = document.getElementById('buscador');
+
+    buscadorEl.addEventListener('input', (e) => {
+        const termino = e.target.value.toLowerCase().trim();
+        const filtrados = catalogoGlobal.filter(p =>
+            p.nombre.toLowerCase().includes(termino) ||
+            (p.codigosBarras && p.codigosBarras.some(cb => cb.toLowerCase().includes(termino)))
+        );
+        renderizarGrilla(filtrados);
+    });
+
+    let html5QrCode = null; let globalTargetInputId = '';
+    function abrirCamara(targetInputId) { 
+        globalTargetInputId = targetInputId || 'buscador'; 
+        new bootstrap.Modal(document.getElementById('modalCamara')).show(); 
+        if(!html5QrCode) html5QrCode = new Html5Qrcode("reader-video"); 
+        
+        const config = { fps: 15, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0 };
+        const onScan = (dec) => { 
+            cerrarCamara(); 
+            const el = document.getElementById(globalTargetInputId); 
+            if(el){ 
+                el.value = dec; 
+                el.dispatchEvent(new Event('input')); // To trigger search filter
+                el.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'})); 
+            } 
+        };
+        
+        html5QrCode.start({ facingMode: "environment" }, config, onScan, () => {})
+        .catch(err => { 
+            console.warn("Fallo 'environment', probando cámara general:", err);
+            html5QrCode.start({ facingMode: "user" }, config, onScan, () => {})
+            .catch(err2 => {
+                 alert("Error cámara: " + err2 + "\n\nNota: Si estás usando un celular u otro PC en red, debes ingresar usando HTTPS o localhost. Los navegadores bloquean la cámara en HTTP remoto."); 
+                 cerrarCamara(); 
+            });
+        }); 
+    }
+    function cerrarCamara() { 
+        if(html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => html5QrCode.clear()).catch(e=>console.log(e)); 
+        }
+        const mod = bootstrap.Modal.getInstance(document.getElementById('modalCamara')); 
+        if(mod) mod.hide(); 
     }
 
-    function confirmarVenta(event) {
+    buscadorEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const termino = e.target.value.trim();
+            if(termino === '') return;
+
+            const matchLaser = catalogoGlobal.find(p => p.codigosBarras && p.codigosBarras.includes(termino));
+            if (matchLaser) {
+                clickProducto(matchLaser.id);
+                e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return;
+            }
+
+            const matchId = catalogoGlobal.find(p => p.id.toString() === termino);
+            if (matchId) {
+                clickProducto(matchId.id);
+                e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return;
+            }
+
+            play(sfxE);
+            e.target.value = ''; buscadorEl.dispatchEvent(new Event('input'));
+            Swal.fire({toast:true, position:'bottom-end', icon:'error', title:'Código No Reconocido', showConfirmButton:false, timer:2000, background:'#1a1a1a', color:'#ff003c'});
+        }
+    });
+
+    function clickProducto(id) {
+        const producto = catalogoGlobal.find(p => p.id === id);
+
+        if (producto.esPesable) {
+            productoPesableTemporal = producto;
+            document.getElementById('pesoProductName').innerText = producto.nombre;
+            document.getElementById('inputPeso').value = '';
+            modalPesoObj.show();
+            setTimeout(() => document.getElementById('inputPeso').focus(), 500);
+        } else {
+            agregarAlCarrito(producto, 1);
+        }
+    }
+
+    function confirmarPeso() {
+        const pesoGr = parseInt(document.getElementById('inputPeso').value);
+        if (isNaN(pesoGr) || pesoGr <= 0) return alert("Por favor ingresa un peso válido");
+        agregarAlCarrito(productoPesableTemporal, pesoGr);
+        modalPesoObj.hide();
+        productoPesableTemporal = null;
+        document.getElementById('buscador').focus(); // Retornar foco
+    }
+
+    document.getElementById('inputPeso').addEventListener('keyup', (e) => { if (e.key === "Enter") confirmarPeso(); });
+
+    function agregarAlCarrito(producto, cantidad) {
+        // SONIDO BIP AL AGREGAR PRODUCTO A LA BANDEJA
+        play(sfxBeep, 0.5);
+
+        if (!producto.esPesable) {
+            const itemEx = carrito.find(i => i.producto.id === producto.id);
+            if (itemEx) { itemEx.cantidad += cantidad; actualizarUI(); return; }
+        }
+        carrito.push({ producto: producto, cantidad: cantidad, idTicket: Date.now() + Math.random() });
+        actualizarUI();
+    }
+
+    function removerDelCarrito(idTicket) {
+        play(sfxBeep, 0.3); // Usamos un bip para borrar tambien
+        carrito = carrito.filter(i => i.idTicket !== idTicket);
+        actualizarUI();
+    }
+
+    function vaciarCarrito() {
+        if(carrito.length === 0) return;
+        play(sfxE, 0.4);
+        carrito = [];
+        actualizarUI();
+    }
+
+    function actualizarUI() {
+        const lista = document.getElementById('lista-carrito');
+        lista.innerHTML = '';
+
+        let total = 0;
+        if(carrito.length === 0) {
+            lista.innerHTML = `<div class="text-center text-muted mt-5"><i class="bi bi-upc-scan fs-1 mb-3 opacity-50 d-block"></i><h5 class="fw-bold">Bandeja Vacía</h5><p class="small">Pistolea un producto.</p></div>`;
+            document.getElementById('txt-subtotal').innerText = "$0";
+            document.getElementById('txt-total').innerText = "$0";
+            return;
+        }
+
+        carrito.forEach(item => {
+            const { producto, cantidad, idTicket } = item;
+            let pReal = producto.precioFinalApp ? producto.precioFinalApp : (producto.esPesable ? producto.precioPorKilo : producto.precio);
+            let pCalc = producto.esPesable ? (pReal / 1000) * cantidad : pReal * cantidad;
+            total += pCalc;
+
+            let eCant = producto.esPesable ? `${cantidad} gr` : `${cantidad} un`;
+
+            lista.innerHTML += `
+                <div class="cart-item animate__animated animate__fadeInRight animate__faster">
+                    <div class="flex-grow-1">
+                        <div class="fw-bold fs-6 text-white text-capitalize">${producto.nombre}</div>
+                        <div class="small text-info">${eCant} x $${pReal} ${producto.promocionActiva ? '<i class="bi bi-tag-fill text-warning"></i>' : ''}</div>
+                    </div>
+                    <div class="fw-bolder fs-4 mx-3 text-white">$${Math.round(pCalc)}</div>
+                    <button class="btn btn-outline-danger border-0 rounded-circle" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;" onclick="removerDelCarrito(${idTicket})">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            `;
+        });
+
+        document.getElementById('txt-total').innerText = `$${Math.round(total)}`;
+        document.getElementById('txt-subtotal').innerText = `$${Math.round(total)}`;
+    }
+
+    function calcularMontoTotalNeto() {
+        let t = 0;
+        carrito.forEach(item => {
+            let pReal = item.producto.precioFinalApp ? item.producto.precioFinalApp : (item.producto.esPesable ? item.producto.precioPorKilo : item.producto.precio);
+            t += item.producto.esPesable ? (pReal / 1000) * item.cantidad : pReal * item.cantidad;
+        });
+        return t;
+    }
+
+    // ==========================================
+    // FLUJO DE PAGO Y FIADOS (MODAL VIP RAPIDO)
+    // ==========================================
+    async function abrirModalFiador() {
+        if (carrito.length === 0) return; // Validación previa
+
+        // Instancia segura del Modal (previene bugs de Bootstrap)
+        const myModalEl = document.getElementById('modalFiador');
+        const modalFiador = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+
+        document.getElementById('txtMontoFiador').innerText = document.getElementById('txt-total').innerText;
+
+        const d = document.getElementById('listaClientesModule');
+        d.innerHTML = `<div class="col-12 text-center"><div class="spinner-border text-warning mx-auto"></div><p class="mt-2 text-muted">Cargando base VIP...</p></div>`;
+        modalFiador.show();
+
+        try {
+            const res = await fetch('/api/admin/clientes/autorizados');
+            if(!res.ok) throw new Error("Error de red");
+            const clientes = await res.json();
+
+            // Extraer a los VIP
+            const vips = clientes.filter(c => c.etiqueta && c.etiqueta.toUpperCase().includes('VIP'));
+
+            d.innerHTML = '';
+            if(vips.length === 0) {
+                d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">No hay clientes VIP registrados en el sistema.</p></div>';
+                return;
+            }
+
+            // Mostrar botones rápidos VIP
+            vips.forEach(c => {
+                const deuda = c.deudaActiva ? c.deudaActiva : 0;
+                d.innerHTML += `
+                    <div class="col-md-6 col-lg-4">
+                        <button class="btn btn-outline-warning w-100 p-3 h-100 text-start shadow-sm" style="border-radius: 15px; border-width: 2px;" onclick="procesarPagoFiado(${c.id}, '${c.nombre}')">
+                            <i class="bi bi-person-badge-fill fs-3 mb-2 d-block text-warning"></i>
+                            <span class="fw-bold fs-5 text-white d-block text-truncate">${c.nombre}</span>
+                            <small class="text-muted d-block mt-1">DNI/RUT: ${c.dni || 'S/N'}</small>
+                            <span class="badge bg-danger mt-2 fw-bold fs-6">Deuda Actual: ${fmt(deuda)}</span>
+                        </button>
+                    </div>
+                `;
+            });
+        } catch (error) {
+            d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">Fallo de conexión al buscar clientes VIP.</p></div>';
+        }
+    }
+
+    async function procesarPagoFiado(id, nombre) {
+        const total = calcularMontoTotalNeto();
+        const { isConfirmed } = await Swal.fire({
+            title: `¿Autorizar Fiado?`,
+            html: `Se cargarán <strong>${fmt(total)}</strong> a la cuenta de <strong class="text-warning">${nombre}</strong>.`,
+            icon: 'question', background: '#1a1a1a', color: '#fff',
+            showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555',
+            confirmButtonText: '<strong class="text-dark">Sí, Autorizar</strong>', cancelButtonText: 'Cancelar'
+        });
+
+        if(isConfirmed) {
+            // Cerrar modal seguro
+            const myModalEl = document.getElementById('modalFiador');
+            const modalFiador = bootstrap.Modal.getInstance(myModalEl);
+            if(modalFiador) modalFiador.hide();
+
+            await ejecutarCobro('FIADO', id);
+        }
+    }
+
+    async function procesarPago(metodo) {
         if (carrito.length === 0) {
-            sfxFail.currentTime = 0; sfxFail.play().catch(()=>{});
-            return alert("⚠️ Agregue al menos un servicio al carrito.");
+            play(sfxE);
+            return Swal.fire({toast:true, position:'top-end', icon:'warning', title:'Caja Vacía', showConfirmButton:false, timer:2000, background:'#1a1a1a', color:'#fff'});
         }
 
-        const nombreCliente = document.getElementById('cliente-nombre').value.trim();
-        if (!nombreCliente) {
-            sfxFail.currentTime = 0; sfxFail.play().catch(()=>{});
-            return alert("⚠️ Debe ingresar el nombre de la clienta.");
+        if (metodo === 'FIADO') {
+            abrirModalFiador();
+            return; // Pausa el flujo aquí, sigue al confirmar en el modal
         }
 
-        const fecha = document.getElementById('fecha-servicio').value;
-        if (!fecha) {
-            sfxFail.currentTime = 0; sfxFail.play().catch(()=>{});
-            return alert("⚠️ Seleccione una fecha para la cita.");
+        if (metodo === 'TRANSFERENCIA') {
+            const { isConfirmed } = await Swal.fire({
+                title: 'TRANSFERENCIA BANCARIA',
+                text: 'Recuerda verificar que el dinero ingresó a la cuenta antes de entregar la mercadería.',
+                icon: 'info', background: '#1a1a1a', color: '#00f3ff',
+                showCancelButton: true, confirmButtonColor: '#00f3ff', cancelButtonColor: '#555',
+                confirmButtonText: '<strong class="text-dark">Verificado, Cobrar</strong>'
+            });
+            if(!isConfirmed) return;
         }
 
-        activarEfectoWaooo(event.currentTarget);
+        await ejecutarCobro(metodo, null);
+    }
 
-        const serviciosAgrupados = carrito.map(i => i.nombre).join(" + ");
-        const nombreConFirma = `${serviciosAgrupados} [Cobró: ${vendedorActual}]`;
-        const metodoPago = document.querySelector('input[name="metodoPago"]:checked').value;
+    async function ejecutarCobro(metodo, clienteId) {
+        Swal.fire({ title: 'PROCESANDO TRANSACCIÓN...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-        const venta = {
-            clienteId: document.getElementById('cliente-id').value || null,
-            nuevoClienteNombre: nombreCliente,
-            nuevoClienteTelefono: document.getElementById('cliente-telefono').value.trim(),
-            nuevoClienteCorreo: document.getElementById('cliente-correo').value.trim(),
-            nombreTratamiento: nombreConFirma,
-            totalPagado: carrito.reduce((sum, i) => sum + i.precio, 0),
-            metodoPago: metodoPago,
-            fechaHora: fecha,
-            estado: metodoPago === 'MERCADO_PAGO' ? 'RESERVADO' : 'CONFIRMADO'
+        const payload = {
+            total: calcularMontoTotalNeto(),
+            metodoPago: metodo,
+            clienteId: clienteId,
+            items: carrito.map(i=>({ idProducto: i.producto.id, cantidad: i.cantidad, precio: i.producto.precioFinalApp || i.producto.precio, titulo: i.producto.nombre }))
         };
 
-        const btn = document.getElementById('btn-procesar');
-        btn.disabled = true;
-        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Autorizando...`;
+        try {
+            const res = await fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+            if (!res.ok) throw new Error("Fallo en servidor de pagos");
 
-        setTimeout(() => {
-            fetch('/api/pos/venta-directa', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(venta)
-            })
-            .then(res => res.text())
-            .then(data => {
-                if (data.startsWith('http')) {
-                    window.location.href = data;
-                } else {
-                    alert("🎉 ¡Venta registrada exitosamente!");
-                    location.reload();
-                }
-            })
-            .catch(err => {
-                sfxFail.currentTime = 0; sfxFail.play().catch(()=>{});
-                alert("Ocurrió un error al procesar la venta. Revise su conexión.");
-                btn.disabled = false;
-                btn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Procesar Venta`;
-                console.error(err);
-            });
-        }, 800);
+            const d = await res.json();
+
+            if (d.status === 'mercadopago') {
+                window.location.href = d.init_point;
+            } else if (d.status === 'ok') {
+
+                // SONIDO "CHA-CHING" DE CAJA AL CONFIRMAR LA VENTA EXITOSA
+                play(sfxCash, 1.0);
+
+                if(metodo === 'FIADO') GOMEZ.speak('Crédito autorizado y registrado en la cuenta del cliente.');
+                else GOMEZ.speak('Pago procesado correctamente. Imprimiendo comprobante.');
+
+                generarTicketImpresion(metodo, payload.total);
+                carrito = []; actualizarUI();
+
+                // Dispara ventana impresión (Ticket térmico oculto)
+                setTimeout(() => window.print(), 800);
+
+                Swal.fire({
+                    icon: 'success', title: '¡PAGO EXITOSO!', text: d.mensaje,
+                    background: '#1a1a1a', color: '#fff', confirmButtonColor: '#39ff14',
+                    confirmButtonText: '<strong class="text-dark">Siguiente Cliente</strong>',
+                    backdrop: `rgba(57, 255, 20, 0.1)`
+                });
+            }
+            else throw new Error(d.mensaje);
+        } catch (e) {
+            play(sfxE);
+            Swal.fire({ title: 'ERROR DE TRANSACCIÓN', text: e.message, icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#ff003c' });
+        }
     }
-</script>
 
+    // TICKET LOGIC (80mm)
+    function generarTicketImpresion(tipo, totalMonto) {
+        const d = new Date();
+        document.getElementById('ticket-fecha').innerText = d.toLocaleString('es-CL');
+        const tbody = document.getElementById('ticket-items');
+        tbody.innerHTML = '';
+
+        carrito.forEach(item => {
+            let p = item.producto;
+            let precioUnitarioReal = p.precioFinalApp ? p.precioFinalApp : (p.esPesable ? p.precioPorKilo : p.precio);
+            let montoLin = Math.round(p.esPesable ? (precioUnitarioReal / 1000) * item.cantidad : precioUnitarioReal * item.cantidad);
+            let cantStr = p.esPesable ? item.cantidad + ' gr' : item.cantidad;
+            tbody.innerHTML += `<tr><td style="vertical-align: top;">${cantStr}</td><td style="vertical-align: top; padding-right: 5px;">${p.nombre}</td><td style="vertical-align: top; text-align: right;">$${montoLin}</td></tr>`;
+        });
+        document.getElementById('ticket-total-txt').innerText = totalMonto;
+        document.getElementById('ticket-tipo-txt').innerText = tipo;
+    }
+
+    // --- LIBRO DE CAJA Y ARQUEO ---
+    const offcanvasLibro = new bootstrap.Offcanvas(document.getElementById('offcanvasLibroCaja'));
+    
+    function abrirLibroCaja() {
+        actualizarCajaFuerte();
+        offcanvasLibro.show();
+    }
+
+    async function actualizarCajaFuerte() {
+        try {
+            const res = await fetch('/api/ventas/caja-fuerte');
+            if(!res.ok) throw new Error("Error obteniendo arqueo");
+            const data = await res.json();
+            
+            document.getElementById('hud-efectivo').innerText = fmt(data.totalEfectivo);
+            document.getElementById('hud-tarjeta').innerText = fmt(data.totalTarjeta || 0);
+            document.getElementById('hud-fiado').innerText = fmt(data.totalFiado);
+            document.getElementById('badge-total-ventas').innerText = data.ventas.length + ' Bts.';
+            
+            const list = document.getElementById('lista-ventas-historico');
+            list.innerHTML = '';
+            
+            if(data.ventas.length === 0) {
+                list.innerHTML = '<div class="p-4 text-center text-muted fw-bold">No hay transacciones en este turno.</div>';
+                return;
+            }
+            
+            data.ventas.forEach(v => {
+                const isFiado = v.tipoPago === 'FIADO';
+                const icon = isFiado ? '<i class="bi bi-person-vcard text-warning"></i>' : '<i class="bi bi-cash text-success"></i>';
+                const badgeE = isFiado ? '<span class="badge bg-warning text-dark opacity-75">PENDIENTE</span>' : '<span class="badge bg-success opacity-75">PAGADO</span>';
+                
+                const hora = v.fechaHora ? v.fechaHora.split('T')[1].substring(0,5) : '00:00';
+                
+                list.innerHTML += `
+                    <button class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary p-3 d-flex justify-content-between align-items-center" onclick="verDetalleVenta('${encodeURIComponent(v.detalle)}')">
+                        <div>
+                            <span class="fs-4 me-2">${icon}</span>
+                            <strong class="fs-5">${fmt(v.montoTotal)}</strong>
+                            <div class="small text-info mt-1"><i class="bi bi-clock"></i> ${hora} ${v.cliente ? ' | ' + v.cliente.nombre : ''}</div>
+                        </div>
+                        <div>${badgeE}</div>
+                    </button>
+                `;
+            });
+        } catch(e) { console.warn(e); }
+    }
+
+    function verDetalleVenta(detalleEncoded) {
+        let det = decodeURIComponent(detalleEncoded);
+        let htmlTicket = `<div style="font-family: monospace; text-align: left; background: #fff; color: #000; padding: 15px; border-radius: 5px; font-size: 14px; white-space: pre-wrap;">${det}</div>`;
+        
+        Swal.fire({
+            title: 'TICKET CERRADO',
+            html: htmlTicket,
+            background: '#1a1a1a', color: '#fff',
+            confirmButtonColor: '#00f3ff', confirmButtonText: 'Volver a la Caja'
+        });
+    }
+
+    async function confirmarCierreCaja() {
+        const hEfe = document.getElementById('hud-efectivo').innerText;
+        const hFia = document.getElementById('hud-fiado').innerText;
+        
+        const { isConfirmed } = await Swal.fire({
+            title: '⚠️ ¿SEGURO DESEA CORTAR CAJA?',
+            html: `
+                <div class="text-start mt-3">
+                    <p class="text-white">Al confirmar, el turno se cerrará y el balance regresará a cero. Las transacciones se archivarán.</p>
+                    <div class="p-3 bg-dark border border-secondary rounded">
+                        <strong class="d-block text-success">EFECTIVO RENTABILIZADO: ${hEfe}</strong>
+                        <strong class="d-block text-primary mt-2">PAGOS POR MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</strong>
+                        <strong class="d-block text-warning mt-2">DEUDA VIP EMITIDA: ${hFia}</strong>
+                    </div>
+                </div>
+            `,
+            icon: 'warning', background: '#1a1a1a', color: '#fff',
+            showCancelButton: true, confirmButtonColor: '#ff003c', cancelButtonColor: '#555',
+            confirmButtonText: '<strong class="text-white">Sí, Ejecutar Cierre (Z)</strong>', cancelButtonText: 'Cancelar'
+        });
+
+        if(isConfirmed) {
+            Swal.fire({ title: 'Generando Corte Z...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading() });
+            try {
+                const res = await fetch('/api/ventas/ejecutar-corte', { method: 'POST' });
+                if(!res.ok) throw new Error("Error en servidor");
+                const msg = await res.text();
+                if(msg === 'OK') {
+                    play(sfxC, 0.7);
+                    
+                    const zHtml = `
+                    <div style="background: white; color: black; font-family: monospace; padding: 20px; border-top: 5px dashed #ccc; border-bottom: 5px dashed #ccc; text-align: left;">
+                        <h4 style="text-align:center; font-weight:bold; margin-bottom: 10px;">REPORTE Z</h4>
+                        <p style="margin:2px 0;">--------------------------------</p>
+                        <p style="margin:2px 0;">CAJERO: DEFAULT</p>
+                        <p style="margin:2px 0;">FECHA: ${new Date().toLocaleString()}</p>
+                        <p style="margin:2px 0;">--------------------------------</p>
+                        <h5 style="margin:10px 0;">TOTAL EFECTIVO: ${hEfe}</h5>
+                        <h5 style="margin:10px 0;">TOTAL MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</h5>
+                        <h5 style="margin:10px 0; color: #666;">TOTAL FIADOS: ${hFia}</h5>
+                        <p style="margin:2px 0;">--------------------------------</p>
+                        <p style="text-align:center; margin-top:20px; font-size:12px;">Corte generado correctamente.</p>
+                    </div>`;
+                    
+                    offcanvasLibro.hide();
+                    actualizarCajaFuerte(); 
+                    
+                    Swal.fire({
+                        title: 'COMPLETADO', html: zHtml,
+                        background: '#1a1a1a', color: '#fff',
+                        confirmButtonColor: '#39ff14', confirmButtonText: '<strong class="text-dark">Aceptar</strong>'
+                    });
+                } else if(msg === 'SIN_VENTAS') {
+                    Swal.fire({ icon: 'info', title: 'CAJA VACÍA', text: 'No hay ventas para cerrar en el turno actual.', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#39ff14' });
+                }
+            } catch(e) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'No se procesó el cierre.', background: '#1a1a1a', color: '#fff' });
+            }
+        }
+    }
+
+    setInterval(actualizarCajaFuerte, 60000); // 1 minuto
+    setTimeout(actualizarCajaFuerte, 2000); // Llamado inicial seguro
+
+    // --- SISTEMA DE INSTALACIÓN PWA (DESCARGA MÓVIL) ---
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        if(document.getElementById('pwa-install-banner')) return;
+
+        const pwaBanner = document.createElement('div');
+        pwaBanner.id = 'pwa-install-banner';
+        pwaBanner.className = 'animate__animated animate__fadeInUp';
+        pwaBanner.style.cssText = `
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 400px; z-index: 10000;
+            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(15px);
+            border: 1px solid var(--neon-cyan); border-radius: 25px;
+            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.2);
+        `;
+        pwaBanner.innerHTML = `
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-display text-white fs-3" style="text-shadow: 0 0 10px var(--neon-cyan);"></i>
+                <div class="text-start" style="line-height: 1.2;">
+                    <strong class="text-white d-block" style="font-size: 1rem;">Gomez POS IA</strong>
+                    <span class="small" style="color: #aaa;">Caja Nativa Ultrarrápida</span>
+                </div>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <button class="btn btn-sm fw-bolder text-dark" style="background: var(--neon-cyan); border-radius: 12px; padding: 6px 15px;" id="btn-pwa-accept">Instalar</button>
+                <button class="btn btn-sm text-secondary p-1" id="btn-pwa-close"><i class="bi bi-x-lg"></i></button>
+            </div>
+        `;
+        document.body.appendChild(pwaBanner);
+
+        document.getElementById('btn-pwa-accept').onclick = () => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') pwaBanner.remove();
+                deferredPrompt = null;
+            });
+        };
+        document.getElementById('btn-pwa-close').onclick = () => {
+            pwaBanner.classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
+            setTimeout(() => pwaBanner.remove(), 500);
+        };
+    });
+</script>
 </body>
 </html>

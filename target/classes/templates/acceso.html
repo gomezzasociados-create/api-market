@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Acceso | GOMEZ GYM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0c10;
+            color: #66fcf1;
+            font-family: 'Teko', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        #mensaje {
+            font-size: 8rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px rgba(102, 252, 241, 0.5);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.2s ease;
+            z-index: 10;
+        }
+
+        #submensaje {
+            font-size: 3rem;
+            margin-top: -20px;
+            opacity: 0.8;
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* Subtle input focus trap */
+        #barcodeInput {
+            position: absolute;
+            top: -100px; /* Out of view but near enough for focus */
+            left: -100px;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* Gamified States */
+        body.estado-activo {
+            background-color: #39ff14 !important;
+            color: #000 !important;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+        }
+        body.estado-activo #mensaje {
+            text-shadow: none;
+            transform: scale(1.1);
+        }
+
+        body.estado-vencido {
+            background-color: #ff0000 !important;
+            color: #fff !important;
+            animation: flash_red 0.4s alternate infinite;
+        }
+        body.estado-vencido #mensaje {
+            text-shadow: 0 0 30px #000;
+            transform: scale(1.05);
+        }
+
+        body.estado-error {
+            background-color: #ffaa00 !important;
+            color: #000 !important;
+        }
+
+        @keyframes flash_red {
+            0% { background-color: #a00000; }
+            100% { background-color: #ff0000; }
+        }
+        
+        /* Particle / Dark overlay for aesthetic */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(11,12,16, 0.8) 120%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div id="mensaje">ESPERANDO ESCANEO</div>
+    <div id="submensaje">Acerque la credencial al lector</div>
+
+    <!-- Hidden Input for Barcode Scanner -->
+    <input type="text" id="barcodeInput" autofocus autocomplete="off">
+
+    <script>
+        const input = document.getElementById('barcodeInput');
+        const body = document.body;
+        const mensajeEl = document.getElementById('mensaje');
+        const submensajeEl = document.getElementById('submensaje');
+        
+        // Mantener el foco siempre en el input
+        document.addEventListener('click', () => {
+            input.focus();
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') input.focus();
+        });
+        input.addEventListener('blur', () => {
+            // Un pequeño timeout para que no interfiera con otros eventos internos
+            setTimeout(() => input.focus(), 10);
+        });
+
+        // Audio Context para generar el beep sin archivos externos (Web Audio API)
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playBeep(tipo) {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            if (tipo === 'vencido' || tipo === 'error') {
+                // Sonido grave de chicharra / error
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(150, audioCtx.currentTime); 
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.4); 
+            } else if (tipo === 'activo') {
+                // Sonido agudo de Check / Aprobado
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); 
+                oscillator.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2); 
+            }
+        }
+
+        let procesando = false;
+        let clearTimer;
+
+        input.addEventListener('keypress', function (e) {
+            // Iniciar AudioCtx en la primera interacción del usuario (requerido por navegadores)
+            initAudio();
+
+            // El lector de código de barras termina simulando la tecla Enter
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const codigo = input.value.trim();
+                input.value = ''; // Limpiar campo
+                
+                if (codigo && !procesando) {
+                    validarAcceso(codigo);
+                }
+            }
+        });
+
+        function resetPantalla() {
+            body.className = '';
+            mensajeEl.textContent = 'ESPERANDO ESCANEO';
+            submensajeEl.textContent = 'Acerque la credencial al lector';
+            procesando = false;
+        }
+
+        function mostrarEstado(estado, mensajePrincipal, submensaje, beeper) {
+            body.className = `estado-${estado.toLowerCase()}`;
+            mensajeEl.textContent = mensajePrincipal;
+            submensajeEl.textContent = submensaje;
+            
+            playBeep(beeper);
+
+            // Cancelar el timer anterior si hay escaneo rápido
+            if (clearTimer) clearTimeout(clearTimer);
+
+            // Volver a la normalidad después de un lapso
+            clearTimer = setTimeout(() => {
+                resetPantalla();
+            }, 3000); // 3 segundos antes de volver al reposo
+        }
+
+        async function validarAcceso(codigo) {
+            procesando = true;
+            try {
+                // Fetch al backend actual de MensualidadController
+                const response = await fetch(`/api/validar-acceso/${codigo}`);
+                if (!response.ok) {
+                    throw new Error('Respuesta de red fallida');
+                }
+                const data = await response.json();
+                
+                // Procesar respuesta JSON: { estado, mensaje, color }
+                if (data.estado === 'ACTIVO') {
+                    mostrarEstado('ACTIVO', '¡ACCESO CONCEDIDO!', data.mensaje, 'activo');
+                } else if (data.estado === 'VENCIDO') {
+                    // Texto cortado o procesado
+                    let txtMensaje = (data.mensaje.includes('PAGO REQUERIDO')) ? '¡PAGO REQUERIDO!' : data.mensaje;
+                    mostrarEstado('VENCIDO', txtMensaje, data.mensaje, 'vencido');
+                } else {
+                    mostrarEstado('ERROR', 'DENEGADO', data.mensaje, 'error');
+                }
+
+            } catch (error) {
+                console.error("Error validando acceso:", error);
+                mostrarEstado('ERROR', 'ERROR DEL SISTEMA', 'No se pudo verificar el acceso', 'error');
+                procesando = false;
+            }
+        }
+    </script>
+</body>
+</html>
