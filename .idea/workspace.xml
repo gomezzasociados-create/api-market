@@ -4,167 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basedatos/gymdb.mv.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basedatos/gymdb.trace.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/SecurityInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/AdminRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/AuthRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/CheckoutController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/MenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/PosController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/ProductoRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentaRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Ajuste.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/CartItemDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/CheckoutRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/CorteZ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Gasto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Producto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Proveedor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Venta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/AjusteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/CorteZRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/GastoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/ProductoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/ProveedorRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/VentaRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/AbastecimientoRobotService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/CobranzaRobotService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/EvolutionApiService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/MarketDataService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/MarketingRobotService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/manifest-admin.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/manifest-menu.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/manifest-pos.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/marvit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/sw.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/acceso.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/checkout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/menu.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/pagos.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/application-prod.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/SecurityConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/SecurityInterceptor.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/WebConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/AdminController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/AdminRestController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/AuthRestController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/CheckoutController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/LoginController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/MenuController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/PosController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/ProductoRestController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentaRestController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Ajuste.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/CartItemDTO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/CheckoutRequest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/CorteZ.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Gasto.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Producto.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Proveedor.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Venta.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/AjusteRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/CorteZRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/GastoRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/ProductoRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/ProveedorRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/VentaRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/AbastecimientoRobotService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/CobranzaRobotService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/EvolutionApiService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/MarketDataService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/MarketingRobotService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/manifest-admin.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/manifest-menu.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/manifest-pos.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/marvit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/sw.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/acceso.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/checkout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/menu.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/pagos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/MinierpApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/MinierpApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/DataInitializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/AdminCitasRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/AdminViewController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/CitaRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/PagoRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/SpaController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/TratamientoRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentasRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Cita.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/PaqueteComprado.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/model/Tratamiento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/CitaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/ClienteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/PaqueteCompradoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/repository/TratamientoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/LimpiezaCitasService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/SpaDataService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/PACKS.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/SESIONES.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/spa-fondo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/spa-music.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/spa-music2.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/spa-music3.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/spa-music4.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agenda.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/crm.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/portal-reservas.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/tratamientos.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/ventas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/ventas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/MinierpApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/MinierpApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/DataInitializer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/AdminCitasRestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/AdminViewController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/CitaRestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/PagoRestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/SpaController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/TratamientoRestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentasRestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Cita.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Cliente.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/PaqueteComprado.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/model/Tratamiento.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/CitaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/ClienteRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/ClienteRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/PaqueteCompradoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/repository/TratamientoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/LimpiezaCitasService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/service/SpaDataService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data/PACKS.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data/SESIONES.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/spa-fondo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/spa-music.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/spa-music2.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/spa-music3.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/spa-music4.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/agenda.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/crm.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/portal-reservas.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/pos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/tratamientos.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/ventas.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/ventas.html" afterDir="false" />
+    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="inico de proyecto super market">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,6 +96,19 @@
       <option name="presentableId" value="Default" />
       <updated>1775019459061</updated>
     </task>
+    <task id="LOCAL-00001" summary="inico de proyecto super market">
+      <option name="closed" value="true" />
+      <created>1775307409850</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1775307409850</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="inico de proyecto super market" />
+    <option name="LAST_COMMIT_MESSAGE" value="inico de proyecto super market" />
   </component>
 </project>
