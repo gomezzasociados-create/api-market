@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="inico de proyecto super market">
+    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="Actualizacion 2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basedatos/gymdb.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/basedatos/gymdb.mv.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,11 +106,29 @@
       <option name="project" value="LOCAL" />
       <updated>1775307409850</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Actualizacion 1">
+      <option name="closed" value="true" />
+      <created>1775308421037</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775308421037</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Actualizacion 2">
+      <option name="closed" value="true" />
+      <created>1775308606980</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775308606980</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="inico de proyecto super market" />
-    <option name="LAST_COMMIT_MESSAGE" value="inico de proyecto super market" />
+    <MESSAGE value="Actualizacion 1" />
+    <MESSAGE value="Actualizacion 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actualizacion 2" />
   </component>
 </project>
