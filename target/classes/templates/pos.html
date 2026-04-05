@@ -229,16 +229,22 @@
         }
 
         @media (max-width: 991px) {
-            .pos-header { flex-direction: column; align-items: center; padding: 10px; height: auto; }
+            .pos-header { flex-direction: column; align-items: center; padding: 15px; height: auto; gap: 10px; }
             .pos-layout { flex-direction: column; overflow-y: auto; overflow-x: hidden; height: auto; }
-            .cart-sidebar { width: 100%; border-left: none; border-top: 2px solid var(--neon-cyan); height: auto; min-height: 50vh;}
-            .products-area { height: auto; min-height: 50vh; }
-            .cart-items-container { min-height: 250px; }
+            .cart-sidebar { width: 100%; border-left: none; border-top: 2px solid var(--neon-cyan); height: auto; }
+            .products-area { height: auto; padding: 15px !important; }
+            .cart-items-container { min-height: 200px; padding: 10px; }
             .total-display { font-size: 2.5rem; text-align: center; }
-            #hud-caja-indicadores { flex-wrap: wrap; justify-content: center; margin-top: 15px; margin-left: 0 !important; }
-            #hud-efectivo, #hud-tarjeta, #hud-fiado { font-size: 1.2rem !important; }
+            #hud-caja-indicadores { flex-wrap: wrap; justify-content: center; margin-top: 5px; margin-left: 0 !important; gap: 5px !important;}
+            #hud-efectivo, #hud-tarjeta, #hud-fiado { font-size: 1.1rem !important; padding: 10px !important; }
             .gomez-assistant { width: 60px; height: 60px; bottom: 15px; left: 15px; }
-            .ms-auto.flex-nowrap { flex-wrap: wrap !important; justify-content: center; gap: 10px; margin-top: 15px; margin-left: 0 !important; width:100%;}
+            .ms-auto.flex-nowrap { flex-wrap: wrap !important; justify-content: center; gap: 8px; margin-top: 10px; margin-left: 0 !important; width:100%;}
+            .form-control-neon { font-size: 1rem; padding: 12px 15px; border-radius: 8px; }
+            .btn-pay { padding: 12px; font-size: 0.95rem; }
+            .grid-productos { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            .product-img { height: 120px; }
+            .product-title { font-size: 1rem; }
+            .product-price { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -280,12 +286,15 @@
 </div>
 
 <div id="mainPosUI" style="display: none;" class="animate__animated animate__fadeIn">
-    <div class="pos-header">
+    <div class="pos-header position-relative">
+        <button id="btn-descargar-app" class="btn text-dark fw-bold position-absolute top-50 end-0 translate-middle-y me-3 shadow-lg" style="display: none; z-index: 1000; background: var(--neon-cyan); border-radius: 20px; font-size: 0.85rem; padding: 8px 15px;" onclick="instalarAppPWA()">
+            <i class="bi bi-cloud-arrow-down-fill me-1 fs-5"></i> INSTALAR POS
+        </button>
         <div class="epic-title-wrapper" style="transform: scale(0.8); transform-origin: left center;">
             <h1 class="epic-market">MARKET</h1>
             <h1 class="epic-limber">LIMBER</h1>
         </div>
-        
+
         <div class="d-flex ms-4 gap-3 align-items-center" id="hud-caja-indicadores">
             <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
                 <div class="text-success small fw-bold text-uppercase"><i class="bi bi-cash-stack"></i> Efectivo</div>
@@ -482,7 +491,6 @@
             <span class="badge bg-success shadow-sm" id="badge-total-ventas">0 Bts.</span>
         </div>
         <div class="list-group list-group-flush flex-grow-1 overflow-auto" id="lista-ventas-historico">
-            <!-- Items del libro inyectados vía JS -->
         </div>
         <div class="p-4 bg-dark border-top border-warning text-center mt-auto">
             <button class="btn btn-danger fw-bolder py-3 w-100 rounded-pill shadow-lg d-flex align-items-center justify-content-center gap-2" style="font-size: 1.2rem; filter: saturate(1.5);" onclick="confirmarCierreCaja()">
@@ -685,7 +693,7 @@
     setInterval(async () => {
         // Solo sincronizar si la caja está desbloqueada
         if (document.getElementById('mainPosUI').style.display === 'none') return;
-        
+
         try {
             const res = await fetch('/api/productos');
             if (res.ok) {
@@ -702,7 +710,7 @@
                         limpios.push(p);
                     }
                 });
-                
+
                 if (verificarDiferenciasReactivo(catalogoGlobal, limpios)) {
                     catalogoGlobal = limpios;
                     const termino = document.getElementById('buscador').value.toLowerCase().trim();
@@ -745,7 +753,7 @@
 
             const badge = p.esPesable ? `<span class="producto-pesable-badge"><i class="bi bi-speedometer"></i> GRAMOS</span>` : '';
             const promoBadge = hayPromo ? `<span class="promo-badge"><i class="bi bi-tag-fill"></i> OFERTA</span>` : '';
-            
+
             let stockBadge = '';
             if (p.stock !== null && p.stock !== undefined) {
                 if (p.stock <= 0) {
@@ -809,38 +817,38 @@
     });
 
     let html5QrCode = null; let globalTargetInputId = '';
-    function abrirCamara(targetInputId) { 
-        globalTargetInputId = targetInputId || 'buscador'; 
-        new bootstrap.Modal(document.getElementById('modalCamara')).show(); 
-        if(!html5QrCode) html5QrCode = new Html5Qrcode("reader-video"); 
-        
+    function abrirCamara(targetInputId) {
+        globalTargetInputId = targetInputId || 'buscador';
+        new bootstrap.Modal(document.getElementById('modalCamara')).show();
+        if(!html5QrCode) html5QrCode = new Html5Qrcode("reader-video");
+
         const config = { fps: 15, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0 };
-        const onScan = (dec) => { 
-            cerrarCamara(); 
-            const el = document.getElementById(globalTargetInputId); 
-            if(el){ 
-                el.value = dec; 
+        const onScan = (dec) => {
+            cerrarCamara();
+            const el = document.getElementById(globalTargetInputId);
+            if(el){
+                el.value = dec;
                 el.dispatchEvent(new Event('input')); // To trigger search filter
-                el.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'})); 
-            } 
+                el.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+            }
         };
-        
+
         html5QrCode.start({ facingMode: "environment" }, config, onScan, () => {})
-        .catch(err => { 
+        .catch(err => {
             console.warn("Fallo 'environment', probando cámara general:", err);
             html5QrCode.start({ facingMode: "user" }, config, onScan, () => {})
             .catch(err2 => {
-                 alert("Error cámara: " + err2 + "\n\nNota: Si estás usando un celular u otro PC en red, debes ingresar usando HTTPS o localhost. Los navegadores bloquean la cámara en HTTP remoto."); 
-                 cerrarCamara(); 
+                 alert("Error cámara: " + err2 + "\n\nNota: Si estás usando un celular u otro PC en red, debes ingresar usando HTTPS o localhost. Los navegadores bloquean la cámara en HTTP remoto.");
+                 cerrarCamara();
             });
-        }); 
+        });
     }
-    function cerrarCamara() { 
+    function cerrarCamara() {
         if(html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => html5QrCode.clear()).catch(e=>console.log(e)); 
+            html5QrCode.stop().then(() => html5QrCode.clear()).catch(e=>console.log(e));
         }
-        const mod = bootstrap.Modal.getInstance(document.getElementById('modalCamara')); 
-        if(mod) mod.hide(); 
+        const mod = bootstrap.Modal.getInstance(document.getElementById('modalCamara'));
+        if(mod) mod.hide();
     }
 
     buscadorEl.addEventListener('keydown', (e) => {
@@ -981,7 +989,8 @@
         modalFiador.show();
 
         try {
-            const res = await fetch('/api/admin/clientes/autorizados');
+            // ¡LÍNEA CORREGIDA! Apunta al nuevo controlador de clientes VIP
+            const res = await fetch('/api/clientes/autorizados');
             if(!res.ok) throw new Error("Error de red");
             const clientes = await res.json();
 
@@ -1061,27 +1070,52 @@
     async function ejecutarCobro(metodo, clienteId) {
         Swal.fire({ title: 'PROCESANDO TRANSACCIÓN...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
+        // Crear una versión amigable del "Detalle" de la venta para enviarlo al Whatsapp
+        let detalleTexto = "";
+        carrito.forEach(item => {
+            const cant = item.producto.esPesable ? item.cantidad + ' gr' : item.cantidad + ' un';
+            detalleTexto += `• ${cant} x ${item.producto.nombre}\n`;
+        });
+
         const payload = {
             total: calcularMontoTotalNeto(),
-            metodoPago: metodo,
+            tipo: metodo, // <-- IMPORTANTE: Lo que antes era metodoPago, ahora lo renombramos a "tipo" para que Java lo entienda
+            detalle: detalleTexto, // <-- Enviamos el detalle armado
             clienteId: clienteId,
-            items: carrito.map(i=>({ idProducto: i.producto.id, cantidad: i.cantidad, precio: i.producto.precioFinalApp || i.producto.precio, titulo: i.producto.nombre }))
+            items: carrito.map(i=>({ id: i.producto.id, cantidad: i.cantidad }))
         };
 
         try {
-            const res = await fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-            if (!res.ok) throw new Error("Fallo en servidor de pagos");
+            // ¡LÍNEA CORREGIDA! Apunta al nuevo controlador de ventas
+            const res = await fetch('/api/ventas/procesar', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+            if (!res.ok) throw new Error("Fallo en servidor de ventas");
 
-            const d = await res.json();
+            const textResponse = await res.text();
 
-            if (d.status === 'mercadopago') {
-                window.location.href = d.init_point;
-            } else if (d.status === 'ok') {
+            // Evaluamos la respuesta cruda de nuestro VentaRestController
+            let data = {};
+            try {
+                // Por si en el futuro devuelve un JSON (Mercadopago)
+                data = JSON.parse(textResponse);
+            } catch(e) {
+                // Como devuelve texto ("OK" o "ERROR..."), lo atrapamos aquí
+                if (textResponse === "OK") {
+                    data = { status: "ok", mensaje: "Venta registrada con éxito." };
+                } else if (textResponse.startsWith("http")) {
+                    data = { status: "mercadopago", init_point: textResponse };
+                } else {
+                    data = { status: "error", mensaje: textResponse };
+                }
+            }
+
+            if (data.status === 'mercadopago') {
+                window.location.href = data.init_point;
+            } else if (data.status === 'ok') {
 
                 // SONIDO "CHA-CHING" DE CAJA AL CONFIRMAR LA VENTA EXITOSA
                 play(sfxCash, 1.0);
 
-                if(metodo === 'FIADO') GOMEZ.speak('Crédito autorizado y registrado en la cuenta del cliente.');
+                if(metodo === 'FIADO') GOMEZ.speak('Crédito autorizado. Enviando resumen de compra al WhatsApp del cliente.');
                 else GOMEZ.speak('Pago procesado correctamente. Imprimiendo comprobante.');
 
                 generarTicketImpresion(metodo, payload.total);
@@ -1091,13 +1125,13 @@
                 setTimeout(() => window.print(), 800);
 
                 Swal.fire({
-                    icon: 'success', title: '¡PAGO EXITOSO!', text: d.mensaje,
+                    icon: 'success', title: '¡PAGO EXITOSO!', text: data.mensaje,
                     background: '#1a1a1a', color: '#fff', confirmButtonColor: '#39ff14',
                     confirmButtonText: '<strong class="text-dark">Siguiente Cliente</strong>',
                     backdrop: `rgba(57, 255, 20, 0.1)`
                 });
             }
-            else throw new Error(d.mensaje);
+            else throw new Error(data.mensaje);
         } catch (e) {
             play(sfxE);
             Swal.fire({ title: 'ERROR DE TRANSACCIÓN', text: e.message, icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#ff003c' });
@@ -1124,7 +1158,7 @@
 
     // --- LIBRO DE CAJA Y ARQUEO ---
     const offcanvasLibro = new bootstrap.Offcanvas(document.getElementById('offcanvasLibroCaja'));
-    
+
     function abrirLibroCaja() {
         actualizarCajaFuerte();
         offcanvasLibro.show();
@@ -1135,27 +1169,27 @@
             const res = await fetch('/api/ventas/caja-fuerte');
             if(!res.ok) throw new Error("Error obteniendo arqueo");
             const data = await res.json();
-            
+
             document.getElementById('hud-efectivo').innerText = fmt(data.totalEfectivo);
             document.getElementById('hud-tarjeta').innerText = fmt(data.totalTarjeta || 0);
             document.getElementById('hud-fiado').innerText = fmt(data.totalFiado);
             document.getElementById('badge-total-ventas').innerText = data.ventas.length + ' Bts.';
-            
+
             const list = document.getElementById('lista-ventas-historico');
             list.innerHTML = '';
-            
+
             if(data.ventas.length === 0) {
                 list.innerHTML = '<div class="p-4 text-center text-muted fw-bold">No hay transacciones en este turno.</div>';
                 return;
             }
-            
+
             data.ventas.forEach(v => {
                 const isFiado = v.tipoPago === 'FIADO';
                 const icon = isFiado ? '<i class="bi bi-person-vcard text-warning"></i>' : '<i class="bi bi-cash text-success"></i>';
                 const badgeE = isFiado ? '<span class="badge bg-warning text-dark opacity-75">PENDIENTE</span>' : '<span class="badge bg-success opacity-75">PAGADO</span>';
-                
+
                 const hora = v.fechaHora ? v.fechaHora.split('T')[1].substring(0,5) : '00:00';
-                
+
                 list.innerHTML += `
                     <button class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary p-3 d-flex justify-content-between align-items-center" onclick="verDetalleVenta('${encodeURIComponent(v.detalle)}')">
                         <div>
@@ -1173,7 +1207,7 @@
     function verDetalleVenta(detalleEncoded) {
         let det = decodeURIComponent(detalleEncoded);
         let htmlTicket = `<div style="font-family: monospace; text-align: left; background: #fff; color: #000; padding: 15px; border-radius: 5px; font-size: 14px; white-space: pre-wrap;">${det}</div>`;
-        
+
         Swal.fire({
             title: 'TICKET CERRADO',
             html: htmlTicket,
@@ -1185,7 +1219,7 @@
     async function confirmarCierreCaja() {
         const hEfe = document.getElementById('hud-efectivo').innerText;
         const hFia = document.getElementById('hud-fiado').innerText;
-        
+
         const { isConfirmed } = await Swal.fire({
             title: '⚠️ ¿SEGURO DESEA CORTAR CAJA?',
             html: `
@@ -1211,7 +1245,7 @@
                 const msg = await res.text();
                 if(msg === 'OK') {
                     play(sfxC, 0.7);
-                    
+
                     const zHtml = `
                     <div style="background: white; color: black; font-family: monospace; padding: 20px; border-top: 5px dashed #ccc; border-bottom: 5px dashed #ccc; text-align: left;">
                         <h4 style="text-align:center; font-weight:bold; margin-bottom: 10px;">REPORTE Z</h4>
@@ -1225,10 +1259,10 @@
                         <p style="margin:2px 0;">--------------------------------</p>
                         <p style="text-align:center; margin-top:20px; font-size:12px;">Corte generado correctamente.</p>
                     </div>`;
-                    
+
                     offcanvasLibro.hide();
-                    actualizarCajaFuerte(); 
-                    
+                    actualizarCajaFuerte();
+
                     Swal.fire({
                         title: 'COMPLETADO', html: zHtml,
                         background: '#1a1a1a', color: '#fff',
@@ -1246,52 +1280,26 @@
     setInterval(actualizarCajaFuerte, 60000); // 1 minuto
     setTimeout(actualizarCajaFuerte, 2000); // Llamado inicial seguro
 
-    // --- SISTEMA DE INSTALACIÓN PWA (DESCARGA MÓVIL) ---
-    let deferredPrompt;
+    // --- SISTEMA DE INSTALACIÓN PWA (APP NATIVA) ---
+    let eventoInstalacionPWA;
+    const btnDescarga = document.getElementById('btn-descargar-app');
+
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        deferredPrompt = e;
-        
-        if(document.getElementById('pwa-install-banner')) return;
-
-        const pwaBanner = document.createElement('div');
-        pwaBanner.id = 'pwa-install-banner';
-        pwaBanner.className = 'animate__animated animate__fadeInUp';
-        pwaBanner.style.cssText = `
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 400px; z-index: 10000;
-            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(15px);
-            border: 1px solid var(--neon-cyan); border-radius: 25px;
-            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.2);
-        `;
-        pwaBanner.innerHTML = `
-            <div class="d-flex align-items-center gap-3">
-                <i class="bi bi-display text-white fs-3" style="text-shadow: 0 0 10px var(--neon-cyan);"></i>
-                <div class="text-start" style="line-height: 1.2;">
-                    <strong class="text-white d-block" style="font-size: 1rem;">Gomez POS IA</strong>
-                    <span class="small" style="color: #aaa;">Caja Nativa Ultrarrápida</span>
-                </div>
-            </div>
-            <div class="d-flex gap-2 align-items-center">
-                <button class="btn btn-sm fw-bolder text-dark" style="background: var(--neon-cyan); border-radius: 12px; padding: 6px 15px;" id="btn-pwa-accept">Instalar</button>
-                <button class="btn btn-sm text-secondary p-1" id="btn-pwa-close"><i class="bi bi-x-lg"></i></button>
-            </div>
-        `;
-        document.body.appendChild(pwaBanner);
-
-        document.getElementById('btn-pwa-accept').onclick = () => {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') pwaBanner.remove();
-                deferredPrompt = null;
-            });
-        };
-        document.getElementById('btn-pwa-close').onclick = () => {
-            pwaBanner.classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
-            setTimeout(() => pwaBanner.remove(), 500);
-        };
+        eventoInstalacionPWA = e;
+        if(btnDescarga) btnDescarga.style.display = 'inline-block';
     });
+
+    async function instalarAppPWA() {
+        if (eventoInstalacionPWA) {
+            eventoInstalacionPWA.prompt();
+            const { outcome } = await eventoInstalacionPWA.userChoice;
+            if (outcome === 'accepted') {
+                if(btnDescarga) btnDescarga.style.display = 'none';
+            }
+            eventoInstalacionPWA = null;
+        }
+    }
 </script>
 </body>
 </html>

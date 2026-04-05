@@ -4,10 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="Actualizacion 2">
+    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="Actualizacion 3">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/service/WhatsappService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/basedatos/gymdb.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/basedatos/gymdb.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/ClienteRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/ClienteRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentaRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentaRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/ClienteRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/ClienteRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentaRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentaRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/pos.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,13 +138,22 @@
       <option name="project" value="LOCAL" />
       <updated>1775308606980</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Actualizacion 3">
+      <option name="closed" value="true" />
+      <created>1775311997212</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775311997212</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="inico de proyecto super market" />
     <MESSAGE value="Actualizacion 1" />
     <MESSAGE value="Actualizacion 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Actualizacion 2" />
+    <MESSAGE value="Actualizacion 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actualizacion 3" />
   </component>
 </project>
