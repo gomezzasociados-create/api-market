@@ -69,7 +69,7 @@
 
         .glass-panel {
             background: var(--bg-plomo); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; margin-bottom: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; overflow: hidden;
         }
         .glass-panel::before {
@@ -96,40 +96,41 @@
             align-items: center; justify-content: center; cursor: pointer;
         }
         .btn-slim-guide:hover { background: var(--neon-cyan); color: #000 !important; box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.02); border-color: var(--neon-cyan) !important;}
-        
+
+        /* BOTON DE APP MODIFICADO PARA ESTAR SIEMPRE VISIBLE */
         .btn-slim-install {
             background: rgba(0, 0, 0, 0.7); border: 1px solid var(--neon-magenta); color: var(--neon-magenta);
             border-radius: 8px; padding: 6px 15px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
-            text-transform: uppercase; margin: 0; display: none; align-items: center; justify-content: center;
+            text-transform: uppercase; margin: 0; display: inline-flex; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 124, 0.3); backdrop-filter: blur(5px);
         }
         .btn-slim-install:hover { background: var(--neon-magenta); color: #fff !important; box-shadow: 0 0 20px var(--neon-magenta), inset 0 0 10px var(--neon-magenta); transform: scale(1.05); }
         .btn-slim-install i { text-shadow: 0 0 15px var(--neon-magenta); font-size: 1.1rem; }
 
-        .form-control, .form-select {
-            background: rgba(10, 12, 16, 0.8) !important; border: 1px solid rgba(255,255,255,0.1) !important;
+        .form-control, .form-select, textarea {
+            background: rgba(10, 12, 16, 0.8) !important; border: 1px solid rgba(255,255,255,0.2) !important;
             color: #fff !important; border-radius: 10px; padding: 12px 15px; font-weight: 700;
             transition: 0.3s; font-size: 0.95rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
-        .form-control::placeholder { color: #b4c4d4 !important; opacity: 1 !important; font-weight: 600; text-shadow: none; }
-        .form-control:focus, .form-select:focus { border-color: var(--neon-cyan) !important; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2) !important; outline: none; }
+        .form-control::placeholder, textarea::placeholder { color: #b4c4d4 !important; opacity: 1 !important; font-weight: 600; text-shadow: none; }
+        .form-control:focus, .form-select:focus, textarea:focus { border-color: var(--neon-cyan) !important; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2) !important; outline: none; }
         .cyber-label { font-size: 0.75rem; text-transform: uppercase; color: #ffffff !important; font-weight: 900; letter-spacing: 1px; margin-bottom: 6px; display: block; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
 
         .cyber-accordion { --bs-accordion-bg: transparent; --bs-accordion-border-color: transparent; }
 
         .cyber-card {
             background: rgba(20, 25, 32, 0.98);
-            border: 1px solid rgba(255,255,255,0.05); border-left: 3px solid var(--neon-green);
+            border: 1px solid rgba(255,255,255,0.15); border-left: 3px solid var(--neon-green);
             border-radius: 12px !important; margin-bottom: 12px; overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); color: #fff;
             will-change: transform;
         }
 
         .cyber-card:hover { border-color: var(--neon-cyan); box-shadow: 0 8px 25px rgba(0, 243, 255, 0.2); transform: translateY(-2px); }
         .cyber-acc-btn { background: transparent !important; color: #fff !important; padding: 15px 20px !important; box-shadow: none !important; font-weight: 800; letter-spacing: 0.5px;}
         .cyber-acc-btn::after { filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg); }
-        .cyber-acc-body { padding: 20px; background: rgba(0,0,0,0.5); border-top: 1px dashed rgba(255,255,255,0.1); }
+        .cyber-acc-body { padding: 20px; background: rgba(0,0,0,0.6); border-top: 1px dashed rgba(255,255,255,0.25); }
         .promo-active { border-left-color: var(--neon-magenta) !important; box-shadow: 0 0 15px rgba(255,0,124,0.2); }
 
         .btn-neon { background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-weight: 800; border-radius: 10px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.1); }
@@ -144,9 +145,9 @@
         .btn-save-row { background: rgba(0,0,0,0.5); border: 1px solid var(--neon-green); color: var(--neon-green); border-radius: 10px; padding: 12px 15px; font-weight: 900; width: 100%; transition: 0.3s; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-save-row:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 25px rgba(57, 255, 20, 0.5); transform: translateY(-2px); }
 
-        .img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: #000; padding: 2px; }
+        .img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(255,255,255,0.3); background: #000; padding: 2px; }
 
-        .stat-card { background: rgba(20, 25, 32, 0.9); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px 15px; text-align: center; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; backdrop-filter: blur(5px);}
+        .stat-card { background: rgba(20, 25, 32, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 15px; padding: 20px 15px; text-align: center; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; backdrop-filter: blur(5px);}
         .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.2); border-color: var(--neon-cyan); }
         .stat-card h6 { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; font-weight: 900; text-transform: uppercase;}
         .stat-card h2 { font-size: 2rem; font-weight: 900; margin: 0; color: #fff; text-shadow: 0 0 15px currentColor; }
@@ -160,8 +161,8 @@
         @keyframes micBreathe { 0% { transform: scale(1); } 100% { transform: scale(1.15); box-shadow: 0 0 60px rgba(255,0,124,1); } }
 
         .modal-content { background: var(--bg-plomo-solid); backdrop-filter: blur(25px); border: 1px solid var(--neon-cyan); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 243, 255, 0.3); }
-        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 20px; }
-        .modal-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 20px; }
+        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.15); padding: 20px; }
+        .modal-footer { border-top: 1px solid rgba(255,255,255,0.15); padding: 20px; }
 
         #securityLock {
             position:fixed; top:0; left:0; width:100vw; height:100vh;
@@ -206,18 +207,18 @@
         .btn-close-hub:hover { background: var(--neon-magenta); color: #fff; transform: scale(1.1) rotate(90deg); box-shadow: 0 0 30px var(--neon-magenta); }
 
         .pedido-card {
-            background: rgba(20, 25, 32, 0.95); border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(20, 25, 32, 0.95); border: 1px solid rgba(255,255,255,0.15);
             border-top: 4px solid var(--neon-magenta); border-radius: 15px; padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: 0.3s;
-            display: flex; flex-direction: column; height: 100%;
+            display: flex; flex-direction: column; height: 100%; color: #fff;
         }
         .pedido-card:hover { transform: translateY(-5px); border-color: var(--neon-magenta); box-shadow: 0 15px 40px rgba(255,0,124,0.3); }
-        .pedido-header { border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 15px; margin-bottom: 15px; }
+        .pedido-header { border-bottom: 1px dashed rgba(255,255,255,0.25); padding-bottom: 15px; margin-bottom: 15px; }
 
         .pedido-card h5 { color: #ffffff !important; font-weight: 900; letter-spacing: 1px; font-size: 1.4rem; margin: 0; }
         .pedido-card .text-info { color: var(--neon-cyan) !important; font-weight: 800; font-size: 1rem; text-shadow: 0 0 5px rgba(0,243,255,0.5); }
         .pedido-card .text-muted { color: #cccccc !important; font-weight: 600; }
-        .pedido-card .prod-item { color: #ffffff !important; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; font-size: 0.95rem; font-weight: 500; }
+        .pedido-card .prod-item { color: #ffffff !important; border-bottom: 1px solid rgba(255,255,255,0.15); padding: 8px 0; font-size: 0.95rem; font-weight: 500; }
 
         .badge-delivery { background: var(--neon-cyan); color: #000 !important; font-weight: 900; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; letter-spacing: 1px; box-shadow: 0 0 10px var(--neon-cyan); }
         .badge-retiro { background: var(--neon-yellow); color: #000 !important; font-weight: 900; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; letter-spacing: 1px; box-shadow: 0 0 10px var(--neon-yellow); }
@@ -294,9 +295,11 @@
             <h1 class="epic-title">LIMBER<span class="epic-limber">ADMIN</span></h1>
         </div>
         <div class="d-flex gap-2 mt-2 mt-md-0 flex-wrap justify-content-center align-items-center">
+
             <div id="btn-descargar-app-slim" class="btn-slim-install animate__animated animate__fadeIn" onclick="instalarAppPWA()">
-                <i class="bi bi-phone-vibrate me-1"></i> INSTALAR APP
+                <i class="bi bi-phone-vibrate me-2"></i> DESCARGAR APP NATIVA
             </div>
+
             <button class="btn btn-sm btn-magenta fw-bold" onclick="abrirHubEcommerce()"><i class="bi bi-globe"></i> Pedidos Web</button>
             <button class="btn btn-sm btn-neon fw-bold" onclick="playSfx('click'); abrirModalRobot()"><i class="bi bi-robot"></i> Ajustes IA</button>
             <a href="/pos" class="btn btn-sm btn-green-cyber fw-bold"><i class="bi bi-cart"></i> POS Terminal</a>
@@ -882,11 +885,13 @@
 
             cortes.forEach(c => {
                 let fecha = c.fechaCorte ? new Date(c.fechaCorte).toLocaleString('es-CL') : '-';
+
+                // ACTUALIZADO: Tarjetas negras, lineas blancas y textos contrastantes.
                 div.innerHTML += `
-                    <div class="cyber-card p-3 shadow-sm bg-white" style="border-left-color: var(--neon-magenta);">
-                        <div class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
-                            <span class="fw-bolder text-dark">Corte #${c.id}</span>
-                            <span class="text-muted small fw-bold mt-1">${fecha}</span>
+                    <div class="cyber-card p-3 shadow-sm" style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-left: 4px solid var(--neon-magenta);">
+                        <div class="d-flex justify-content-between border-bottom border-light pb-2 mb-3">
+                            <span class="fw-bolder text-white fs-5">Corte #${c.id}</span>
+                            <span class="text-info small fw-bold mt-1">${fecha}</span>
                         </div>
                         <div class="row g-2 text-center">
                             <div class="col-4">
@@ -902,8 +907,8 @@
                                 <div class="text-warning fw-bolder fs-6">${formatMoney(c.totalFiado)}</div>
                             </div>
                         </div>
-                        <div class="mt-2 text-end border-top border-secondary pt-2">
-                            <button class="btn btn-sm text-dark border-dark fw-bold" onclick="window.location.href='/api/pdf/cortez/${c.id}'"><i class="bi bi-receipt"></i> TICKET 80MM</button>
+                        <div class="mt-3 text-end border-top border-light pt-3">
+                            <button class="btn btn-sm btn-magenta fw-bold w-100" onclick="window.location.href='/api/pdf/cortez/${c.id}'"><i class="bi bi-receipt"></i> TICKET 80MM</button>
                         </div>
                     </div>`;
             });
@@ -986,6 +991,12 @@
                 let promoBadge = p.promocionActiva ? `<span class="badge bg-warning text-dark ms-1" style="font-size:0.6rem;">OFERTA</span>` : '';
                 let isPromoClass = p.promocionActiva ? 'promo-active' : '';
 
+                let opcionesProveedor = `<option value="">-- Sin Proveedor Asignado --</option>`;
+                provsGlobal.forEach(prov => {
+                    let selected = (p.proveedorId == prov.id) ? 'selected' : '';
+                    opcionesProveedor += `<option value="${prov.id}" ${selected}>${prov.empresa}</option>`;
+                });
+
                 productosHtml += `
                     <div class="accordion-item cyber-card ${isPromoClass}" id="row-${p.id}">
                         <h2 class="accordion-header">
@@ -1045,7 +1056,14 @@
                                         <input type="number" class="form-control text-info text-center fw-bold" id="stock-${p.id}" value="${p.stock}" onchange="guardarFila(${p.id}, ${p.esPesable})">
                                     </div>
 
-                                    <div class="col-12 border-top border-secondary pt-2 mt-2">
+                                    <div class="col-12 mt-2">
+                                        <label class="cyber-label text-warning"><i class="bi bi-truck me-1"></i> Proveedor (Alertas Stock)</label>
+                                        <select class="form-select border-warning text-white shadow-sm" style="background: rgba(0,0,0,0.8);" id="prov-${p.id}" onchange="guardarFila(${p.id}, ${p.esPesable})">
+                                            ${opcionesProveedor}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 border-top border-light pt-2 mt-2">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <label class="cyber-label text-warning m-0">Promoción</label>
                                             <div class="form-check form-switch"><input class="form-check-input bg-warning border-warning shadow-sm" type="checkbox" id="promoOn-${p.id}" ${p.promocionActiva?'checked':''} onchange="guardarFila(${p.id}, ${p.esPesable})"></div>
@@ -1057,7 +1075,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 border-top border-secondary pt-2">
+                                    <div class="col-12 border-top border-light pt-2">
                                         <label class="cyber-label text-info">Código de Barras</label>
                                         <div id="alias-badges-${p.id}" class="d-flex flex-wrap gap-1 mb-2">
                                             ${(p.codigosBarras||[]).map(cb=>`<span class="badge bg-dark border border-secondary text-info p-1">${cb} <i class="bi bi-x text-danger" style="cursor:pointer;" onclick="removerAlias(${p.id}, '${cb}')"></i></span>`).join('')}
@@ -1084,7 +1102,7 @@
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed fw-bolder fs-6 text-white" style="background: transparent; padding: 18px;" type="button" data-bs-toggle="collapse" data-bs-target="#${catIdId}" onclick="playSfx('click')">
                             <i class="bi bi-tags-fill me-3 fs-5 text-info"></i> <span class="text-uppercase" style="letter-spacing: 1px;">${catName}</span>
-                            <span class="badge bg-dark border text-info ms-auto rounded-pill px-3">${productos.length}</span>
+                            <span class="badge bg-dark border border-light text-info ms-auto rounded-pill px-3">${productos.length}</span>
                         </button>
                     </h2>
                     <div id="${catIdId}" class="accordion-collapse collapse" data-bs-parent="#accordion-categorias">
@@ -1172,7 +1190,7 @@
                         <div id="col-calc-${p.id}" class="accordion-collapse collapse">
                             <div class="accordion-body cyber-acc-body row g-2 rounded-bottom">
                                 <div class="col-6"><label class="cyber-label text-danger">Costo ($)</label><input type="number" class="form-control text-danger fw-bold border-danger" id="calc-costo-${p.id}" value="${pc}" oninput="recalcularFilaCalc(${p.id})"></div>
-                                <div class="col-6"><label class="cyber-label">P. Actual</label><input type="number" class="form-control text-muted bg-dark" id="calc-precio-${p.id}" value="${p.esPesable ? p.precioPorKilo : p.precio}" readonly></div>
+                                <div class="col-6"><label class="cyber-label">P. Actual</label><input type="number" class="form-control text-white bg-dark" id="calc-precio-${p.id}" value="${p.esPesable ? p.precioPorKilo : p.precio}" readonly></div>
                                 <div class="col-6"><label class="cyber-label text-info">Margen (%)</label><input type="number" class="form-control text-info fw-bold input-margen-row border-info" id="margen-${p.id}" oninput="recalcularFilaCalc(${p.id})"></div>
                                 <div class="col-6"><label class="cyber-label text-success">Sugerido ($)</label><div class="form-control text-success fw-bolder bg-dark border-success text-center" id="sugerido-${p.id}">-</div></div>
                             </div>
@@ -1324,7 +1342,7 @@
             if (isVip) {
                 // --- ESTRUCTURA AVANZADA PARA CLIENTES VIP ---
                 let misVentas = historialVentasGlobal.filter(v => v.cliente && v.cliente.id === c.id);
-                let historialHTML = misVentas.length === 0 ? '<div class="text-muted small p-2 text-center">Sin registros</div>' : misVentas.map(v => {
+                let historialHTML = misVentas.length === 0 ? '<div class="text-white small p-2 text-center">Sin registros</div>' : misVentas.map(v => {
                     let esAbono = v.tipoPago && v.tipoPago.startsWith('ABONO_');
                     let colorMonto = esAbono ? 'text-success' : 'text-danger';
                     let tituloEtiqueta = esAbono ? `<span class="badge bg-success text-white" style="font-size:0.6rem;">PAGO</span>` : '<span class="badge bg-danger text-white" style="font-size:0.6rem;">COMPRA</span>';
@@ -1339,7 +1357,7 @@
                         </div>`;
 
                     return `
-                        <div class="border-bottom border-secondary pb-1 mb-1">
+                        <div class="border-bottom border-light pb-1 mb-1">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-info fw-bold" style="font-size:0.7rem;">${new Date(v.fechaHora).toLocaleDateString('es-CL')}</span>${tituloEtiqueta}
                             </div>
@@ -1371,11 +1389,11 @@
                                     <div class="col-6"><label class="cyber-label text-warning">Fecha Límite Pago</label><input type="date" class="form-control fw-bold border-warning bg-dark text-white" id="limite-${c.id}" value="${c.fechaLimitePago||''}"></div>
 
                                     <div class="col-12 mt-3">
-                                        <h6 class="text-info small border-bottom border-secondary pb-1 fw-bold">HISTORIAL</h6>
-                                        <div class="p-2 bg-dark rounded border border-secondary" style="max-height: 150px; overflow-y: auto;">${historialHTML}</div>
+                                        <h6 class="text-info small border-bottom border-light pb-1 fw-bold">HISTORIAL</h6>
+                                        <div class="p-2 bg-dark rounded border border-light" style="max-height: 150px; overflow-y: auto;">${historialHTML}</div>
                                     </div>
 
-                                    <div class="col-12 mt-2 border-top border-secondary pt-2">
+                                    <div class="col-12 mt-2 border-top border-light pt-2">
                                         <label class="cyber-label text-info"><i class="bi bi-robot"></i> Mensaje Robot (Venta Crédito)</label>
                                         <textarea class="form-control bg-dark text-white border-secondary" id="msg-compra-${c.id}" rows="2" placeholder="Ej: Hola [NOMBRE], tu nueva deuda es [DEUDA]...">${c.plantillaMsgCompra||''}</textarea>
                                     </div>
@@ -1409,7 +1427,7 @@
                             <button class="accordion-button collapsed cyber-acc-btn" type="button" data-bs-toggle="collapse" data-bs-target="#cli-${c.id}">
                                 <div class="d-flex justify-content-between w-100 align-items-center pe-3">
                                     <span class="text-white">${c.nombre}</span>
-                                    <span class="text-muted small fw-bold"><i class="bi bi-person"></i> REGULAR</span>
+                                    <span class="text-white small fw-bold"><i class="bi bi-person"></i> REGULAR</span>
                                 </div>
                             </button>
                         </h2>
@@ -1606,8 +1624,8 @@
                 <div class="col-md-6 col-12">
                     <div class="cyber-card p-3 h-100 bg-dark">
                         <h6 class="fw-bold mb-1 text-white"><i class="bi bi-building me-2 text-info"></i>${p.empresa}</h6>
-                        <div class="d-flex justify-content-between border-top border-secondary pt-2 mt-2">
-                            <span class="small text-muted fw-bold">Deuda a Pagar:</span>
+                        <div class="d-flex justify-content-between border-top border-light pt-2 mt-2">
+                            <span class="small text-white fw-bold">Deuda a Pagar:</span>
                             <span class="text-danger fw-bolder">${formatMoney(p.deudaActiva)}</span>
                         </div>
                     </div>
@@ -1626,7 +1644,7 @@
                 <div class="cyber-card p-3 d-flex justify-content-between align-items-center bg-dark">
                     <div class="small">
                         <div class="fw-bolder text-white">${g.descripcion||'Gasto'}</div>
-                        <div class="text-muted fw-bold" style="font-size:0.7rem;">${new Date(g.fechaHora).toLocaleDateString('es-CL')}</div>
+                        <div class="text-white fw-bold" style="font-size:0.7rem;">${new Date(g.fechaHora).toLocaleDateString('es-CL')}</div>
                     </div>
                     <div class="text-end">
                         <div class="fw-bolder text-danger fs-5">${formatMoney(g.monto)}</div>
@@ -1739,6 +1757,9 @@
         const stockActual = parseFloat(document.getElementById(`stock-${id}`).value) || 0;
         let pFinal = parseFloat(document.getElementById(`precio-${id}`).value) || 0;
 
+        // Capturamos el proveedor seleccionado
+        const provSelect = document.getElementById(`prov-${id}`);
+
         const payload = {
             nombre: document.getElementById(`nom-${id}`).value,
             imagen: document.getElementById(`img-${id}`).value,
@@ -1747,6 +1768,7 @@
             precioCompra: document.getElementById(`costo-${id}`).value,
             precio: pFinal,
             stock: stockActual,
+            proveedorId: provSelect && provSelect.value ? provSelect.value : null, // <-- NUEVO DATO ENVIADO AL BACKEND
             promocionActiva: document.getElementById(`promoOn-${id}`).checked,
             precioPromo: document.getElementById(`precioPromo-${id}`).value,
             fechaInicioPromo: document.getElementById(`fi-${id}`).value,
@@ -1765,6 +1787,7 @@
                 prod.stock = stockActual;
                 prod.precio = payload.esPesable ? null : pFinal;
                 prod.precioPorKilo = payload.esPesable ? pFinal : null;
+                prod.proveedorId = payload.proveedorId; // Actualizamos el DOM local
             }
 
             playSfx('save');
@@ -1822,19 +1845,32 @@
         }
     }, 5000);
 
-    // --- PWA ---
+    // --- PWA ACTUALIZADO: Forzado y con mensaje guiado ---
     let eventoInstalacionPWA;
-    const btnDescarga = document.getElementById('btn-descargar-app-slim');
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); eventoInstalacionPWA = e;
-        if(btnDescarga) btnDescarga.style.display = 'inline-flex';
+        e.preventDefault();
+        eventoInstalacionPWA = e;
     });
+
     async function instalarAppPWA() {
         if (eventoInstalacionPWA) {
             eventoInstalacionPWA.prompt();
             const { outcome } = await eventoInstalacionPWA.userChoice;
-            if (outcome === 'accepted') if(btnDescarga) btnDescarga.style.display = 'none';
+            if (outcome === 'accepted') {
+                const btnDescarga = document.getElementById('btn-descargar-app-slim');
+                if(btnDescarga) btnDescarga.style.display = 'none';
+            }
             eventoInstalacionPWA = null;
+        } else {
+            // Si el navegador no ha disparado el evento (o ya está instalada), mostramos una guía futurista
+            Swal.fire({
+                title: '<i class="bi bi-phone text-neon-cyan fs-1"></i><br>Instalación Manual',
+                html: '<p class="text-white">Para instalar la App Nativa, abre el menú de tu navegador (los 3 puntitos en Android o el botón de compartir en iOS) y selecciona <strong class="text-info">"Añadir a la pantalla de inicio"</strong> o <strong class="text-info">"Instalar aplicación"</strong>.</p>',
+                background: '#1e222b',
+                color: '#fff',
+                confirmButtonColor: '#00f3ff',
+                confirmButtonText: '<strong class="text-dark">ENTENDIDO</strong>'
+            });
         }
     }
 
