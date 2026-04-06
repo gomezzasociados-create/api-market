@@ -1,0 +1,141 @@
+ID,NOMBRE,CATEGORIA,PRECIO_COMPRA,PRECIO_VENTA,STOCK,DESCRIPCION,URL_IMAGEN
+1,Palta Hass Nacional,Feria,2500,4990,50,"Palta gran calibre",https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80
+2,Tomate Larga Vida,Feria,800,1500,80,"Tomate rojo",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+3,Limón de Pica,Feria,1500,2200,30,"Especial para tragos",https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80
+4,Cebolla Guarda,Feria,700,1100,100,"Cebolla firme",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+5,Papa Leona Blanca,Feria,500,800,150,"Cosecha nacional",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+6,Choclo Húngaro,Feria,400,700,40,"Choclo fresco",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+7,Manzana Fuji Crocante,Feria,900,1400,60,"Sabor dulce",https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80
+8,Plátano Ecuador,Feria,1000,1490,90,"Importación premium",https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80
+9,Lechuga Escarola Fresca,Feria,600,990,20,"Del día",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+10,Zanahoria a Granel,Feria,600,900,45,"Limpia",https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?auto=format&fit=crop&w=400&q=80
+11,Pan Marraqueta Blanca,Panadería,1300,1990,30,"Recién horneado",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+12,Pan Hallulla Tradicional,Panadería,1300,1990,35,"Receta clásica",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+13,Pan Coliza Campo,Panadería,1400,2100,10,"Coliza artesanal",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+14,Pan Integral Fibra,Panadería,1500,2300,15,"Alto en fibra",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+15,Pan Dobladitas Manteca,Panadería,1600,2400,12,"Excelente sabor",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+16,Pre-Pizzas Caseras (Pack 2),Panadería,1200,1990,20,"Masa a la piedra",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+17,Empanadas Queso Horno,Panadería,700,1200,40,"Queso derretido",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+18,Empanada Pino Horno,Panadería,900,1500,30,"Pino casero jugoso",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+19,Sopaipillas Fritas (Kg),Panadería,1800,2990,15,"Masa con zapallo",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+20,Pan de Completo Ideal,Panadería,1200,1890,25,"10 Unidades",https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80
+21,Lomo Vetado Especial V,Carnicería,9500,13990,20,"Para asados",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+22,Posta Rosada Premium,Carnicería,7000,9900,25,"Cacerola",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+23,Huachalomo de Campo,Carnicería,6500,8990,30,"Económico asado",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+24,Abastero Vacuno,Carnicería,6800,9200,20,"Corte magro",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+25,Pechuga Pollo Entera,Carnicería,3500,4990,40,"Sin marinar",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+26,Trutro Entero Pollo,Carnicería,2800,4100,35,"A granel",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+27,Alitas de Pollo P,Carnicería,2500,3990,30,"Para barbacoa",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+28,Cerdo Chuleta Centro,Carnicería,4500,6500,20,"Sabrosa",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+29,Costillar Cerdo Sabroso,Carnicería,6000,8500,18,"Corte Nacional",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+30,Pulpa de Cerdo Magra,Carnicería,4200,5990,25,"Sin hueso",https://images.unsplash.com/photo-1603048297172-c92544798d5e?auto=format&fit=crop&w=400&q=80
+31,Queso Gouda Soprole,Fiambrería,6500,8990,15,"Tradicional",https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=400&q=80
+32,Queso Mantecoso Llanquihue,Fiambrería,7000,9500,10,"Blanco fresco",https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=400&q=80
+33,Queso Cabra Fresco,Fiambrería,8500,12000,5,"Artesanal",https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=400&q=80
+34,Jamón Pierna San Jorge,Fiambrería,5500,7900,20,"Extra fino",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+35,Jamón Pavo Receta del Abuelo,Fiambrería,7500,9990,12,"Dietético",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+36,Salame Ahumado PF,Fiambrería,8500,11500,8,"Corte italiano",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+37,Mortadela Lisa Sabrosa,Fiambrería,3500,4990,25,"Económica",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+38,Arrollado Huaso Picante,Fiambrería,8000,10500,10,"Con ají",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+39,Chorizo Parrillero Premium,Fiambrería,6000,8500,18,"Para asado",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+40,Vienesa Tradicional Cerdo,Fiambrería,3800,5200,35,"Para hot dogs",https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80
+41,Aceite Maravilla Chef 1L,Abarrotes,1700,2390,120,"100% Maravilla",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+42,Aceite Belmont Vegetal 1L,Abarrotes,1600,2190,100,"Blend vegetal",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+43,Arroz Tucapel Largo 1Kg,Abarrotes,1200,1690,200,"El original",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+44,Arroz Miraflores Corto 1Kg,Abarrotes,1100,1550,150,"Grado 2",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+45,Fideos Carozzi Espagueti,Abarrotes,600,890,300,"N5",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+46,Fideos Lucchetti Corbatas,Abarrotes,650,920,250,"Clásicos cortos",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+47,Salsa de Tomate Pomarola,Abarrotes,350,550,200,"Salsa italiana",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+48,Atún Van Camps Lomitos,Abarrotes,1200,1690,120,"En agua",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+49,Jurel San José Tarro,Abarrotes,1100,1590,110,"Exportación",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+50,Azúcar Iansa Blanca 1Kg,Abarrotes,1000,1350,300,"Granulada",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+51,Sal de Mar Lobos 1Kg,Abarrotes,450,650,150,"Tradicional",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+52,Harina Mont Blanc Sin Polvos,Abarrotes,800,1100,140,"Panificación",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+53,Harina Selecta Con Polvos,Abarrotes,950,1350,120,"Repostería",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+54,Legumbres Lentejas 400g,Abarrotes,1100,1600,50,"Cosecha central",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+55,Porotos Tórtola 400g,Abarrotes,1300,1800,45,"Poroto nacional",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+56,Garbanzos Wasil Caja,Abarrotes,1000,1450,45,"Listos para servir",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+57,Mayonesa Hellmanns Pote,Abarrotes,1800,2500,60,"Receta casera",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+58,Ketchup Kraft Squeeze,Abarrotes,1400,1990,50,"Sabor americano",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+59,Mostaza JB Tradicional,Abarrotes,900,1300,40,"Clásica chilena",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+60,Aceto Balsámico Chef,Abarrotes,2100,2900,15,"Aliño premium",https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80
+61,Café Nescafé Tradición 100g,Desayuno,2500,3490,80,"Instantáneo",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+62,Té Supremo Ceylan 100,Desayuno,1900,2690,120,"Té negro",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+63,Milo Nestlé Tarro 400g,Desayuno,2800,3990,50,"Bebida achocolatada",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+64,Avena Quaker Tradicional,Desayuno,1200,1690,70,"Avena integral",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+65,Cereal Chocapic Nestlé,Desayuno,2500,3600,80,"Chocolate crocante",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+66,Leche Condensada Nestlé,Desayuno,1300,1850,90,"Original",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+67,Manjar Colun Bolsa,Desayuno,1200,1750,60,"Receta campo",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+68,Mantequilla Colun 250g,Desayuno,2200,2990,60,"Del sur con sal",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+69,Margarina Soprole Pote,Desayuno,1300,1890,90,"Untable",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+70,Mermelada Watts Durazno,Desayuno,900,1290,60,"Frutilla natural",https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=400&q=80
+71,Leche Colun Entera Caja,Lácteos,900,1250,120,"Grasa entera",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+72,Leche Soprole Descremada,Lácteos,850,1200,100,"Baja en grasas",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+73,Leche Soprole Sin Lactosa,Lácteos,1100,1500,90,"Fácil digestión",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+74,Yoghurt Soprole Batido,Lácteos,250,380,200,"Frutilla",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+75,Yoghurt Colun Trozos,Lácteos,350,500,150,"Durazno natural",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+76,Yoghurt Protein Plus,Lácteos,550,850,80,"Aumento muscular",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+77,Quesillo Colun Regular,Lácteos,1800,2490,40,"Fresco dietético",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+78,Postre Manjarate Pote,Lácteos,650,950,40,"Mousse tradicional",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+79,Probiótico Chamyto Pack,Lácteos,1400,2100,45,"Para las defensas",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+80,Crema Soprole 200ml,Lácteos,950,1350,80,"Para cocinar o batir",https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80
+81,Coca-Cola Original 3L,Bebidas,2300,3100,150,"Clásica azucarada",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+82,Coca-Cola Zero 3L,Bebidas,2300,3100,120,"Sin azúcar",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+83,Sprite Limón 3L,Bebidas,2100,2800,80,"Refrescante",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+84,Fanta Naranja 3L,Bebidas,2100,2800,60,"Naranja burbujas",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+85,Kem Piña 1.5L,Bebidas,1200,1650,50,"Cultura chilena pop",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+86,Papaya Pap 1.5L,Bebidas,1200,1650,50,"Nacional auténtica",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+87,Canada Dry Ginger Ale,Bebidas,1500,2100,40,"Para piscolas premium",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+88,Jugo Watts Durazno 1.5L,Bebidas,1300,1750,90,"Néctar botella",https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=400&q=80
+89,Agua Cachantun Gas L,Bebidas,800,1150,120,"Mineral gasificada",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+90,Agua Vital Sin Gas L,Bebidas,750,1050,110,"Agua purificada",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+91,Cerveza Cristal Lata,Bebidas,600,950,200,"Refrescante clásica",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+92,Cerveza Escudo Lata,Bebidas,650,1000,150,"Más grado",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+93,Cerveza Royal Guard Pack,Bebidas,4500,5990,30,"Premium",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+94,Cerveza Becker Lata,Bebidas,550,900,180,"Económica asados",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+95,Cerveza Corona Vidrio,Bebidas,1100,1500,90,"Importada mexico",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+96,Pisco Mistral 35,Bebidas,6500,8900,20,"Añejado roble",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+97,Pisco Alto del Carmen,Bebidas,6200,8500,25,"Reservado transparente",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+98,Vino Casillero Diablo,Bebidas,3500,4800,40,"Carmenere Valle",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+99,Vino Gato Negro Tinto,Bebidas,2500,3500,50,"Vino de mesa popular",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+100,Energética Red Bull,Bebidas,1200,1800,80,"Revitalizante 250ml",https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80
+101,Papas Lays Clásicas,Snacks,1800,2400,60,"Corte liso",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+102,Ramitas de Queso Evercrisp,Snacks,1500,2100,50,"Cumpleaños",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+103,Doritos Queso Grande,Snacks,1600,2200,40,"Tortillas crocantes",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+104,Mani Salado Marco Polo,Snacks,1100,1500,70,"Ideal pichangas",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+105,Galletas Tritón Vainilla,Snacks,600,850,100,"Clásicas bañadas",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+106,Galletas Tuareg Coco,Snacks,650,900,80,"Sabor intenso",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+107,Galletas McKay Vino,Snacks,500,750,120,"Tradicional colación",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+108,Super 8 Nestlé Caja,Snacks,4500,6000,15,"Obsequio clásico",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+109,Chocolate Costa Rama,Snacks,1800,2400,30,"Hojuelas",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+110,Bombones Vizzio,Snacks,2200,2900,30,"Almendras cubiertas",https://images.unsplash.com/photo-1566478989037-e624b0e4ce1f?auto=format&fit=crop&w=400&q=80
+111,Papel Higiénico Confort,Aseo,2800,3900,60,"Económico 40m",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+112,Papel Toalla Nova,Aseo,1800,2500,80,"Seca todo 2x",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+113,Lavalozas Quix Limón,Aseo,1400,1990,100,"Desengrasante",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+114,Detergente Omo Polvo,Aseo,2500,3600,40,"Multiuso matic",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+115,Detergente Ariel Líquido,Aseo,4500,6200,30,"Quitamanchas 1L",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+116,Suavizante Fuzol Ropa,Aseo,1500,2200,50,"Brisa floral",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+117,Cloro Tradicional Gel,Aseo,900,1300,120,"Limpieza profunda",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+118,Limpiador Poett Lavanda,Aseo,1600,2250,70,"Pisos brillantes",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+119,Bolsas Basura Virutex,Aseo,1200,1800,60,"Tamaño mediano",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+120,Esponja Scotch-Brite,Aseo,1800,2500,50,"Cuidado fácil",https://images.unsplash.com/photo-1584820927498-cafe2c2f6d2f?auto=format&fit=crop&w=400&q=80
+121,Pasta Dental Pepsodent,Perfumería,1300,1850,100,"Blanqueadora",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+122,Pasta Dental Colgate Total,Perfumería,1800,2500,80,"Sarro total",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+123,Cepillo Dientes Oral-B,Perfumería,1500,2100,60,"Cerdas suaves",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+124,Jabón Barra Ballerina,Perfumería,600,900,150,"Avena humectante",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+125,Jabón Líquido Dove,Perfumería,2500,3500,40,"Neutro pH",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+126,Shampoo Head & Shoulders,Perfumería,3800,5300,45,"Anticaspa",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+127,Shampoo Ballerina Doy,Perfumería,1800,2600,50,"Económico envase",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+128,Acondicionador Sedal Brillo,Perfumería,2600,3600,35,"Revitalizante",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+129,Desodorante Spray Rexona,Perfumería,2800,3990,50,"Motion sense hombre",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+130,Desodorante Roll-On Dove,Perfumería,2200,3100,40,"Piel sensible",https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400&q=80
+131,Papas Prefritas Verde,Congelados,2500,3490,40,"Corte tradicional",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+132,Hamburguesas Receta Abuelo,Congelados,4500,6500,20,"100g vacuno",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+133,Helado Bresler Almendrado,Congelados,900,1300,40,"Palta vainilla almendra",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+134,Helado Savory Cassata 1L,Congelados,2800,3990,15,"Tres leches",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+135,Sofrito Mix Congelado,Congelados,1200,1690,35,"Cebolla zanahoria",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+136,Choclo Grano Verde,Congelados,1800,2500,30,"Desgranado",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+137,Empanadas Queso Congeladas,Congelados,3500,4990,15,"10 unidades",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+138,Pizza Piedra Pepperoni,Congelados,4500,6200,20,"Horno rápido",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+139,Churros Prefritos (Bolsa),Congelados,3200,4500,25,"Rellenar con manjar",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80
+140,Arvejas Minuto Verde,Congelados,1500,2100,35,"Listas para cocer",https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=400&q=80

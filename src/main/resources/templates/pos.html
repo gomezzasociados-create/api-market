@@ -21,9 +21,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('PWA ServiceWorker registrado en POS.', reg.scope);
-                }).catch(err => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
                     console.log('Fallo el ServiceWorker: ', err);
                 });
             });
@@ -38,187 +36,133 @@
             --neon-pink: #ff003c;
             --neon-green: #39ff14;
             --neon-cyan: #00f3ff;
+            --neon-magenta: #ff007c;
             --neon-yellow: #fcee0a;
             --text-light: #ffffff;
+            --glass-blur: blur(12px);
         }
 
         /* --- FONDO DINÁMICO --- */
         .market-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2; opacity: 0.8; pointer-events: none;
-            background-color: #000;
+            z-index: -2; opacity: 1; pointer-events: none;
+            background-color: #0a0a0f;
             background-image: url('https://res.cloudinary.com/doi0o3hlr/image/upload/v1775196208/mk_bbslzj.png');
             background-size: cover; background-position: center;
             background-attachment: fixed;
-            animation: softPulse 15s infinite alternate ease-in-out;
-            will-change: transform;
-        }
-
-        @keyframes softPulse {
-            0% { transform: scale(1); filter: brightness(0.6) contrast(1.2); }
-            100% { transform: scale(1.05); filter: brightness(0.7) contrast(1.3); }
         }
 
         .overlay-futurist {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, rgba(0,240,255,0.05) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at center, transparent 0%, rgba(10,10,15,0.4) 100%);
+            z-index: -1; pointer-events: none; transition: background 0.3s;
         }
 
-        body {
-            background-color: transparent;
-            color: var(--text-light);
-            font-family: 'Outfit', sans-serif;
-            overflow: hidden; /* Evita doble scroll */
-        }
+        body { background-color: transparent; color: var(--text-light); font-family: 'Outfit', sans-serif; overflow: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; box-shadow: 0 0 10px var(--neon-cyan); }
 
-        /* --- TÍTULO ÉPICO NIVEL DIOS --- */
-        .pos-header {
-            height: 90px;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-            background: rgba(10, 10, 15, 0.9);
-            backdrop-filter: blur(15px);
-            display: flex;
-            align-items: center;
-            padding: 0 30px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
-            z-index: 100;
-            position: relative;
-        }
+        #futurist-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #1a1a1a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
+        .vortex { width: 100px; height: 100px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--neon-green); border-bottom-color: var(--neon-cyan); animation: vortexRotate 1s linear infinite; }
+        @keyframes vortexRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .epic-title-wrapper {
-            display: flex; align-items: baseline; gap: 10px;
-        }
-        .epic-market {
-            font-size: 3rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; margin: 0;
-            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8));
-        }
-        .epic-limber {
-            font-size: 2.8rem; font-weight: 900; letter-spacing: 15px; margin: 0; text-transform: uppercase;
-            color: var(--neon-cyan);
-            animation: limberGodMode 2.5s ease-in-out infinite alternate;
-        }
+        /* --- CABECERA --- */
+        .pos-header { border-bottom: 1px solid rgba(0, 240, 255, 0.3); background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(15px); display: flex; align-items: center; padding: 15px 30px; box-shadow: 0 5px 30px rgba(0,0,0,0.5); z-index: 100; position: relative; }
+        .epic-title-wrapper { display: flex; align-items: baseline; gap: 10px; }
+        .epic-market { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8)); }
+        .epic-limber { font-size: 2.2rem; font-weight: 900; letter-spacing: 12px; margin: 0; text-transform: uppercase; color: var(--neon-cyan); animation: limberGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);}
+        @keyframes limberGodMode { 0% { text-shadow: 0 0 5px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 15px #fff, 0 0 25px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
 
-        @keyframes limberGodMode {
-            0% { text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan); transform: scale(1); }
-            100% { text-shadow: 0 0 15px #fff, 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan); transform: scale(1.02); color: #ffffff; }
-        }
-
-        /* --- GUÍA G.O.M.E.Z. --- */
-        .gomez-guide-box {
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px);
-            border-left: 3px solid var(--neon-cyan); border-radius: 15px;
-            padding: 10px 20px; display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1); margin-bottom: 20px;
-        }
-        .btn-speak-guide {
-            background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
-            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; transition: 0.3s; flex-shrink: 0;
-        }
-        .btn-speak-guide:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.1); }
+        .btn-slim-install { background: rgba(0, 0, 0, 0.7); border: 1px solid var(--neon-magenta); color: var(--neon-magenta); border-radius: 8px; padding: 5px 15px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: none; margin: 0 0 15px 0; width: fit-content; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 124, 0.3); backdrop-filter: blur(5px); align-items: center; justify-content: center; cursor: pointer; }
+        .btn-slim-install:hover { background: var(--neon-magenta); color: #fff; box-shadow: 0 0 20px var(--neon-magenta), inset 0 0 10px var(--neon-magenta); transform: scale(1.05); }
+        .btn-slim-install i { text-shadow: 0 0 15px var(--neon-magenta); font-size: 1.2rem; }
 
         /* --- LAYOUT PRINCIPAL --- */
-        .pos-layout { display: flex; height: calc(100vh - 90px); }
+        .pos-layout { display: flex; height: calc(100vh - 85px); position: relative; }
         .products-area { flex: 1; padding: 20px; overflow-y: auto; }
 
-        /* SCROLLBAR */
-        .products-area::-webkit-scrollbar { width: 8px; }
-        .products-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-        .products-area::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+        /* --- GRID PRODUCTOS --- */
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .tilt-wrapper { perspective: 2000px; }
+        .product-card { background: rgba(15, 15, 20, 0.85); border: 2px solid rgba(0, 243, 255, 0.3); border-bottom: 6px solid rgba(0, 243, 255, 0.7); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 15px rgba(0,0,0,0.6); backdrop-filter: blur(10px); height: 100%; }
+        .product-card:hover { border-color: var(--neon-cyan); border-bottom: 6px solid var(--neon-cyan); filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 12px 25px rgba(0, 243, 255, 0.3); }
+        .product-card:active { transform: translateY(4px); border-bottom: 2px solid var(--neon-cyan); box-shadow: 0 2px 5px rgba(0, 243, 255, 0.2); background: rgba(0, 0, 0, 0.95); }
 
-        /* --- CARRITO LATERAL --- */
-        .cart-sidebar {
-            width: 450px; background: rgba(10, 10, 15, 0.95);
-            border-left: 1px solid rgba(0, 243, 255, 0.3); display: flex; flex-direction: column;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.8); backdrop-filter: blur(20px);
-        }
-        .cart-header { padding: 25px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); text-align: center; }
-        .cart-items-container { flex: 1; overflow-y: auto; padding: 15px; }
+        .img-container { width: 100%; height: 160px; background: rgba(0,0,0,0.8); overflow: hidden; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .product-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.3s; }
+        .product-card:hover .product-img { transform: scale(1.05); opacity: 1; }
 
-        .cart-item {
-            background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 15px; margin-bottom: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-left: 3px solid var(--neon-green); transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .cart-item:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); border-color: var(--neon-cyan); }
+        .producto-pesable-badge { position: absolute; top: 8px; right: 8px; background: var(--neon-magenta); color: white; font-size: 0.65rem; font-weight: 800; padding: 4px 8px; border-radius: 10px; box-shadow: 0 0 10px var(--neon-magenta); z-index: 5; border: 1px solid #fff; }
+        .promo-badge { position: absolute; top: 8px; left: 8px; background: var(--neon-yellow); color: #000; font-size: 0.65rem; font-weight: 800; padding: 4px 8px; border-radius: 10px; box-shadow: 0 0 10px var(--neon-yellow); z-index: 5; }
 
-        .cart-footer { padding: 25px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 243, 255, 0.3); }
-        .total-display { font-size: 3rem; font-weight: 900; color: var(--neon-green); text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: right; margin-bottom: 20px; line-height: 1; }
+        .product-info { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; text-align: center; background: rgba(0,0,0,0.4); }
+        .product-title { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 5px; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.1;}
+        .product-price { font-size: 1.6rem; font-weight: 900; color: var(--neon-green); margin-top: auto; letter-spacing: -1px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);}
+        .product-price small { font-size: 0.8rem; color: #aaa; text-shadow: none; }
 
-        /* Botones de Pago */
-        .btn-pay {
-            font-weight: 800; border: none; padding: 15px; border-radius: 15px;
-            font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .form-control-neon { background-color: rgba(0,0,0,0.8); border: 1px solid var(--neon-cyan); color: #fff; font-size: 1rem; font-weight: bold; border-radius: 12px; padding: 12px 15px; }
+        .form-control-neon:focus { background-color: rgba(0,0,0,0.95); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.3); }
+
+        /* --- SIDEBAR CARRITO --- */
+        .cart-sidebar { width: 400px; background: rgba(10, 10, 15, 0.95); border-left: 1px solid rgba(0, 243, 255, 0.3); display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.8); backdrop-filter: blur(20px); }
+        .cart-header { padding: 15px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); text-align: center; position: relative; }
+        .btn-close-cart { display: none; position: absolute; top: 15px; left: 15px; background: transparent; border: 2px solid var(--neon-pink); color: var(--neon-pink); border-radius: 50%; width: 35px; height: 35px; text-align: center; line-height: 30px; font-weight: bold; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 15px rgba(255, 0, 60, 0.3); transition: 0.3s; }
+        .btn-close-cart:hover { background: var(--neon-pink); color: #fff; transform: scale(1.1) rotate(90deg); }
+
+        .cart-items-container { flex: 1; overflow-y: auto; padding: 10px; }
+        .cart-item { background: rgba(0, 0, 0, 0.6); border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--neon-green); border-right: 1px solid rgba(0,243,255,0.2); }
+        .cart-footer { padding: 20px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 243, 255, 0.3); }
+        .total-display { font-size: 2.5rem; font-weight: 900; color: var(--neon-green); text-shadow: 0 0 15px rgba(57, 255, 20, 0.4); text-align: right; margin-bottom: 15px; line-height: 1; }
+
+        .btn-pay { font-weight: 800; border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; text-transform: uppercase; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-pay:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .btn-contado { background: var(--neon-green); color: #000; }
-        .btn-contado:hover { box-shadow: 0 0 25px rgba(57,255,20,0.5); }
         .btn-transfer { background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); }
-        .btn-transfer:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 25px rgba(0,243,255,0.5); }
         .btn-vip { background: var(--neon-yellow); color: #000; }
-        .btn-vip:hover { box-shadow: 0 0 25px rgba(252,238,10,0.5); }
         .btn-mp { background: linear-gradient(90deg, #009ee3, #00b4d8); color: #fff; }
 
-        /* --- TARJETAS DE PRODUCTO (3D WAOOO) --- */
-        .tilt-wrapper { perspective: 2000px; }
-        .product-card {
-            background: rgba(20, 20, 25, 0.9); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden; position: relative; height: 100%; display: flex; flex-direction: column;
-            transform-style: preserve-3d; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .product-card::before {
-            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 4px;
-            background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan);
-            z-index: 10; pointer-events: none;
-        }
-        .product-card:hover::before { animation: neonScan 1.2s linear infinite; }
-        .product-card:hover { border-color: var(--neon-cyan); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2); }
+        /* --- BOTÓN FLOTANTE MÓVIL --- */
+        .cart-float-btn { display: none; position: fixed; bottom: 80px; right: 20px; width: 70px; height: 70px; background: rgba(0,0,0,0.9); color: var(--neon-green); border-radius: 50%; border: 3px solid var(--neon-green); align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px rgba(57, 255, 20, 0.4), inset 0 0 10px rgba(57, 255, 20, 0.2); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); }
+        .cart-float-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 35px var(--neon-green); background: var(--neon-green); color: #000; }
+        .cart-float-btn.pulse { animation: neonPulse 1.5s infinite; }
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.4); } 50% { box-shadow: 0 0 50px var(--neon-green); } }
+        .cart-count-badge { position: absolute; top: -5px; right: -5px; background: var(--neon-cyan); color: #000; width: 30px; height: 30px; border-radius: 50%; font-size: 0.95rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon-cyan); border: 2px solid #000; }
 
-        .product-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s; background: #000;}
-        .product-card:hover .product-img { transform: scale(1.1) translateZ(30px); filter: brightness(1.2); }
+        /* --- BOTÓN G.O.M.E.Z. --- */
+        .gomez-assistant { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; z-index: 1000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .gomez-core { width: 100%; height: 100%; background: var(--neon-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; box-shadow: 0 0 20px rgba(0,240,255,0.6); position: relative; z-index: 2; transition: 0.3s; }
+        .gomez-assistant:hover .gomez-core { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px var(--neon-cyan); transform: scale(1.1); }
+        .gomez-ring { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; border: 2px dashed var(--neon-magenta); z-index: 1; animation: orbitRing 5s linear infinite; opacity: 0.6; }
+        @keyframes orbitRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .listening-pulse .gomez-core { border-color: var(--neon-magenta); color: var(--neon-magenta); box-shadow: 0 0 40px rgba(255, 0, 124, 0.8); animation: micBreathe 0.6s infinite alternate;}
+        @keyframes micBreathe { 0% { transform: scale(1); } 100% { transform: scale(1.15); box-shadow: 0 0 60px rgba(255,0,124,1); } }
 
-        .producto-pesable-badge {
-            position: absolute; top: 10px; right: 10px; background: var(--neon-pink); color: white;
-            font-size: 0.75rem; font-weight: 800; padding: 5px 10px; border-radius: 12px; box-shadow: 0 0 15px var(--neon-pink); z-index: 5;
-        }
-        .promo-badge {
-            position: absolute; top: 10px; left: 10px; background: var(--neon-yellow); color: #000;
-            font-size: 0.75rem; font-weight: 800; padding: 5px 10px; border-radius: 12px; box-shadow: 0 0 15px var(--neon-yellow); z-index: 5;
-        }
+        .modal-content.dark-neon { background-color: rgba(15,15,20,0.95); backdrop-filter: blur(20px); border: 1px solid var(--neon-cyan); color: white; border-radius: 25px; }
 
-        .product-info { padding: 20px; transform: translateZ(40px); display: flex; flex-direction: column; flex-grow: 1; }
-        .product-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 5px; text-transform: capitalize; }
-        .product-price { font-size: 1.8rem; font-weight: 900; color: var(--neon-green); margin-top: auto; }
+        /* --- HUB E-COMMERCE --- */
+        .ecommerce-hub-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 12, 16, 0.98); z-index: 10500; backdrop-filter: blur(30px); display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; padding-bottom: 50px; }
+        .hub-header { padding: 25px 40px; border-bottom: 2px solid var(--neon-magenta); display: flex; justify-content: space-between; align-items: center; background: linear-gradient(180deg, rgba(255,0,124,0.15) 0%, transparent 100%); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
+        .hub-title { font-weight: 900; font-size: 2.5rem; color: #ffffff; letter-spacing: 2px; text-shadow: 0 0 15px var(--neon-magenta); margin: 0; }
+        .btn-close-hub { background: transparent; border: 2px solid var(--neon-magenta); color: var(--neon-magenta); width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(255,0,124,0.3); }
+        .btn-close-hub:hover { background: var(--neon-magenta); color: #fff; transform: scale(1.1) rotate(90deg); box-shadow: 0 0 30px var(--neon-magenta); }
+        .pedido-card { background: rgba(20, 25, 32, 0.95); border: 1px solid rgba(255,255,255,0.1); border-top: 4px solid var(--neon-magenta); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: 0.3s; display: flex; flex-direction: column; height: 100%; }
+        .pedido-card:hover { transform: translateY(-5px); border-color: var(--neon-magenta); box-shadow: 0 15px 40px rgba(255,0,124,0.3); }
+        .pedido-header { border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 15px; margin-bottom: 15px; }
+        .pedido-card h5 { color: #ffffff !important; font-weight: 900; letter-spacing: 1px; font-size: 1.4rem; margin: 0; }
+        .pedido-card .text-info { color: var(--neon-cyan) !important; font-weight: 800; font-size: 1rem; text-shadow: 0 0 5px rgba(0,243,255,0.5); }
+        .pedido-card .prod-item { color: #ffffff !important; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; font-size: 0.95rem; font-weight: 500; }
+        .badge-delivery { background: var(--neon-cyan); color: #000 !important; font-weight: 900; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; letter-spacing: 1px; box-shadow: 0 0 10px var(--neon-cyan); }
+        .badge-retiro { background: var(--neon-yellow); color: #000 !important; font-weight: 900; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; letter-spacing: 1px; box-shadow: 0 0 10px var(--neon-yellow); }
+        .dir-text { color: var(--neon-yellow) !important; font-weight: 800; font-size: 1rem; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px; border: 1px dashed rgba(252,238,10,0.3); }
+        .total-text { color: var(--neon-green) !important; font-weight: 900; font-size: 2rem; text-shadow: 0 0 15px rgba(57,255,20,0.4); }
+        .btn-despachar { background: rgba(57,255,20,0.1); border: 2px solid var(--neon-green); color: var(--neon-green); font-weight: 900; border-radius: 12px; transition: 0.3s; padding: 12px; margin-top: 15px; width: 100%; text-transform: uppercase;}
+        .btn-despachar:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green); transform: translateY(-2px); }
+        .btn-hub-pulse { animation: hubPulse 1.5s infinite; }
+        @keyframes hubPulse { 0%, 100% { box-shadow: 0 0 5px rgba(255, 0, 124, 0.4); } 50% { box-shadow: 0 0 25px var(--neon-magenta); } }
 
-        /* Buscador */
-        .form-control-neon {
-            background-color: rgba(0,0,0,0.7); border: 1px solid var(--neon-cyan); color: #fff;
-            font-size: 1.2rem; font-weight: bold; border-radius: 15px; padding: 15px 20px;
-        }
-        .form-control-neon:focus { background-color: rgba(0,0,0,0.9); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
-
-        /* --- BOTÓN FLOTANTE G.O.M.E.Z. MICRÓFONO --- */
-        .gomez-assistant { position: fixed; bottom: 30px; left: 30px; width: 70px; height: 70px; z-index: 1000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .gomez-core { width: 100%; height: 100%; background: var(--neon-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; box-shadow: 0 0 20px rgba(0,240,255,0.6); position: relative; z-index: 2; transition: 0.3s; }
-        .gomez-assistant:hover .gomez-core { transform: scale(1.1); box-shadow: 0 0 30px var(--neon-blue), 0 0 15px #fff; }
-        .gomez-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--neon-blue); z-index: 1; animation: gomezPing 2s infinite ease-out; }
-        .listening-pulse .gomez-core { background: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); animation: micBreathe 1s infinite alternate;}
-        .listening-pulse .gomez-ring { border-color: var(--neon-red); animation: gomezPingFast 0.8s infinite ease-out; }
-
-        @keyframes gomezPing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
-        @keyframes gomezPingFast { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
-        @keyframes micBreathe { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-
-        /* Modal Personalizado Oscuro */
-        .modal-content.dark-neon { background-color: rgba(15,15,20,0.95); backdrop-filter: blur(20px); border: 1px solid var(--neon-cyan); color: white; border-radius: 25px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
-        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .modal-footer { border-top: 1px solid rgba(255,255,255,0.1); }
+        /* SweetAlert */
+        .swal2-popup { background: rgba(15,15,20,0.98) !important; border: 1px solid var(--neon-cyan); border-radius: 20px !important; box-shadow: 0 0 50px rgba(0,243,255,0.3) !important; color: #fff !important; }
 
         @media print {
             @page { size: 80mm auto; margin: 0; }
@@ -228,23 +172,52 @@
             #area-impresion { position: absolute; left: 0; top: 0; width: 100%; max-width: 80mm; padding: 5mm; }
         }
 
+        /* --- RESPONSIVE --- */
         @media (max-width: 991px) {
-            .pos-header { flex-direction: column; align-items: center; padding: 15px; height: auto; gap: 10px; }
-            .pos-layout { flex-direction: column; overflow-y: auto; overflow-x: hidden; height: auto; }
-            .cart-sidebar { width: 100%; border-left: none; border-top: 2px solid var(--neon-cyan); height: auto; }
-            .products-area { height: auto; padding: 15px !important; }
-            .cart-items-container { min-height: 200px; padding: 10px; }
-            .total-display { font-size: 2.5rem; text-align: center; }
-            #hud-caja-indicadores { flex-wrap: wrap; justify-content: center; margin-top: 5px; margin-left: 0 !important; gap: 5px !important;}
-            #hud-efectivo, #hud-tarjeta, #hud-fiado { font-size: 1.1rem !important; padding: 10px !important; }
-            .gomez-assistant { width: 60px; height: 60px; bottom: 15px; left: 15px; }
-            .ms-auto.flex-nowrap { flex-wrap: wrap !important; justify-content: center; gap: 8px; margin-top: 10px; margin-left: 0 !important; width:100%;}
-            .form-control-neon { font-size: 1rem; padding: 12px 15px; border-radius: 8px; }
+            body { overflow-y: auto; overflow-x: hidden; }
+            .pos-layout { flex-direction: column; height: auto; display: block; }
+            .products-area { padding: 10px; overflow-y: visible; }
+            .cart-sidebar { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; z-index: 2000; transition: 0.5s; transform: scale(0.8) rotateY(-30deg); opacity: 0; border-left: none; }
+            .cart-sidebar.cart-active { right: 0; transform: scale(1) rotateY(0deg); opacity: 1; box-shadow: -20px 0 60px rgba(0, 243, 255, 0.4); }
+            .cart-float-btn { display: flex !important; }
+            .btn-close-cart { display: block !important; }
+            .cart-items-container { flex: 1; overflow-y: auto; }
+            .total-display { font-size: 2.2rem; text-align: center; }
             .btn-pay { padding: 12px; font-size: 0.95rem; }
-            .grid-productos { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-            .product-img { height: 120px; }
-            .product-title { font-size: 1rem; }
-            .product-price { font-size: 1.4rem; }
+            .gomez-assistant { width: 50px; height: 50px; bottom: 15px; left: 15px; }
+            .hub-title { font-size: 1.5rem; text-align: center; }
+            .hub-header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .pedido-card h5 { font-size: 1.2rem; }
+            .total-text { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 768px) and (orientation: portrait) {
+            .pos-header { flex-direction: column; align-items: center; padding: 15px; gap: 10px; }
+            .epic-title-wrapper { transform: scale(0.9); margin: 0; }
+            #hud-caja-indicadores { flex-wrap: wrap; justify-content: center; margin-top: 10px; margin-left: 0 !important; gap: 8px !important; width: 100%;}
+            .hud-caja-indicadores > div { flex: 1 1 auto; min-width: 90px; }
+            #hud-efectivo, #hud-tarjeta, #hud-fiado { font-size: 1.1rem !important; }
+            .ms-auto.flex-nowrap { flex-wrap: wrap !important; justify-content: center; gap: 10px; margin-top: 5px; width:100%;}
+            .grid-productos { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .img-container { height: 110px; }
+            .product-title { font-size: 0.8rem; }
+            .product-price { font-size: 1.2rem; }
+            .product-info { padding: 8px; }
+        }
+
+        @media (max-width: 991px) and (orientation: landscape) {
+            .pos-header { flex-direction: row; flex-wrap: wrap; align-items: center; padding: 5px 15px; gap: 10px; justify-content: space-between; }
+            .epic-title-wrapper { transform: scale(0.6); transform-origin: left center; margin: 0; }
+            #hud-caja-indicadores { transform: scale(0.75); transform-origin: left center; margin: 0 !important; gap: 5px !important;}
+            .ms-auto.flex-nowrap { transform: scale(0.8); transform-origin: right center; margin: 0 !important; }
+            .btn-slim-install { margin: 5px 0 10px 0; }
+            .grid-productos { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .img-container { height: 90px; }
+            .product-title { font-size: 0.75rem; }
+            .product-price { font-size: 1.1rem; }
+            .product-info { padding: 6px; }
+            .cart-float-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; }
+            .cart-count-badge { font-size: 0.8rem; width: 25px; height: 25px; }
         }
     </style>
 </head>
@@ -254,9 +227,10 @@
 <div class="overlay-futurist"></div>
 
 <audio id="sfx-hover" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
-<audio id="sfx-beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+<audio id="sfx-click" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3" preload="auto"></audio>
-<audio id="sfx-cash" src="https://actions.google.com/sounds/v1/alarms/cash_register.ogg" preload="auto"></audio>
+<audio id="sfx-cash" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+<audio id="sfx-open" src="https://assets.mixkit.co/active_storage/sfx/2833/2833-preview.mp3" preload="auto"></audio>
 
 <div id="gomez-assistant" class="gomez-assistant animate__animated animate__fadeInUp" onclick="GOMEZ.listen()" title="Toca para hablar con G.O.M.E.Z.">
     <div class="gomez-core"><i class="bi bi-mic-fill"></i></div>
@@ -265,122 +239,131 @@
 
 <div id="securityLock" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(10,10,15,0.95); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; backdrop-filter: blur(20px);">
     <i class="bi bi-fingerprint text-neon-cyan pop-anim" style="font-size: 6rem; text-shadow: 0 0 40px var(--neon-cyan);"></i>
-    <h2 class="mt-4 text-white fw-bolder" style="letter-spacing: 8px;">G.O.M.E.Z. POS CORE</h2>
-
-    <div class="gomez-guide-box mt-4 mb-4">
-        <i class="bi bi-shield-lock-fill fs-2" style="color: var(--neon-cyan);"></i>
-        <div>
-            <strong class="text-white">Terminal de Caja Protegida:</strong><br>
-            <span class="text-muted small">Por favor, ingrese el PIN de cajero para autorizar el inicio de operaciones comerciales.</span>
-        </div>
-        <button class="btn-speak-guide" onclick="GOMEZ.speak('Terminal de caja protegida. Por favor, ingrese el PIN de cajero para autorizar el inicio de operaciones comerciales.')">
-            <i class="bi bi-volume-up-fill"></i>
-        </button>
-    </div>
-
-    <div class="d-flex gap-3 mt-2">
+    <h2 class="mt-4 text-white fw-bolder" style="letter-spacing: 8px;">LIMBER POS CORE</h2>
+    <div class="d-flex gap-3 mt-4 flex-wrap justify-content-center">
         <input type="password" id="pinInput" class="form-control bg-dark text-center text-white fw-bold fs-2 shadow-none" style="width: 180px; letter-spacing: 10px; border: 2px solid var(--neon-cyan); box-shadow: 0 0 20px rgba(0,243,255,0.3);" maxlength="4" placeholder="••••">
         <button class="btn btn-outline-info fw-bold px-5 fs-5" style="border-width: 2px; border-radius: 15px;" onclick="unlockPOS()"><i class="bi bi-power me-2"></i> INICIAR</button>
     </div>
     <h5 class="text-danger mt-4 d-none fw-bold animate__animated animate__headShake" id="pinError">❌ AUTORIZACIÓN DENEGADA.</h5>
 </div>
 
+<div id="ecommerce-hub" class="ecommerce-hub-overlay animate__animated">
+    <div class="hub-header">
+        <h2 class="hub-title"><i class="bi bi-box-seam me-2"></i> CENTRO DE DESPACHO WEB</h2>
+        <button class="btn-close-hub" onclick="cerrarHubEcommerce()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="container-fluid mt-4 px-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <h5 class="text-light m-0 fw-bold">Pedidos listos para empaque y entrega</h5>
+            <button class="btn fw-bold px-4" style="background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);" onclick="play(sfxClick); renderPedidosWeb()"><i class="bi bi-arrow-clockwise me-2"></i> ACTUALIZAR PANTALLA</button>
+        </div>
+        <div class="row g-4" id="grilla-pedidos-web"></div>
+    </div>
+</div>
+
 <div id="mainPosUI" style="display: none;" class="animate__animated animate__fadeIn">
-    <div class="pos-header position-relative">
-        <button id="btn-descargar-app" class="btn text-dark fw-bold position-absolute top-50 end-0 translate-middle-y me-3 shadow-lg" style="display: none; z-index: 1000; background: var(--neon-cyan); border-radius: 20px; font-size: 0.85rem; padding: 8px 15px;" onclick="instalarAppPWA()">
-            <i class="bi bi-cloud-arrow-down-fill me-1 fs-5"></i> INSTALAR POS
-        </button>
-        <div class="epic-title-wrapper" style="transform: scale(0.8); transform-origin: left center;">
+    <div class="pos-header">
+        <div class="epic-title-wrapper">
             <h1 class="epic-market">MARKET</h1>
             <h1 class="epic-limber">LIMBER</h1>
         </div>
 
-        <div class="d-flex ms-4 gap-3 align-items-center" id="hud-caja-indicadores">
-            <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+        <div class="d-flex ms-xl-4 gap-2 gap-xl-3 align-items-center" id="hud-caja-indicadores">
+            <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
                 <div class="text-success small fw-bold text-uppercase"><i class="bi bi-cash-stack"></i> Efectivo</div>
-                <div class="fs-4 fw-bolder text-white" id="hud-efectivo">$0</div>
+                <div class="fs-5 fw-bolder text-white" id="hud-efectivo">$0</div>
             </div>
-            <div class="bg-dark border border-primary p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+            <div class="bg-dark border border-primary p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
                 <div class="text-primary small fw-bold text-uppercase"><i class="bi bi-credit-card"></i> Máquina</div>
-                <div class="fs-4 fw-bolder text-white" id="hud-tarjeta">$0</div>
+                <div class="fs-5 fw-bolder text-white" id="hud-tarjeta">$0</div>
             </div>
-            <div class="bg-dark border border-warning p-2 px-3 rounded-4 text-center cursor-pointer shadow-sm" onclick="abrirLibroCaja()">
+            <div class="bg-dark border border-warning p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
                 <div class="text-warning small fw-bold text-uppercase"><i class="bi bi-person-vcard text-warning"></i> Fiados</div>
-                <div class="fs-4 fw-bolder text-white" id="hud-fiado">$0</div>
+                <div class="fs-5 fw-bolder text-white" id="hud-fiado">$0</div>
             </div>
-            <button class="btn btn-dark border-secondary rounded-4 px-3 fw-bold shadow-sm" onclick="abrirLibroCaja()">
-                <i class="bi bi-journal-check fs-4 mb-1 d-block text-info"></i> Libro
+
+            <button class="btn bg-black rounded-4 px-3 py-2 fw-bold shadow-sm w-100" onclick="abrirLibroCaja()" style="border: 1px solid rgba(0,243,255,0.4); color: var(--neon-cyan);">
+                <i class="bi bi-journal-check fs-4 mb-1 d-block text-neon-cyan"></i> Libro
+            </button>
+
+            <button id="btn-pedidos-web" class="btn rounded-4 px-3 py-2 fw-bold shadow-sm w-100 position-relative" onclick="abrirHubEcommerce()" style="background: rgba(255,0,124,0.1); border: 1px solid var(--neon-magenta); color: #fff;">
+                <i class="bi bi-globe fs-4 mb-1 d-block text-neon-magenta"></i> Pedidos
+                <span id="badge-pedidos-web" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none; box-shadow: 0 0 10px red;">0</span>
             </button>
         </div>
 
         <div class="ms-auto flex-nowrap d-flex align-items-center gap-3">
-            <div class="gomez-guide-box m-0 py-2 px-3 d-none d-xl-flex" style="max-width: 350px;">
-                <i class="bi bi-info-circle-fill text-info"></i>
-                <div class="small lh-sm text-light"><strong>Asistente POS:</strong> Escanea o busca. Micrófono disponible.</div>
-            </div>
-            <span class="badge bg-dark border border-secondary p-2 fs-6"><i class="bi bi-person-badge me-1"></i> Caja 01</span>
-            <button class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="bloquearCaja()"><i class="bi bi-lock-fill me-1"></i> Bloquear</button>
+            <span class="badge bg-dark border border-secondary p-2 fs-6 text-white"><i class="bi bi-person-badge me-1"></i> Caja 01</span>
+            <button class="btn btn-outline-danger fw-bold rounded-pill px-4 text-white border-2" onclick="bloquearCaja()"><i class="bi bi-lock-fill me-1"></i> Bloquear</button>
         </div>
     </div>
 
     <div class="pos-layout">
-
         <div class="products-area">
-            <div class="d-flex mb-4 gap-3 align-items-center">
-                <div class="input-group" style="max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 15px;">
-                    <span class="input-group-text bg-dark border-info text-info fs-4"><i class="bi bi-search"></i></span>
-                    <input type="text" id="buscador" class="form-control form-control-neon border-info shadow-none" placeholder="Escanea código de barras o busca por nombre..." autocomplete="off">
-                </div>
-                <button class="btn btn-outline-info shadow-none fw-bold px-4 py-3" style="border-radius: 15px; border-width: 2px;" onclick="abrirCamara(null)"><i class="bi bi-camera-video-fill me-2 fs-5"></i> OPTIC SCAN</button>
+            <div id="btn-descargar-app-slim" class="btn-slim-install animate__animated animate__fadeIn" onclick="instalarAppPWA()">
+                <i class="bi bi-phone-vibrate me-2"></i> DESCARGAR APP NATIVA
             </div>
 
-            <div class="row g-4 pb-5" id="grilla-productos">
+            <div class="d-flex mb-4 gap-2 align-items-center flex-wrap flex-md-nowrap">
+                <div class="input-group flex-grow-1" style="box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-radius: 12px;">
+                    <span class="input-group-text bg-dark border-info text-info fs-5"><i class="bi bi-search"></i></span>
+                    <input type="text" id="buscador" class="form-control form-control-neon border-info shadow-none" placeholder="Buscar o escanear código..." autocomplete="off">
+                </div>
+                <button class="btn btn-outline-info shadow-none fw-bold px-3 py-2 w-100 w-md-auto bg-dark" style="border-radius: 12px; border-width: 2px;" onclick="abrirCamara(null)"><i class="bi bi-upc-scan me-1 fs-5"></i> LENTE</button>
             </div>
+
+            <div class="grid-productos pb-5" id="grilla-productos"></div>
         </div>
 
-        <div class="cart-sidebar">
+        <div class="cart-float-btn pulse animate__animated animate__bounceInUp" id="btn-flotante-caja" onclick="toggleCaja()" aria-label="Abrir caja">
+            <i class="bi bi-cart4"></i>
+            <span class="cart-count-badge animate__animated" id="cart-count">0</span>
+        </div>
+
+        <div class="cart-sidebar" id="cart-sidebar">
             <div class="cart-header">
-                <h3 class="mb-0 fw-900 text-white" style="letter-spacing: 2px;"><i class="bi bi-receipt text-info me-2"></i> TICKET DE VENTA</h3>
+                <button class="btn-close-cart" onclick="toggleCaja()"><i class="bi bi-x-lg"></i></button>
+                <h4 class="mb-0 fw-900 text-white" style="letter-spacing: 1px;"><i class="bi bi-receipt text-info me-2"></i> TICKET ACTUAL</h4>
             </div>
 
             <div class="cart-items-container" id="lista-carrito">
                 <div class="text-center text-muted mt-5 d-flex flex-column align-items-center">
                     <i class="bi bi-upc-scan fs-1 mb-3 opacity-50"></i>
-                    <h5 class="fw-bold">Bandeja Vacía</h5>
-                    <p class="small">Pistolea un producto para comenzar.</p>
+                    <h6 class="fw-bold">Bandeja Vacía</h6>
+                    <p class="small">Pistolea un producto.</p>
                 </div>
             </div>
 
             <div class="cart-footer">
-                <div class="d-flex justify-content-between text-light mb-2 fw-bold fs-5">
+                <div class="d-flex justify-content-between text-light mb-1 fw-bold fs-6">
                     <span>SUBTOTAL:</span>
                     <span id="txt-subtotal">$0</span>
                 </div>
                 <div class="total-display" id="txt-total">$0</div>
 
-                <div class="row g-3">
+                <div class="row g-2">
                     <div class="col-6">
                         <button class="btn btn-pay btn-contado w-100" onclick="procesarPago('CONTADO')">
-                            <i class="bi bi-cash-coin fs-4"></i> CONTADO
+                            <i class="bi bi-cash-coin fs-5"></i> EFECTIVO
                         </button>
                     </div>
                     <div class="col-6">
                         <button class="btn btn-pay btn-transfer w-100" onclick="procesarPago('TRANSFERENCIA')">
-                            <i class="bi bi-bank fs-4"></i> TRANSF.
+                            <i class="bi bi-bank fs-5"></i> TRANSF.
                         </button>
                     </div>
                     <div class="col-6">
                         <button class="btn btn-pay btn-vip w-100" onclick="procesarPago('FIADO')">
-                            <i class="bi bi-star-fill fs-4"></i> CRÉDITO VIP
+                            <i class="bi bi-star-fill fs-5"></i> CRÉDITO VIP
                         </button>
                     </div>
                     <div class="col-6">
                         <button class="btn btn-pay btn-mp w-100 border-0" onclick="procesarPago('MERCADOPAGO')">
-                            <i class="bi bi-credit-card-fill fs-4"></i> MPAGO
+                            <i class="bi bi-credit-card-fill fs-5"></i> M. PAGO
                         </button>
                     </div>
                 </div>
-                <button class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill" onclick="vaciarCarrito()"><i class="bi bi-trash3-fill me-1"></i> Cancelar Venta</button>
+                <button class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill bg-black border-2 text-white" onclick="vaciarCarrito()"><i class="bi bi-trash3-fill me-1"></i> Limpiar Caja</button>
             </div>
         </div>
     </div>
@@ -390,16 +373,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content dark-neon p-2">
             <div class="modal-header border-0 pb-0">
-                <h4 class="modal-title font-weight-bold text-info"><i class="bi bi-speedometer2"></i> Ingreso de Báscula</h4>
+                <h5 class="modal-title font-weight-bold text-info"><i class="bi bi-speedometer2"></i> Ingreso de Báscula</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center p-4">
-                <h2 id="pesoProductName" class="mb-4 text-white fw-bolder text-capitalize">Producto</h2>
-                <div class="input-group mb-3 px-3">
-                    <input type="number" id="inputPeso" class="form-control form-control-neon py-3 fs-1" step="1" min="1" placeholder="Ej: 500" autocomplete="off">
-                    <span class="input-group-text bg-info text-dark fw-bolder fs-2 border-0 px-4">GR</span>
+            <div class="modal-body text-center p-3">
+                <h4 id="pesoProductName" class="mb-3 text-white fw-bolder text-capitalize">Producto</h4>
+                <div class="input-group mb-2 px-3">
+                    <input type="number" id="inputPeso" class="form-control form-control-neon py-2 fs-2 text-center" step="1" min="1" placeholder="Ej: 500" autocomplete="off">
+                    <span class="input-group-text bg-info text-dark fw-bolder fs-3 border-0 px-3">GR</span>
                 </div>
-                <p class="text-info mt-3 fw-bold"><i class="bi bi-info-circle"></i> Presiona ENTER para confirmar</p>
+                <p class="text-info mt-2 mb-0 fw-bold small"><i class="bi bi-info-circle"></i> Presiona ENTER para confirmar</p>
             </div>
         </div>
     </div>
@@ -409,28 +392,12 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content dark-neon" style="border-color: var(--neon-yellow)">
             <div class="modal-header border-secondary pb-2">
-                <h4 class="modal-title font-weight-bold" style="color: var(--neon-yellow)"><i class="bi bi-star-fill"></i> Autorizar Crédito VIP</h4>
+                <h5 class="modal-title font-weight-bold" style="color: var(--neon-yellow)"><i class="bi bi-star-fill"></i> Autorizar Crédito VIP</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4 bg-dark" style="border-radius: 0 0 25px 25px;">
-                <h3 class="text-center text-light mb-4">Total a Fiar: <span class="fw-bolder" style="color:var(--neon-green)" id="txtMontoFiador">$0</span></h3>
-                <p class="text-info text-center mb-4"><i class="bi bi-info-circle"></i> Seleccione el cliente de la lista VIP para asignar la deuda a su cuenta. Cero fricción.</p>
-                <div id="listaClientesModule" class="row g-3" style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalCamara" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="background: rgba(10,5,10,0.9); border: 1px solid var(--neon-blue) !important; box-shadow: 0 0 30px rgba(0,240,255,0.4) !important;">
-            <div class="modal-body p-0 position-relative">
-                <button type="button" class="btn-close btn-close-white position-absolute" onclick="cerrarCamara()" style="top: 15px; right: 15px; z-index: 1000; filter: invert(1); background-color: var(--neon-blue); border-radius: 50%; opacity: 0.8; padding: 10px;" aria-label="Close"></button>
-                <div id="reader-video" style="width: 100%; min-height: 300px; background: #000;"></div>
-                <div class="p-3 text-center bg-transparent text-info fw-bold" style="letter-spacing: 2px;">
-                    <i class="bi bi-upc-scan" style="font-size: 1.5rem; text-shadow: 0 0 15px var(--neon-blue);"></i> ENFOCA EL CÓDIGO DE BARRAS
-                </div>
+            <div class="modal-body p-3 bg-dark" style="border-radius: 0 0 25px 25px;">
+                <h4 class="text-center text-light mb-3">Total a Fiar: <span class="fw-bolder" style="color:var(--neon-green)" id="txtMontoFiador">$0</span></h4>
+                <div id="listaClientesModule" class="row g-2" style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;"></div>
             </div>
         </div>
     </div>
@@ -438,19 +405,14 @@
 
 <div id="area-impresion" style="display: none; background: white; color: black; font-family: monospace;">
     <div style="text-align: center; margin-bottom: 10px;">
-        <h2 style="margin: 0; font-size: 1.5rem;">MARKET LIMBER</h2>
+        <h2 style="margin: 0; font-size: 1.5rem;">LIMBER MARKET</h2>
         <p style="margin: 0; font-size: 0.8rem;">Plataforma Inteligente GOMEZ</p>
         <p style="margin: 0; font-size: 0.8rem;" id="ticket-fecha"></p>
         <p style="margin: 0; font-size: 0.8rem;">------------------------</p>
     </div>
+    <div id="ticket-cliente-info" style="font-size: 0.8rem; text-align: left; margin-bottom: 10px;"></div>
     <table style="width: 100%; font-size: 0.9rem; text-align: left; margin-bottom: 10px;">
-        <thead>
-        <tr>
-            <th style="width: 15%;">Cant</th>
-            <th>Detalle</th>
-            <th style="text-align: right; width: 25%;">Monto</th>
-        </tr>
-        </thead>
+        <thead><tr><th style="width: 15%;">Cant</th><th>Detalle</th><th style="text-align: right; width: 25%;">Monto</th></tr></thead>
         <tbody id="ticket-items"></tbody>
     </table>
     <div style="text-align: right; border-top: 1px dashed black; padding-top: 5px;">
@@ -464,24 +426,25 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="modalCamara" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg overflow-hidden" style="border-radius: 20px;">
-            <div class="modal-body p-0 position-relative bg-dark">
-                <button type="button" class="btn-close btn-close-white position-absolute shadow" onclick="cerrarCamara()" style="top: 15px; right: 15px; z-index: 1000; background-color: rgba(255,255,255,0.2); border-radius: 50%; padding: 12px;"></button>
-                <div id="reader-video" style="width: 100%; min-height: 350px; background: #000;"></div>
-                <div class="p-4 text-center bg-dark text-white fw-bold d-flex flex-column align-items-center">
-                    <i class="bi bi-upc-scan mb-2" style="font-size: 2rem; color: var(--neon-blue);"></i>
-                    <span>CENTRA EL CÓDIGO EN LA LENTE</span>
+        <div class="modal-content border-0 shadow-none bg-transparent">
+            <div class="modal-body p-0 position-relative d-flex justify-content-center align-items-center">
+                <div class="scanner-container position-relative" style="width: 100%; max-width: 500px; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #000; border: 2px solid var(--neon-green); box-shadow: 0 0 40px rgba(57, 255, 20, 0.4);">
+                    <button type="button" class="btn-close-cyber position-absolute" onclick="cerrarCamara()" style="top: 15px; right: 15px; z-index: 100; background: rgba(0,0,0,0.8); border: 2px solid var(--neon-magenta); color: var(--neon-magenta); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;"><i class="bi bi-x-lg fs-4"></i></button>
+                    <div id="reader-video" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                    <div class="hud-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 25px;">
+                        <div class="laser-scan" style="position: absolute; top: 10%; left: 5%; width: 90%; height: 2px; background: var(--neon-magenta); box-shadow: 0 0 25px 8px rgba(255, 0, 124, 0.6); opacity: 1; z-index: 11; animation: scanline 2s ease-in-out infinite alternate;"></div>
+                        <div class="text-center mt-auto pb-3"><span style="color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); font-weight: 900;">● SENSOR ÓPTICO</span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="offcanvas offcanvas-start dark-neon" tabindex="-1" id="offcanvasLibroCaja" style="width: 500px; max-width: 100vw; background-color: rgba(15,15,20,0.95); border-right: 2px solid var(--neon-cyan);">
-    <div class="offcanvas-header bg-dark border-bottom border-info">
+<div class="offcanvas offcanvas-start dark-neon" tabindex="-1" id="offcanvasLibroCaja" style="width: 450px; max-width: 100vw; background-color: rgba(30, 35, 45, 0.98); border-right: 2px solid var(--neon-cyan);">
+    <div class="offcanvas-header bg-black border-bottom border-info">
         <h5 class="offcanvas-title text-info fw-bold"><i class="bi bi-journal-text me-2"></i> Libro de Ventas Diario</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
     </div>
@@ -490,10 +453,9 @@
             <span class="text-light fw-bold">Registro de Turno Actual</span>
             <span class="badge bg-success shadow-sm" id="badge-total-ventas">0 Bts.</span>
         </div>
-        <div class="list-group list-group-flush flex-grow-1 overflow-auto" id="lista-ventas-historico">
-        </div>
+        <div class="list-group list-group-flush flex-grow-1 overflow-auto bg-black" id="lista-ventas-historico"></div>
         <div class="p-4 bg-dark border-top border-warning text-center mt-auto">
-            <button class="btn btn-danger fw-bolder py-3 w-100 rounded-pill shadow-lg d-flex align-items-center justify-content-center gap-2" style="font-size: 1.2rem; filter: saturate(1.5);" onclick="confirmarCierreCaja()">
+            <button class="btn btn-danger fw-bolder py-3 w-100 rounded-pill shadow-lg d-flex align-items-center justify-content-center gap-2" style="font-size: 1.2rem; background: #ff003c; border-color: #ff003c;" onclick="confirmarCierreCaja()">
                 <i class="bi bi-shield-lock-fill fs-3"></i> EJECUTAR CIERRE DE CAJA
             </button>
             <small class="text-muted d-block mt-2 fw-bold">Esto archivará el turno actual y reseteará a $0</small>
@@ -502,151 +464,171 @@
 </div>
 
 <script>
-    // --- MOTOR DE VOZ G.O.M.E.Z. (CAJA POS) ---
-    const GOMEZ = {
-        synth: window.speechSynthesis,
-        recognition: null,
-        isListening: false,
-        bestVoice: null,
-
-        init: function() {
-            const loadVoices = () => {
-                const voices = this.synth.getVoices();
-                if (voices.length > 0) {
-                    this.bestVoice = voices.find(v => (v.name.includes("Google") || v.name.includes("Microsoft") || v.name.includes("Neural") || v.name.includes("Premium") || v.name.includes("Natural")) && v.lang.startsWith("es")) || voices.find(v => v.lang.startsWith("es"));
-                }
-            };
-            loadVoices();
-            if (speechSynthesis.onvoiceschanged !== undefined) {
-                speechSynthesis.onvoiceschanged = loadVoices;
-            }
-
-            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                this.recognition = new SpeechRecognition();
-                this.recognition.lang = 'es-CL';
-                this.recognition.continuous = false;
-                this.recognition.interimResults = false;
-
-                this.recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript.toLowerCase();
-                    this.processCommand(transcript);
-                };
-
-                this.recognition.onerror = (event) => {
-                    console.error("Mic error:", event.error);
-                    Swal.fire('Atención', 'Micrófono denegado o inaccesible. Recuerda que los navegadores exigen conexión HTTPS o Localhost para escuchar tu voz.', 'warning');
-                    this.isListening = false;
-                    document.getElementById('gomez-assistant').classList.remove('listening-pulse');
-                };
-
-                this.recognition.onend = () => {
-                    this.isListening = false;
-                    document.getElementById('gomez-assistant').classList.remove('listening-pulse');
-                };
-            }
-        },
-
-        speak: function(text) {
-            if (this.synth.speaking) { this.synth.cancel(); }
-            const utterance = new SpeechSynthesisUtterance(text);
-            if (this.bestVoice) utterance.voice = this.bestVoice;
-            utterance.lang = 'es-CL';
-            utterance.pitch = 1.0;
-            utterance.rate = 1.05;
-            this.synth.speak(utterance);
-        },
-
-        listen: function() {
-            if (!this.recognition) return Swal.fire('Error', 'Micrófono no soportado en este navegador.', 'error');
-            if (this.isListening) { this.recognition.stop(); return; }
-            try {
-                this.recognition.start();
-                this.isListening = true;
-                document.getElementById('gomez-assistant').classList.add('listening-pulse');
-
-                Swal.fire({
-                    title: 'G.O.M.E.Z. Escuchando...',
-                    text: 'Comandos: Cobrar Efectivo, Vaciar Caja, Bloquear.',
-                    toast: true, position: 'bottom-start', showConfirmButton: false, timer: 3000,
-                    icon: 'info', background: '#1a1a1a', color: '#00f3ff'
-                });
-            } catch(e) { console.error("Error start mic:", e); }
-        },
-
-        processCommand: function(cmd) {
-            if (cmd.includes("limpiar") || cmd.includes("vaciar") || cmd.includes("borrar todo")) {
-                this.speak("Borrando ticket a su orden, administrador.");
-                vaciarCarrito();
-            } else if (cmd.includes("cobrar efectivo") || cmd.includes("pago contado")) {
-                this.speak("Procesando pago al contado. Excelente operación.");
-                procesarPago('CONTADO');
-            } else if (cmd.includes("cobrar transferencia") || cmd.includes("pago transferencia")) {
-                this.speak("Iniciando protocolo de pago por transferencia.");
-                procesarPago('TRANSFERENCIA');
-            } else if (cmd.includes("bloquear") || cmd.includes("cerrar caja")) {
-                bloquearCaja();
-            } else if (cmd.includes("ayuda")) {
-                this.speak("Soy tu asistente financiero. Usa el escáner para registrar artículos y luego dime un método de pago, por ejemplo, cobrar en efectivo. También puedo limpiar la caja actual o bloquear el terminal.");
-            } else {
-                this.speak("Comando no reconocido. Puedes intentar decir 'Cobrar Efectivo' o 'Vaciar Caja'.");
-            }
+    // --- PWA ---
+    let eventoInstalacionPWA;
+    const btnDescarga = document.getElementById('btn-descargar-app-slim');
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); eventoInstalacionPWA = e;
+        if(btnDescarga) btnDescarga.style.display = 'inline-flex';
+    });
+    async function instalarAppPWA() {
+        if (eventoInstalacionPWA) {
+            eventoInstalacionPWA.prompt();
+            const { outcome } = await eventoInstalacionPWA.userChoice;
+            if (outcome === 'accepted') if(btnDescarga) btnDescarga.style.display = 'none';
+            eventoInstalacionPWA = null;
         }
+    }
+
+    // --- AUDIO ---
+    const sfx = { hover: document.getElementById('sfx-hover'), click: document.getElementById('sfx-click'), error: document.getElementById('sfx-error'), cash: document.getElementById('sfx-cash'), open: document.getElementById('sfx-open') };
+    function play(soundElement, volume = 0.3) { try { if(soundElement) { soundElement.currentTime = 0; soundElement.volume = volume; soundElement.play(); } } catch(e) {} }
+
+    // --- GOMEZ ---
+    const GOMEZ = {
+        synth: window.speechSynthesis, recognition: null, isListening: false, bestVoice: null,
+        init: function() {
+            const loadVoices = () => { const voices = this.synth.getVoices(); if (voices.length > 0) this.bestVoice = voices.find(v => v.lang.startsWith("es")); };
+            loadVoices(); if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
+        },
+        speak: function(text) { if (this.synth.speaking) this.synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); if (this.bestVoice) utterance.voice = this.bestVoice; utterance.lang = 'es-CL'; utterance.rate = 1.1; this.synth.speak(utterance); },
+        listen: function() { play(sfx.click); Swal.fire({ title: 'Escuchando...', toast: true, position: 'bottom-start', showConfirmButton: false, timer: 3000, background: '#1e222b', color: '#00f3ff' }); }
     };
+    document.addEventListener('DOMContentLoaded', () => GOMEZ.init());
 
-    // Init GOMEZ
-    document.addEventListener('DOMContentLoaded', () => { GOMEZ.init(); });
-
-    // --- EFECTOS DE SONIDO ---
-    const play = (s, v = 0.3) => { try { s.currentTime = 0; s.volume = v; s.play(); } catch(e){} };
-    const sfxH = document.getElementById('sfx-hover');
-    const sfxBeep = document.getElementById('sfx-beep'); // BIP DE ESCÁNER
-    const sfxE = document.getElementById('sfx-error');
-    const sfxCash = document.getElementById('sfx-cash'); // CHA-CHING DE CAJA
-
-    // --- SEGURIDAD POS ---
+    // --- SEGURIDAD ---
     async function unlockPOS() {
         const pin = document.getElementById('pinInput').value;
         try {
-            const res = await fetch('/api/auth/unlock', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ pin: pin })
-            });
-
+            const res = await fetch('/api/auth/unlock', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ pin: pin }) });
             if(res.ok) {
-                const data = await res.json();
-                if(data.role === 'CAJERO' || data.role === 'ADMIN') {
-                    document.getElementById('securityLock').style.display = 'none';
-                    document.getElementById('mainPosUI').style.display = 'block';
-                    GOMEZ.speak('Acceso concedido. Sistemas tácticos G.O.M.E.Z. en línea. Operaciones de caja habilitadas.');
-                    cargarCatalogo();
-                    setTimeout(() => document.getElementById('buscador').focus(), 1000);
-                }
-            } else {
-                throw new Error("Pin incorrecto");
-            }
+                document.getElementById('securityLock').style.display = 'none';
+                document.getElementById('mainPosUI').style.display = 'block';
+                cargarCatalogo(); setTimeout(() => document.getElementById('buscador').focus(), 1000);
+            } else throw new Error("Pin incorrecto");
         } catch(e) {
-            play(sfxE, 0.5);
-            GOMEZ.speak('Autorización denegada. Pin incorrecto o sin conexión.');
-            document.getElementById('pinError').classList.remove('d-none');
-            document.getElementById('pinInput').value = "";
+            play(sfx.error, 0.5); document.getElementById('pinError').classList.remove('d-none'); document.getElementById('pinInput').value = "";
             setTimeout(() => document.getElementById('pinError').classList.add('d-none'), 3000);
         }
     }
-
-    function bloquearCaja() {
-        GOMEZ.speak("Bloqueando terminal por seguridad. Hasta pronto.");
-        document.getElementById('securityLock').style.display = 'flex';
-        document.getElementById('mainPosUI').style.display = 'none';
-        document.getElementById('pinInput').value = "";
-    }
-
+    function bloquearCaja() { document.getElementById('securityLock').style.display = 'flex'; document.getElementById('mainPosUI').style.display = 'none'; document.getElementById('pinInput').value = ""; }
     document.getElementById('pinInput').addEventListener('keydown', (e) => { if(e.key==='Enter') unlockPOS(); });
 
-    let catalogoGlobal = [];
-    let carrito = [];
-    let productoPesableTemporal = null;
+    // --- HUB E-COMMERCE ---
+    let numeroDePedidosVistos = 0;
+    function abrirHubEcommerce() {
+        play(sfx.open, 0.8);
+        const hub = document.getElementById('ecommerce-hub');
+        hub.style.display = 'flex'; hub.classList.remove('animate__zoomOut'); hub.classList.add('animate__zoomIn');
+        document.getElementById('btn-pedidos-web').classList.remove('btn-hub-pulse');
+        document.getElementById('badge-pedidos-web').style.display = 'none';
+        renderPedidosWeb();
+    }
+    function cerrarHubEcommerce() {
+        play(sfx.click, 0.5);
+        const hub = document.getElementById('ecommerce-hub');
+        hub.classList.remove('animate__zoomIn'); hub.classList.add('animate__zoomOut');
+        setTimeout(() => { hub.style.display = 'none'; }, 500);
+    }
+
+    async function actualizarVentasSilencioso() {
+        try {
+            const res = await fetch('/api/admin/ventas');
+            if(res.ok) {
+                const ventasGlobal = await res.json();
+                const pedidosActivos = ventasGlobal.filter(v => v.detalle && v.detalle.includes('=== DATOS DEL PEDIDO ==='));
+
+                if(pedidosActivos.length > numeroDePedidosVistos && document.getElementById('ecommerce-hub').style.display === 'none') {
+                    const btnHub = document.getElementById('btn-pedidos-web');
+                    const badgeHub = document.getElementById('badge-pedidos-web');
+                    btnHub.classList.add('btn-hub-pulse');
+                    badgeHub.style.display = 'block';
+                    badgeHub.innerText = pedidosActivos.length;
+                }
+                if(document.getElementById('ecommerce-hub').style.display === 'flex') { window.tempVentasGlobal = ventasGlobal; renderPedidosWeb(); }
+                numeroDePedidosVistos = pedidosActivos.length;
+            }
+        } catch(e) {}
+    }
+    setInterval(actualizarVentasSilencioso, 10000);
+
+    async function renderPedidosWeb() {
+        const container = document.getElementById('grilla-pedidos-web'); container.innerHTML = '';
+        let ventasData = window.tempVentasGlobal;
+        if(!ventasData) {
+            Swal.fire({ title: 'Actualizando...', background: '#1e222b', color: '#fff', didOpen: () => Swal.showLoading() });
+            try { const res = await fetch('/api/admin/ventas'); ventasData = await res.json(); Swal.close(); } catch(e) { Swal.close(); return; }
+        }
+        const pedidos = ventasData.filter(v => v.detalle && v.detalle.includes('=== DATOS DEL PEDIDO ==='));
+        numeroDePedidosVistos = pedidos.length;
+
+        if(pedidos.length === 0) { container.innerHTML = '<div class="col-12 text-center mt-5"><h4 class="text-muted fw-bold">No hay pedidos pendientes en la web.</h4></div>'; return; }
+        pedidos.sort((a,b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+
+        pedidos.forEach(p => {
+            const lineas = p.detalle.split('\n');
+            let clienteStr = "Cliente Anónimo", telStr = "Sin teléfono", dirStr = "Retiro en Local", prodLines = [], capturandoProds = false;
+
+            lineas.forEach(linea => {
+                if (linea.includes('👤 Cliente:')) clienteStr = linea.replace('👤 Cliente:', '').trim();
+                else if (linea.includes('📱 Tel/Wsp:')) telStr = linea.replace('📱 Tel/Wsp:', '').trim();
+                else if (linea.includes('📍 Dir:')) dirStr = linea.replace('📍 Dir:', '').trim();
+                else if (linea.includes('========================')) capturandoProds = true;
+                else if (capturandoProds && linea.trim() !== '') prodLines.push(linea);
+            });
+
+            let esDelivery = dirStr.toLowerCase() !== 'retiro en local' && dirStr !== '';
+            let badgeTipo = esDelivery ? `<span class="badge-delivery"><i class="bi bi-bicycle"></i> DELIVERY</span>` : `<span class="badge-retiro"><i class="bi bi-shop"></i> RETIRO</span>`;
+            let prodHtml = prodLines.map(pl => `<div class="prod-item text-white border-bottom border-secondary pb-1 mb-1">${pl}</div>`).join('');
+            let fecha = new Date(p.fechaHora).toLocaleDateString('es-CL', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+
+            container.innerHTML += `
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="pedido-card">
+                        <div class="pedido-header d-flex justify-content-between align-items-start">
+                            <div><h5 class="mb-1 text-white fw-bold">${clienteStr}</h5><div class="text-info small"><i class="bi bi-whatsapp"></i> ${telStr}</div></div>
+                            <div class="text-end">${badgeTipo}<div class="text-light small mt-1">${fecha}</div></div>
+                        </div>
+                        <div class="mb-3 flex-grow-1" style="max-height: 120px; overflow-y: auto;">
+                            <strong class="text-neon-cyan small d-block mb-2">Productos a Empacar:</strong>${prodHtml}
+                        </div>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted small fw-bold">DESTINO:</span>
+                                <span class="dir-text text-warning fw-bold text-end" style="max-width: 60%;">${dirStr}</span>
+                            </div>
+                            <button class="btn btn-despachar" onclick="marcarPedidoDespachado(${p.id}, \`${p.detalle.replace(/`/g, "'")}\`)">
+                                <i class="bi bi-check-circle-fill me-2"></i> MARCAR DESPACHADO
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+    }
+
+    async function marcarPedidoDespachado(ventaId, detalleActual) {
+        const { isConfirmed } = await Swal.fire({ title: '¿Confirmar Despacho?', text: 'El pedido desaparecerá de esta pantalla.', icon: 'question', background: '#1e222b', color: '#fff', showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555', confirmButtonText: '<strong class="text-dark">Sí, está listo</strong>' });
+        if (isConfirmed) {
+            Swal.fire({ title: 'Actualizando...', background: '#1e222b', color: '#fff', didOpen: () => Swal.showLoading() });
+            const nuevoDetalle = detalleActual.replace('=== DATOS DEL PEDIDO ===', '=== PEDIDO ENTREGADO ===');
+            try {
+                const resVentas = await fetch('/api/admin/ventas');
+                const ventas = await resVentas.json();
+                const ventaParaActualizar = ventas.find(v => v.id === ventaId);
+
+                if(ventaParaActualizar) {
+                    ventaParaActualizar.detalle = nuevoDetalle;
+                    const resPut = await fetch(`/api/ventas/${ventaId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ventaParaActualizar) });
+                    play(sfx.cash, 0.8);
+                    window.tempVentasGlobal = null; renderPedidosWeb();
+                    Swal.fire({toast:true, icon:'success', title:'Despachado', position:'top-end', background:'#1e222b', color:'#fff', showConfirmButton:false, timer:2000});
+                }
+            } catch(e) { Swal.close(); }
+        }
+    }
+
+    // --- LOGICA DE CAJA Y CATALOGO ---
+    let catalogoGlobal = []; let carrito = []; let productoPesableTemporal = null;
     const modalPesoObj = new bootstrap.Modal(document.getElementById('modalPeso'));
     const fmt = (n) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n));
 
@@ -656,285 +638,115 @@
             if(!response.ok) throw new Error("Falla API");
             const crudos = await response.json();
 
-            // Optimizar y limpiar
             const limpios = []; const vistos = new Set();
             crudos.forEach(p => {
                 const norm = p.nombre ? p.nombre.trim().toLowerCase() : "sin nombre";
                 if(!vistos.has(norm)) {
                     vistos.add(norm);
-                    if (!p.imagen || String(p.imagen).trim() === '' || String(p.imagen).includes('placeholder')) {
-                        p.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre || 'P')}&background=1a1a1a&color=00f3ff&size=400&bold=true`;
-                    }
+                    if (!p.imagen || String(p.imagen).trim() === '' || String(p.imagen).includes('placeholder')) { p.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre || 'P')}&background=1a1a1a&color=00f3ff&size=400&bold=true`; }
                     if (!p.categoria) p.categoria = 'General';
                     limpios.push(p);
                 }
             });
-            catalogoGlobal = limpios;
-            renderizarGrilla(catalogoGlobal);
-        } catch (error) {
-            document.getElementById('grilla-productos').innerHTML = `<div class="col-12 text-center text-white mt-5"><h5><i class="bi bi-wifi-off text-danger"></i> Error de Red</h5><button class="btn btn-outline-info mt-3" onclick="cargarCatalogo()">Reintentar</button></div>`;
-        }
+            catalogoGlobal = limpios; renderizarGrilla(catalogoGlobal);
+        } catch (error) { document.getElementById('grilla-productos').innerHTML = `<div class="col-12 text-center text-white mt-5"><h5><i class="bi bi-wifi-off text-danger"></i> Error de Red</h5><button class="btn btn-outline-info mt-3" onclick="cargarCatalogo()">Reintentar</button></div>`; }
     }
-
-    // Auto-sincronización en tiempo real (cada 5 segundos)
-    function verificarDiferenciasReactivo(viejos, nuevos) {
-        if (!viejos || viejos.length !== nuevos.length) return true;
-        for (let i = 0; i < nuevos.length; i++) {
-            let n = nuevos[i];
-            let v = viejos.find(x => x.id === n.id);
-            if (!v) return true;
-            if (v.stock !== n.stock || v.precio !== n.precio || v.precioPorKilo !== n.precioPorKilo || v.promocionActiva !== n.promocionActiva || v.precioPromo !== n.precioPromo) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    setInterval(async () => {
-        // Solo sincronizar si la caja está desbloqueada
-        if (document.getElementById('mainPosUI').style.display === 'none') return;
-
-        try {
-            const res = await fetch('/api/productos');
-            if (res.ok) {
-                const crudos = await res.json();
-                const limpios = []; const vistos = new Set();
-                crudos.forEach(p => {
-                    const norm = p.nombre ? p.nombre.trim().toLowerCase() : "sin nombre";
-                    if(!vistos.has(norm)) {
-                        vistos.add(norm);
-                        if (!p.imagen || String(p.imagen).trim() === '' || String(p.imagen).includes('placeholder')) {
-                            p.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre || 'P')}&background=1a1a1a&color=00f3ff&size=400&bold=true`;
-                        }
-                        if (!p.categoria) p.categoria = 'General';
-                        limpios.push(p);
-                    }
-                });
-
-                if (verificarDiferenciasReactivo(catalogoGlobal, limpios)) {
-                    catalogoGlobal = limpios;
-                    const termino = document.getElementById('buscador').value.toLowerCase().trim();
-                    const filtrados = catalogoGlobal.filter(p =>
-                        p.nombre.toLowerCase().includes(termino) ||
-                        (p.codigosBarras && p.codigosBarras.some(cb => cb.toLowerCase().includes(termino)))
-                    );
-                    renderizarGrilla(filtrados);
-                }
-            }
-        } catch(e) {}
-    }, 5000);
 
     function renderizarGrilla(productos) {
-        const grilla = document.getElementById('grilla-productos');
-        grilla.innerHTML = '';
-        if(productos.length === 0) {
-            grilla.innerHTML = `<div class="col-12 text-center text-muted mt-5 fw-bold">No hay coincidencias en bodega.</div>`;
-            return;
-        }
+        const grilla = document.getElementById('grilla-productos'); grilla.innerHTML = '';
+        if(productos.length === 0) { grilla.innerHTML = `<div class="col-12 text-center text-muted mt-5 fw-bold">No hay coincidencias.</div>`; return; }
 
         productos.forEach((p, i) => {
-            let precioActual = p.esPesable ? p.precioPorKilo : p.precio;
-            let original = precioActual;
-
-            let hayPromo = false;
+            let precioActual = p.esPesable ? p.precioPorKilo : p.precio; let original = precioActual; let hayPromo = false;
             if (p.promocionActiva && p.precioPromo > 0) {
-                if (p.fechaInicioPromo && p.fechaFinPromo) {
-                    const hoy = new Date().toISOString().split('T')[0];
-                    if (hoy >= p.fechaInicioPromo && hoy <= p.fechaFinPromo) {
-                        precioActual = p.precioPromo;
-                        hayPromo = true;
-                    }
-                } else {
-                    precioActual = p.precioPromo;
-                    hayPromo = true;
-                }
+                if (p.fechaInicioPromo && p.fechaFinPromo) { const hoy = new Date().toISOString().split('T')[0]; if (hoy >= p.fechaInicioPromo && hoy <= p.fechaFinPromo) { precioActual = p.precioPromo; hayPromo = true; } }
+                else { precioActual = p.precioPromo; hayPromo = true; }
             }
             p.precioFinalApp = precioActual;
 
-            const badge = p.esPesable ? `<span class="producto-pesable-badge"><i class="bi bi-speedometer"></i> GRAMOS</span>` : '';
+            const badge = p.esPesable ? `<span class="producto-pesable-badge"><i class="bi bi-speedometer"></i> KG</span>` : '';
             const promoBadge = hayPromo ? `<span class="promo-badge"><i class="bi bi-tag-fill"></i> OFERTA</span>` : '';
-
             let stockBadge = '';
             if (p.stock !== null && p.stock !== undefined) {
-                if (p.stock <= 0) {
-                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 59, 48, 0.95); color: white; padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 0.85rem; letter-spacing: 1px; z-index: 15; box-shadow: 0 0 15px rgba(255, 59, 48, 0.6); backdrop-filter: blur(5px);"><i class="bi bi-exclamation-triangle-fill"></i> AGOTADO</span>`;
-                } else if (p.stock <= 5 && !p.esPesable) {
-                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; z-index: 15; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); backdrop-filter: blur(5px);"><i class="bi bi-clock-history"></i> Quedan ${p.stock}</span>`;
-                } else if (p.stock <= 5 && p.esPesable) {
-                    stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; z-index: 15; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); backdrop-filter: blur(5px);"><i class="bi bi-clock-history"></i> Quedan ${p.stock} KG</span>`;
-                }
+                if (p.stock <= 0) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 59, 48, 0.95); color: white; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.7rem; letter-spacing: 1px; z-index: 15;"><i class="bi bi-exclamation-triangle-fill"></i> AGOTADO</span>`;
+                else if (p.stock <= 5) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 0.7rem; z-index: 15;"><i class="bi bi-clock-history"></i> Quedan ${p.stock}</span>`;
             }
 
-            let precioHTML = `<span class="product-price">$${precioActual}${p.esPesable?'/KG':''}</span>`;
-            if(hayPromo) {
-                precioHTML = `<span class="product-price text-warning">$${precioActual} <small class="text-muted text-decoration-line-through fs-6">$${original}</small></span>`;
-            }
-
-            const wrap = document.createElement('div');
-            wrap.className = `col-6 col-md-4 col-xl-3 tilt-wrapper animate__animated animate__fadeInUp`;
-            wrap.style.animationDelay = `${(i % 12) * 0.05}s`;
-
-            // If out of stock, add visual disabled effects but allow scanning/clicking just in case it's a glitch, or fade it.
+            let precioHTML = hayPromo ? `<span class="product-price text-warning">$${precioActual} <small class="text-decoration-line-through">$${original}</small></span>` : `<span class="product-price">$${precioActual} <small>${p.esPesable?'/KG':''}</small></span>`;
             const filterCss = (p.stock !== null && p.stock <= 0) ? 'filter: grayscale(100%) opacity(0.6);' : '';
 
-            wrap.innerHTML = `
-                <div class="product-card" onclick="clickProducto(${p.id})">
-                    ${badge}
-                    ${promoBadge}
-                    ${stockBadge}
-                    <img src="${p.imagen}" class="product-img" alt="${p.nombre}" loading="lazy" style="${filterCss}">
-                    <div class="product-info">
-                        <h3 class="product-title text-truncate" title="${p.nombre}">${p.nombre}</h3>
-                        ${precioHTML}
-                    </div>
-                </div>
-            `;
-
-            const card = wrap.querySelector('.product-card');
-            card.onmousemove = (e) => {
-                const r = card.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width - 0.5) * 20;
-                const y = ((e.clientY - r.top) / r.height - 0.5) * -20;
-                card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.02)`;
-            };
-            card.onmouseleave = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-            card.onmouseenter = () => play(sfxH, 0.1);
-
+            const wrap = document.createElement('div'); wrap.className = `animate__animated animate__fadeInUp`; wrap.style.animationDelay = `${(i % 12) * 0.03}s`;
+            wrap.innerHTML = `<div class="product-card" onclick="clickProducto(${p.id})">${badge}${promoBadge}${stockBadge}<div class="img-container"><img src="${p.imagen}" class="product-img" alt="${p.nombre}" loading="lazy" style="${filterCss}"></div><div class="product-info"><div class="product-title" title="${p.nombre}">${p.nombre}</div>${precioHTML}</div></div>`;
+            wrap.querySelector('.product-card').onmouseenter = () => play(sfx.hover, 0.1);
             grilla.appendChild(wrap);
         });
     }
 
-    // Buscador instántaneo y Motor de Extracción Láser
     const buscadorEl = document.getElementById('buscador');
-
     buscadorEl.addEventListener('input', (e) => {
         const termino = e.target.value.toLowerCase().trim();
-        const filtrados = catalogoGlobal.filter(p =>
-            p.nombre.toLowerCase().includes(termino) ||
-            (p.codigosBarras && p.codigosBarras.some(cb => cb.toLowerCase().includes(termino)))
-        );
+        const filtrados = catalogoGlobal.filter(p => p.nombre.toLowerCase().includes(termino) || (p.codigosBarras && p.codigosBarras.some(cb => cb.toLowerCase().includes(termino))));
         renderizarGrilla(filtrados);
     });
 
     let html5QrCode = null; let globalTargetInputId = '';
     function abrirCamara(targetInputId) {
-        globalTargetInputId = targetInputId || 'buscador';
-        new bootstrap.Modal(document.getElementById('modalCamara')).show();
+        globalTargetInputId = targetInputId || 'buscador'; new bootstrap.Modal(document.getElementById('modalCamara')).show();
         if(!html5QrCode) html5QrCode = new Html5Qrcode("reader-video");
-
         const config = { fps: 15, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0 };
-        const onScan = (dec) => {
-            cerrarCamara();
-            const el = document.getElementById(globalTargetInputId);
-            if(el){
-                el.value = dec;
-                el.dispatchEvent(new Event('input')); // To trigger search filter
-                el.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
-            }
-        };
-
-        html5QrCode.start({ facingMode: "environment" }, config, onScan, () => {})
-        .catch(err => {
-            console.warn("Fallo 'environment', probando cámara general:", err);
-            html5QrCode.start({ facingMode: "user" }, config, onScan, () => {})
-            .catch(err2 => {
-                 alert("Error cámara: " + err2 + "\n\nNota: Si estás usando un celular u otro PC en red, debes ingresar usando HTTPS o localhost. Los navegadores bloquean la cámara en HTTP remoto.");
-                 cerrarCamara();
-            });
-        });
+        const onScan = (dec) => { cerrarCamara(); const el = document.getElementById(globalTargetInputId); if(el){ el.value = dec; el.dispatchEvent(new Event('input')); el.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'})); } };
+        html5QrCode.start({ facingMode: "environment" }, config, onScan, () => {}).catch(err => { html5QrCode.start({ facingMode: "user" }, config, onScan, () => {}).catch(err2 => { cerrarCamara(); }); });
     }
-    function cerrarCamara() {
-        if(html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => html5QrCode.clear()).catch(e=>console.log(e));
-        }
-        const mod = bootstrap.Modal.getInstance(document.getElementById('modalCamara'));
-        if(mod) mod.hide();
-    }
+    function cerrarCamara() { if(html5QrCode && html5QrCode.isScanning) { html5QrCode.stop().then(() => html5QrCode.clear()).catch(e=>{}); } const mod = bootstrap.Modal.getInstance(document.getElementById('modalCamara')); if(mod) mod.hide(); }
 
     buscadorEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault();
-            const termino = e.target.value.trim();
-            if(termino === '') return;
-
+            e.preventDefault(); const termino = e.target.value.trim(); if(termino === '') return;
             const matchLaser = catalogoGlobal.find(p => p.codigosBarras && p.codigosBarras.includes(termino));
-            if (matchLaser) {
-                clickProducto(matchLaser.id);
-                e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return;
-            }
-
+            if (matchLaser) { clickProducto(matchLaser.id); e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return; }
             const matchId = catalogoGlobal.find(p => p.id.toString() === termino);
-            if (matchId) {
-                clickProducto(matchId.id);
-                e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return;
-            }
-
-            play(sfxE);
-            e.target.value = ''; buscadorEl.dispatchEvent(new Event('input'));
+            if (matchId) { clickProducto(matchId.id); e.target.value = ''; buscadorEl.dispatchEvent(new Event('input')); return; }
+            play(sfx.error); e.target.value = ''; buscadorEl.dispatchEvent(new Event('input'));
             Swal.fire({toast:true, position:'bottom-end', icon:'error', title:'Código No Reconocido', showConfirmButton:false, timer:2000, background:'#1a1a1a', color:'#ff003c'});
         }
     });
 
     function clickProducto(id) {
         const producto = catalogoGlobal.find(p => p.id === id);
-
+        if (producto.stock !== null && producto.stock <= 0) { Swal.fire({toast:true, title:'Stock Agotado', icon:'error', position:'top-end', background:'#000', color:'#fff'}); return; }
+        play(sfx.click, 0.5);
         if (producto.esPesable) {
-            productoPesableTemporal = producto;
-            document.getElementById('pesoProductName').innerText = producto.nombre;
-            document.getElementById('inputPeso').value = '';
-            modalPesoObj.show();
-            setTimeout(() => document.getElementById('inputPeso').focus(), 500);
-        } else {
-            agregarAlCarrito(producto, 1);
-        }
+            productoPesableTemporal = producto; document.getElementById('pesoProductName').innerText = producto.nombre; document.getElementById('inputPeso').value = '';
+            modalPesoObj.show(); setTimeout(() => document.getElementById('inputPeso').focus(), 500);
+        } else { agregarAlCarrito(producto, 1); }
     }
 
     function confirmarPeso() {
         const pesoGr = parseInt(document.getElementById('inputPeso').value);
-        if (isNaN(pesoGr) || pesoGr <= 0) return alert("Por favor ingresa un peso válido");
+        if (isNaN(pesoGr) || pesoGr <= 0) return;
         agregarAlCarrito(productoPesableTemporal, pesoGr);
-        modalPesoObj.hide();
-        productoPesableTemporal = null;
-        document.getElementById('buscador').focus(); // Retornar foco
+        modalPesoObj.hide(); productoPesableTemporal = null; document.getElementById('buscador').focus();
     }
-
     document.getElementById('inputPeso').addEventListener('keyup', (e) => { if (e.key === "Enter") confirmarPeso(); });
 
     function agregarAlCarrito(producto, cantidad) {
-        // SONIDO BIP AL AGREGAR PRODUCTO A LA BANDEJA
-        play(sfxBeep, 0.5);
-
-        if (!producto.esPesable) {
-            const itemEx = carrito.find(i => i.producto.id === producto.id);
-            if (itemEx) { itemEx.cantidad += cantidad; actualizarUI(); return; }
-        }
+        play(sfx.click, 0.5);
+        if (!producto.esPesable) { const itemEx = carrito.find(i => i.producto.id === producto.id); if (itemEx) { itemEx.cantidad += cantidad; actualizarUI(); return; } }
         carrito.push({ producto: producto, cantidad: cantidad, idTicket: Date.now() + Math.random() });
+        const btnCart = document.getElementById('btn-flotante-caja'); btnCart.classList.remove('pulse'); void btnCart.offsetWidth; btnCart.classList.add('animate__rubberBand', 'pulse'); setTimeout(() => btnCart.classList.remove('animate__rubberBand'), 1000);
         actualizarUI();
     }
 
-    function removerDelCarrito(idTicket) {
-        play(sfxBeep, 0.3); // Usamos un bip para borrar tambien
-        carrito = carrito.filter(i => i.idTicket !== idTicket);
-        actualizarUI();
-    }
-
-    function vaciarCarrito() {
-        if(carrito.length === 0) return;
-        play(sfxE, 0.4);
-        carrito = [];
-        actualizarUI();
-    }
+    function removerDelCarrito(idTicket) { play(sfx.click, 0.3); carrito = carrito.filter(i => i.idTicket !== idTicket); actualizarUI(); }
+    function vaciarCarrito() { if(carrito.length === 0) return; play(sfx.error, 0.4); carrito = []; actualizarUI(); if (window.innerWidth <= 991) document.getElementById('cart-sidebar').classList.remove('cart-active'); }
 
     function actualizarUI() {
-        const lista = document.getElementById('lista-carrito');
-        lista.innerHTML = '';
+        const lista = document.getElementById('lista-carrito'); const countBadge = document.getElementById('cart-count'); lista.innerHTML = ''; let total = 0;
+        countBadge.innerText = carrito.length; countBadge.classList.remove('animate__zoomIn'); void countBadge.offsetWidth; countBadge.classList.add('animate__zoomIn');
 
-        let total = 0;
         if(carrito.length === 0) {
-            lista.innerHTML = `<div class="text-center text-muted mt-5"><i class="bi bi-upc-scan fs-1 mb-3 opacity-50 d-block"></i><h5 class="fw-bold">Bandeja Vacía</h5><p class="small">Pistolea un producto.</p></div>`;
-            document.getElementById('txt-subtotal').innerText = "$0";
-            document.getElementById('txt-total').innerText = "$0";
-            return;
+            lista.innerHTML = `<div class="text-center text-muted mt-5"><i class="bi bi-upc-scan fs-1 mb-3 opacity-50 d-block"></i><h6 class="fw-bold">Bandeja Vacía</h6></div>`;
+            document.getElementById('txt-subtotal').innerText = "$0"; document.getElementById('txt-total').innerText = "$0"; return;
         }
 
         carrito.forEach(item => {
@@ -942,203 +754,137 @@
             let pReal = producto.precioFinalApp ? producto.precioFinalApp : (producto.esPesable ? producto.precioPorKilo : producto.precio);
             let pCalc = producto.esPesable ? (pReal / 1000) * cantidad : pReal * cantidad;
             total += pCalc;
-
             let eCant = producto.esPesable ? `${cantidad} gr` : `${cantidad} un`;
 
             lista.innerHTML += `
-                <div class="cart-item animate__animated animate__fadeInRight animate__faster">
-                    <div class="flex-grow-1">
-                        <div class="fw-bold fs-6 text-white text-capitalize">${producto.nombre}</div>
-                        <div class="small text-info">${eCant} x $${pReal} ${producto.promocionActiva ? '<i class="bi bi-tag-fill text-warning"></i>' : ''}</div>
-                    </div>
-                    <div class="fw-bolder fs-4 mx-3 text-white">$${Math.round(pCalc)}</div>
-                    <button class="btn btn-outline-danger border-0 rounded-circle" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;" onclick="removerDelCarrito(${idTicket})">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-            `;
+                <div class="cart-item animate__animated animate__fadeInRight animate__faster p-2">
+                    <div class="flex-grow-1"><div class="fw-bold text-white text-capitalize" style="font-size: 0.85rem; line-height: 1.1; margin-bottom: 4px;">${producto.nombre}</div><div class="small" style="color:var(--neon-cyan);">${eCant} x $${pReal}</div></div>
+                    <div class="fw-bolder fs-5 mx-2 text-success">${fmt(pCalc)}</div>
+                    <button class="btn btn-outline-danger border-0 rounded-circle" style="width:35px;height:35px;display:flex;align-items:center;justify-content:center;" onclick="removerDelCarrito(${idTicket})"><i class="bi bi-x-lg"></i></button>
+                </div>`;
         });
-
-        document.getElementById('txt-total').innerText = `$${Math.round(total)}`;
-        document.getElementById('txt-subtotal').innerText = `$${Math.round(total)}`;
+        document.getElementById('txt-total').innerText = fmt(total); document.getElementById('txt-subtotal').innerText = fmt(total);
     }
 
-    function calcularMontoTotalNeto() {
-        let t = 0;
-        carrito.forEach(item => {
-            let pReal = item.producto.precioFinalApp ? item.producto.precioFinalApp : (item.producto.esPesable ? item.producto.precioPorKilo : item.producto.precio);
-            t += item.producto.esPesable ? (pReal / 1000) * item.cantidad : pReal * item.cantidad;
-        });
-        return t;
-    }
+    function calcularMontoTotalNeto() { let t = 0; carrito.forEach(item => { let pReal = item.producto.precioFinalApp ? item.producto.precioFinalApp : (item.producto.esPesable ? item.producto.precioPorKilo : item.producto.precio); t += item.producto.esPesable ? (pReal / 1000) * item.cantidad : pReal * item.cantidad; }); return t; }
+    function toggleCaja() { const sidebar = document.getElementById('cart-sidebar'); sidebar.classList.toggle('cart-active'); if(sidebar.classList.contains('cart-active')) { play(sfx.open, 0.8); } else { play(sfx.hover, 0.5); } }
 
-    // ==========================================
-    // FLUJO DE PAGO Y FIADOS (MODAL VIP RAPIDO)
-    // ==========================================
+    // --- FLUJO DE PAGO Y FIADOS (MODIFICADO VELOCIDAD TOTAL) ---
     async function abrirModalFiador() {
-        if (carrito.length === 0) return; // Validación previa
-
-        // Instancia segura del Modal (previene bugs de Bootstrap)
+        if (carrito.length === 0) return;
         const myModalEl = document.getElementById('modalFiador');
         const modalFiador = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
-
         document.getElementById('txtMontoFiador').innerText = document.getElementById('txt-total').innerText;
 
         const d = document.getElementById('listaClientesModule');
-        d.innerHTML = `<div class="col-12 text-center"><div class="spinner-border text-warning mx-auto"></div><p class="mt-2 text-muted">Cargando base VIP...</p></div>`;
+        d.innerHTML = `<div class="col-12 text-center"><div class="spinner-border text-warning mx-auto"></div></div>`;
         modalFiador.show();
 
         try {
-            // ¡LÍNEA CORREGIDA! Apunta al nuevo controlador de clientes VIP
             const res = await fetch('/api/clientes/autorizados');
-            if(!res.ok) throw new Error("Error de red");
+            if(!res.ok) throw new Error();
             const clientes = await res.json();
-
-            // Extraer a los VIP
             const vips = clientes.filter(c => c.etiqueta && c.etiqueta.toUpperCase().includes('VIP'));
 
             d.innerHTML = '';
-            if(vips.length === 0) {
-                d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">No hay clientes VIP registrados en el sistema.</p></div>';
-                return;
-            }
+            if(vips.length === 0) { d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">No hay clientes VIP registrados.</p></div>'; return; }
 
-            // Mostrar botones rápidos VIP
             vips.forEach(c => {
                 const deuda = c.deudaActiva ? c.deudaActiva : 0;
                 d.innerHTML += `
-                    <div class="col-md-6 col-lg-4">
-                        <button class="btn btn-outline-warning w-100 p-3 h-100 text-start shadow-sm" style="border-radius: 15px; border-width: 2px;" onclick="procesarPagoFiado(${c.id}, '${c.nombre}')">
+                    <div class="col-md-6 col-12">
+                        <button class="btn btn-outline-warning w-100 p-3 h-100 text-start shadow-sm bg-dark border-2" style="border-radius: 15px;" onclick="procesarPagoFiado(${c.id}, '${c.nombre}')">
                             <i class="bi bi-person-badge-fill fs-3 mb-2 d-block text-warning"></i>
                             <span class="fw-bold fs-5 text-white d-block text-truncate">${c.nombre}</span>
-                            <small class="text-muted d-block mt-1">DNI/RUT: ${c.dni || 'S/N'}</small>
-                            <span class="badge bg-danger mt-2 fw-bold fs-6">Deuda Actual: ${fmt(deuda)}</span>
+                            <span class="badge bg-danger mt-2 fw-bold fs-6">Deuda: ${fmt(deuda)}</span>
                         </button>
-                    </div>
-                `;
+                    </div>`;
             });
-        } catch (error) {
-            d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">Fallo de conexión al buscar clientes VIP.</p></div>';
-        }
+        } catch (error) { d.innerHTML = '<div class="col-12"><p class="text-center text-danger fw-bold">Fallo de conexión al buscar VIP.</p></div>'; }
     }
 
     async function procesarPagoFiado(id, nombre) {
         const total = calcularMontoTotalNeto();
         const { isConfirmed } = await Swal.fire({
-            title: `¿Autorizar Fiado?`,
-            html: `Se cargarán <strong>${fmt(total)}</strong> a la cuenta de <strong class="text-warning">${nombre}</strong>.`,
-            icon: 'question', background: '#1a1a1a', color: '#fff',
-            showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555',
-            confirmButtonText: '<strong class="text-dark">Sí, Autorizar</strong>', cancelButtonText: 'Cancelar'
+            title: `¿Autorizar Fiado?`, html: `Se cargarán <strong>${fmt(total)}</strong> a la cuenta de <strong class="text-warning">${nombre}</strong>.`,
+            icon: 'question', background: '#1e222b', color: '#fff', showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555', confirmButtonText: '<strong class="text-dark">Autorizar</strong>', cancelButtonText: 'Cancelar'
         });
 
         if(isConfirmed) {
-            // Cerrar modal seguro
-            const myModalEl = document.getElementById('modalFiador');
-            const modalFiador = bootstrap.Modal.getInstance(myModalEl);
+            const modalFiador = bootstrap.Modal.getInstance(document.getElementById('modalFiador'));
             if(modalFiador) modalFiador.hide();
-
             await ejecutarCobro('FIADO', id);
         }
     }
 
     async function procesarPago(metodo) {
-        if (carrito.length === 0) {
-            play(sfxE);
-            return Swal.fire({toast:true, position:'top-end', icon:'warning', title:'Caja Vacía', showConfirmButton:false, timer:2000, background:'#1a1a1a', color:'#fff'});
-        }
+        if (carrito.length === 0) { play(sfx.error); return Swal.fire({toast:true, position:'top-end', icon:'warning', title:'Caja Vacía', showConfirmButton:false, timer:2000, background:'#000', color:'#fff'}); }
 
+        // 1. SI ES VIP, abrir modal de tarjetas y terminar aquí
         if (metodo === 'FIADO') {
             abrirModalFiador();
-            return; // Pausa el flujo aquí, sigue al confirmar en el modal
+            return;
         }
 
+        // 2. SI ES TRANSFERENCIA, solo confirmar que revisó la cuenta bancaria
         if (metodo === 'TRANSFERENCIA') {
             const { isConfirmed } = await Swal.fire({
-                title: 'TRANSFERENCIA BANCARIA',
-                text: 'Recuerda verificar que el dinero ingresó a la cuenta antes de entregar la mercadería.',
-                icon: 'info', background: '#1a1a1a', color: '#00f3ff',
-                showCancelButton: true, confirmButtonColor: '#00f3ff', cancelButtonColor: '#555',
-                confirmButtonText: '<strong class="text-dark">Verificado, Cobrar</strong>'
+                title: 'TRANSFERENCIA BANCARIA', text: 'Verifique que el dinero ingresó.',
+                icon: 'info', background: '#1e222b', color: '#00f3ff', showCancelButton: true, confirmButtonColor: '#00f3ff', cancelButtonColor: '#555', confirmButtonText: '<strong class="text-dark">Verificado, Cobrar</strong>'
             });
             if(!isConfirmed) return;
         }
 
+        // 3. COBRO DIRECTO Y RÁPIDO (Cero encuestas al cajero)
         await ejecutarCobro(metodo, null);
     }
 
     async function ejecutarCobro(metodo, clienteId) {
-        Swal.fire({ title: 'PROCESANDO TRANSACCIÓN...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+        Swal.fire({ title: 'PROCESANDO...', background: '#1e222b', color: '#fff', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-        // Crear una versión amigable del "Detalle" de la venta para enviarlo al Whatsapp
         let detalleTexto = "";
         carrito.forEach(item => {
             const cant = item.producto.esPesable ? item.cantidad + ' gr' : item.cantidad + ' un';
             detalleTexto += `• ${cant} x ${item.producto.nombre}\n`;
         });
 
-        const payload = {
-            total: calcularMontoTotalNeto(),
-            tipo: metodo, // <-- IMPORTANTE: Lo que antes era metodoPago, ahora lo renombramos a "tipo" para que Java lo entienda
-            detalle: detalleTexto, // <-- Enviamos el detalle armado
-            clienteId: clienteId,
-            items: carrito.map(i=>({ id: i.producto.id, cantidad: i.cantidad }))
-        };
+        const payload = { total: calcularMontoTotalNeto(), tipo: metodo, detalle: detalleTexto, clienteId: clienteId, items: carrito.map(i=>({ id: i.producto.id, cantidad: i.cantidad })) };
 
         try {
-            // ¡LÍNEA CORREGIDA! Apunta al nuevo controlador de ventas
             const res = await fetch('/api/ventas/procesar', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-            if (!res.ok) throw new Error("Fallo en servidor de ventas");
-
+            if (!res.ok) throw new Error("Fallo en servidor");
             const textResponse = await res.text();
 
-            // Evaluamos la respuesta cruda de nuestro VentaRestController
             let data = {};
-            try {
-                // Por si en el futuro devuelve un JSON (Mercadopago)
-                data = JSON.parse(textResponse);
-            } catch(e) {
-                // Como devuelve texto ("OK" o "ERROR..."), lo atrapamos aquí
-                if (textResponse === "OK") {
-                    data = { status: "ok", mensaje: "Venta registrada con éxito." };
-                } else if (textResponse.startsWith("http")) {
-                    data = { status: "mercadopago", init_point: textResponse };
-                } else {
-                    data = { status: "error", mensaje: textResponse };
-                }
+            try { data = JSON.parse(textResponse); } catch(e) {
+                if (textResponse === "OK") data = { status: "ok", mensaje: "Venta registrada." };
+                else if (textResponse.startsWith("http")) data = { status: "mercadopago", init_point: textResponse };
+                else data = { status: "error", mensaje: textResponse };
             }
 
-            if (data.status === 'mercadopago') {
-                window.location.href = data.init_point;
-            } else if (data.status === 'ok') {
+            if (data.status === 'mercadopago') { window.location.href = data.init_point; }
+            else if (data.status === 'ok') {
+                play(sfx.success, 0.8); // Ping corto
 
-                // SONIDO "CHA-CHING" DE CAJA AL CONFIRMAR LA VENTA EXITOSA
-                play(sfxCash, 1.0);
-
-                if(metodo === 'FIADO') GOMEZ.speak('Crédito autorizado. Enviando resumen de compra al WhatsApp del cliente.');
-                else GOMEZ.speak('Pago procesado correctamente. Imprimiendo comprobante.');
+                if (window.innerWidth <= 991) document.getElementById('cart-sidebar').classList.remove('cart-active');
 
                 generarTicketImpresion(metodo, payload.total);
                 carrito = []; actualizarUI();
 
-                // Dispara ventana impresión (Ticket térmico oculto)
                 setTimeout(() => window.print(), 800);
 
                 Swal.fire({
                     icon: 'success', title: '¡PAGO EXITOSO!', text: data.mensaje,
-                    background: '#1a1a1a', color: '#fff', confirmButtonColor: '#39ff14',
-                    confirmButtonText: '<strong class="text-dark">Siguiente Cliente</strong>',
-                    backdrop: `rgba(57, 255, 20, 0.1)`
+                    background: '#1e222b', color: '#fff', confirmButtonColor: '#39ff14', confirmButtonText: '<strong class="text-dark">Siguiente Cliente</strong>', backdrop: `rgba(57, 255, 20, 0.1)`
                 });
             }
             else throw new Error(data.mensaje);
         } catch (e) {
-            play(sfxE);
-            Swal.fire({ title: 'ERROR DE TRANSACCIÓN', text: e.message, icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#ff003c' });
+            play(sfx.error); Swal.fire({ title: 'ERROR', text: e.message, icon: 'error', background: '#000', color: '#fff', confirmButtonColor: '#ff003c' });
         }
     }
 
-    // TICKET LOGIC (80mm)
+    // TICKET LOGIC
     function generarTicketImpresion(tipo, totalMonto) {
         const d = new Date();
         document.getElementById('ticket-fecha').innerText = d.toLocaleString('es-CL');
@@ -1167,7 +913,7 @@
     async function actualizarCajaFuerte() {
         try {
             const res = await fetch('/api/ventas/caja-fuerte');
-            if(!res.ok) throw new Error("Error obteniendo arqueo");
+            if(!res.ok) throw new Error();
             const data = await res.json();
 
             document.getElementById('hud-efectivo').innerText = fmt(data.totalEfectivo);
@@ -1179,7 +925,7 @@
             list.innerHTML = '';
 
             if(data.ventas.length === 0) {
-                list.innerHTML = '<div class="p-4 text-center text-muted fw-bold">No hay transacciones en este turno.</div>';
+                list.innerHTML = '<div class="p-4 text-center text-muted fw-bold">No hay transacciones.</div>';
                 return;
             }
 
@@ -1187,33 +933,26 @@
                 const isFiado = v.tipoPago === 'FIADO';
                 const icon = isFiado ? '<i class="bi bi-person-vcard text-warning"></i>' : '<i class="bi bi-cash text-success"></i>';
                 const badgeE = isFiado ? '<span class="badge bg-warning text-dark opacity-75">PENDIENTE</span>' : '<span class="badge bg-success opacity-75">PAGADO</span>';
-
                 const hora = v.fechaHora ? v.fechaHora.split('T')[1].substring(0,5) : '00:00';
 
                 list.innerHTML += `
                     <button class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary p-3 d-flex justify-content-between align-items-center" onclick="verDetalleVenta('${encodeURIComponent(v.detalle)}')">
                         <div>
-                            <span class="fs-4 me-2">${icon}</span>
-                            <strong class="fs-5">${fmt(v.montoTotal)}</strong>
-                            <div class="small text-info mt-1"><i class="bi bi-clock"></i> ${hora} ${v.cliente ? ' | ' + v.cliente.nombre : ''}</div>
+                            <span class="fs-5 me-2">${icon}</span>
+                            <strong class="fs-6">${fmt(v.montoTotal)}</strong>
+                            <div class="small text-info mt-1"><i class="bi bi-clock"></i> ${hora}</div>
                         </div>
                         <div>${badgeE}</div>
                     </button>
                 `;
             });
-        } catch(e) { console.warn(e); }
+        } catch(e) {}
     }
 
     function verDetalleVenta(detalleEncoded) {
         let det = decodeURIComponent(detalleEncoded);
         let htmlTicket = `<div style="font-family: monospace; text-align: left; background: #fff; color: #000; padding: 15px; border-radius: 5px; font-size: 14px; white-space: pre-wrap;">${det}</div>`;
-
-        Swal.fire({
-            title: 'TICKET CERRADO',
-            html: htmlTicket,
-            background: '#1a1a1a', color: '#fff',
-            confirmButtonColor: '#00f3ff', confirmButtonText: 'Volver a la Caja'
-        });
+        Swal.fire({ title: 'TICKET CERRADO', html: htmlTicket, background: '#1e222b', color: '#fff', confirmButtonColor: '#00f3ff', confirmButtonText: '<strong class="text-dark">Cerrar</strong>' });
     }
 
     async function confirmarCierreCaja() {
@@ -1221,85 +960,53 @@
         const hFia = document.getElementById('hud-fiado').innerText;
 
         const { isConfirmed } = await Swal.fire({
-            title: '⚠️ ¿SEGURO DESEA CORTAR CAJA?',
+            title: '⚠️ ¿CORTAR CAJA?',
             html: `
                 <div class="text-start mt-3">
-                    <p class="text-white">Al confirmar, el turno se cerrará y el balance regresará a cero. Las transacciones se archivarán.</p>
+                    <p class="text-white small">El turno se cerrará y el balance regresará a cero.</p>
                     <div class="p-3 bg-dark border border-secondary rounded">
-                        <strong class="d-block text-success">EFECTIVO RENTABILIZADO: ${hEfe}</strong>
-                        <strong class="d-block text-primary mt-2">PAGOS POR MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</strong>
-                        <strong class="d-block text-warning mt-2">DEUDA VIP EMITIDA: ${hFia}</strong>
+                        <strong class="d-block text-success">EFECTIVO: ${hEfe}</strong>
+                        <strong class="d-block text-primary mt-2">MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</strong>
+                        <strong class="d-block text-warning mt-2">VIP EMITIDA: ${hFia}</strong>
                     </div>
                 </div>
             `,
-            icon: 'warning', background: '#1a1a1a', color: '#fff',
+            icon: 'warning', background: '#1e222b', color: '#fff',
             showCancelButton: true, confirmButtonColor: '#ff003c', cancelButtonColor: '#555',
-            confirmButtonText: '<strong class="text-white">Sí, Ejecutar Cierre (Z)</strong>', cancelButtonText: 'Cancelar'
+            confirmButtonText: '<strong class="text-white">Sí, Ejecutar (Z)</strong>', cancelButtonText: 'Cancelar'
         });
 
         if(isConfirmed) {
-            Swal.fire({ title: 'Generando Corte Z...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Generando Corte...', background: '#1e222b', color: '#fff', didOpen: () => Swal.showLoading() });
             try {
                 const res = await fetch('/api/ventas/ejecutar-corte', { method: 'POST' });
-                if(!res.ok) throw new Error("Error en servidor");
+                if(!res.ok) throw new Error("Error servidor");
                 const msg = await res.text();
-                if(msg === 'OK') {
-                    play(sfxC, 0.7);
 
+                if(msg === 'OK') {
+                    play(sfx.cash, 0.7);
                     const zHtml = `
-                    <div style="background: white; color: black; font-family: monospace; padding: 20px; border-top: 5px dashed #ccc; border-bottom: 5px dashed #ccc; text-align: left;">
+                    <div style="background: white; color: black; font-family: monospace; padding: 15px; border-top: 3px dashed #ccc; border-bottom: 3px dashed #ccc; text-align: left; font-size: 12px;">
                         <h4 style="text-align:center; font-weight:bold; margin-bottom: 10px;">REPORTE Z</h4>
-                        <p style="margin:2px 0;">--------------------------------</p>
-                        <p style="margin:2px 0;">CAJERO: DEFAULT</p>
                         <p style="margin:2px 0;">FECHA: ${new Date().toLocaleString()}</p>
-                        <p style="margin:2px 0;">--------------------------------</p>
-                        <h5 style="margin:10px 0;">TOTAL EFECTIVO: ${hEfe}</h5>
-                        <h5 style="margin:10px 0;">TOTAL MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</h5>
-                        <h5 style="margin:10px 0; color: #666;">TOTAL FIADOS: ${hFia}</h5>
-                        <p style="margin:2px 0;">--------------------------------</p>
-                        <p style="text-align:center; margin-top:20px; font-size:12px;">Corte generado correctamente.</p>
+                        <p style="margin:2px 0;">------------------------</p>
+                        <h5 style="margin:8px 0;">EFECTIVO: ${hEfe}</h5>
+                        <h5 style="margin:8px 0;">MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</h5>
+                        <h5 style="margin:8px 0; color: #666;">FIADOS: ${hFia}</h5>
+                        <p style="text-align:center; margin-top:15px;">Corte generado.</p>
                     </div>`;
 
-                    offcanvasLibro.hide();
-                    actualizarCajaFuerte();
-
-                    Swal.fire({
-                        title: 'COMPLETADO', html: zHtml,
-                        background: '#1a1a1a', color: '#fff',
-                        confirmButtonColor: '#39ff14', confirmButtonText: '<strong class="text-dark">Aceptar</strong>'
-                    });
+                    offcanvasLibro.hide(); actualizarCajaFuerte();
+                    Swal.fire({ title: 'COMPLETADO', html: zHtml, background: '#1e222b', color: '#fff', confirmButtonColor: '#39ff14' });
                 } else if(msg === 'SIN_VENTAS') {
-                    Swal.fire({ icon: 'info', title: 'CAJA VACÍA', text: 'No hay ventas para cerrar en el turno actual.', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#39ff14' });
+                    Swal.fire({ icon: 'info', title: 'CAJA VACÍA', text: 'No hay ventas para cerrar.', background: '#1e222b', color: '#fff' });
                 }
-            } catch(e) {
-                Swal.fire({ icon: 'error', title: 'Error', text: 'No se procesó el cierre.', background: '#1a1a1a', color: '#fff' });
-            }
+            } catch(e) { Swal.fire({ icon: 'error', title: 'Error', text: 'Fallo al cerrar caja.', background: '#1e222b', color: '#fff' }); }
         }
     }
 
-    setInterval(actualizarCajaFuerte, 60000); // 1 minuto
-    setTimeout(actualizarCajaFuerte, 2000); // Llamado inicial seguro
-
-    // --- SISTEMA DE INSTALACIÓN PWA (APP NATIVA) ---
-    let eventoInstalacionPWA;
-    const btnDescarga = document.getElementById('btn-descargar-app');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        eventoInstalacionPWA = e;
-        if(btnDescarga) btnDescarga.style.display = 'inline-block';
-    });
-
-    async function instalarAppPWA() {
-        if (eventoInstalacionPWA) {
-            eventoInstalacionPWA.prompt();
-            const { outcome } = await eventoInstalacionPWA.userChoice;
-            if (outcome === 'accepted') {
-                if(btnDescarga) btnDescarga.style.display = 'none';
-            }
-            eventoInstalacionPWA = null;
-        }
-    }
+    setInterval(actualizarCajaFuerte, 60000);
+    setTimeout(actualizarCajaFuerte, 2000);
 </script>
 </body>
 </html>

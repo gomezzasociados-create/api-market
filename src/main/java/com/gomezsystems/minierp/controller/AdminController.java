@@ -45,7 +45,6 @@ public class AdminController {
     // 2. LECTOR CSV MEJORADO (LEE FOTOS Y PESABLES AUTOMÁTICAMENTE)
     // =======================================================
     @PostMapping("/api/admin/inventario/csv")
-    @Transactional
     @ResponseBody
     public ResponseEntity<String> subirCsv(@RequestParam("file") MultipartFile file) {
         try {
@@ -54,23 +53,36 @@ public class AdminController {
             while ((line = br.readLine()) != null) {
                 String[] p = line.split(",");
                 if (p.length >= 7) { // Mínimo 7 columnas requeridas
+                    try {
+                    // Ignorar fila de títulos
+                    if (p[1].toLowerCase().contains("nombre") || p[2].toLowerCase().contains("categor") || p[3].toLowerCase().contains("precio")) {
+                        continue;
+                    }
+
                     Producto prod = new Producto();
                     prod.setNombre(p[1].trim());
                     prod.setCategoria(p[2].trim());
-                    prod.setPrecioCompra(Double.parseDouble(p[3].trim()));
+                    
+                    String costoStr = p[3].replaceAll("[^0-9.]", "");
+                    prod.setPrecioCompra(costoStr.isEmpty() ? 0.0 : Double.parseDouble(costoStr));
+
+                    String ventaStr = p[4].replaceAll("[^0-9.]", "");
+                    Double valVenta = ventaStr.isEmpty() ? 0.0 : Double.parseDouble(ventaStr);
 
                     // Lógica inteligente: Si es Feria o Panadería, asume que se vende por Kilo
                     if(p[2].trim().equalsIgnoreCase("Feria") || p[2].trim().equalsIgnoreCase("Panadería")) {
                         prod.setEsPesable(true);
-                        prod.setPrecioPorKilo(Double.parseDouble(p[4].trim()));
+                        prod.setPrecioPorKilo(valVenta);
                         prod.setPrecio(0.0);
                     } else {
                         prod.setEsPesable(false);
-                        prod.setPrecio(Double.parseDouble(p[4].trim()));
+                        prod.setPrecio(valVenta);
                         prod.setPrecioPorKilo(0.0);
                     }
 
-                    prod.setStock(Double.parseDouble(p[5].trim()));
+                    String stockStr = p[5].replaceAll("[^0-9.-]", "");
+                    prod.setStock(stockStr.isEmpty() ? 0.0 : Double.parseDouble(stockStr));
+                    
                     prod.setDescripcion(p[6].trim());
 
                     // Magia: Si el CSV trae una 8va columna, la guarda como URL de la foto
@@ -79,11 +91,15 @@ public class AdminController {
                     }
 
                     productoRepository.save(prod);
+                    } catch (Exception rowEx) {
+                        // Si esta fila falla por un precio inválido o constraint, pasa a la siguiente silenciosamente.
+                        System.err.println("Error procesando fila CSV: " + line + " -> " + rowEx.getMessage());
+                    }
                 }
             }
-            return ResponseEntity.ok("Catálogo CSV inyectado exitosamente con imágenes.");
+            return ResponseEntity.ok("Catálogo procesado. Las filas válidas se cargaron exitosamente.");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error leyendo CSV: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error estructural leyendo CSV: " + e.getMessage());
         }
     }
 }

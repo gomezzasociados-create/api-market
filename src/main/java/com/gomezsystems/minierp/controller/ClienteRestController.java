@@ -61,8 +61,10 @@ public class ClienteRestController {
             cliente.setDni(datosActualizados.getDni());
             cliente.setDeudaActiva(datosActualizados.getDeudaActiva());
             cliente.setCupoMaximo(datosActualizados.getCupoMaximo());
+            cliente.setFechaLimitePago(datosActualizados.getFechaLimitePago());
             cliente.setPlantillaMsgCompra(datosActualizados.getPlantillaMsgCompra());
             cliente.setPlantillaMsgAbono(datosActualizados.getPlantillaMsgAbono());
+            cliente.setPlantillaMsgOferta(datosActualizados.getPlantillaMsgOferta());
             cliente.setEtiqueta(datosActualizados.getEtiqueta());
             clienteRepository.save(cliente);
             return ResponseEntity.ok("OK");

@@ -11731,3 +11731,23 @@ select v1_0.id,v1_0.cierre_aplicado,v1_0.cliente_id,v1_0.detalle,v1_0.estado,v1_
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-05 20:37:01.481693-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"
+Value too long for column "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"; SQL statement:
+insert into productos (categoria,descripcion,es_pesable,fecha_fin_promo,fecha_inicio_promo,imagen,nombre,precio,precio_compra,precio_por_kilo,precio_promo,promocion_activa,proveedor_id,stock,version,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,default) [22001-224]
+2026-04-05 20:40:15.055571-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"
+Value too long for column "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"; SQL statement:
+insert into productos (categoria,descripcion,es_pesable,fecha_fin_promo,fecha_inicio_promo,imagen,nombre,precio,precio_compra,precio_por_kilo,precio_promo,promocion_activa,proveedor_id,stock,version,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,default) [22001-224]
+2026-04-05 20:40:15.096990-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/Ground-Beef-80-Lean-Ground-Beef-1-.jpg?cont... (327)"
+Value too long for column "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/Ground-Beef-80-Lean-Ground-Beef-1-.jpg?cont... (327)"; SQL statement:
+insert into productos (categoria,descripcion,es_pesable,fecha_fin_promo,fecha_inicio_promo,imagen,nombre,precio,precio_compra,precio_por_kilo,precio_promo,promocion_activa,proveedor_id,stock,version,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,default) [22001-224]
+2026-04-05 20:47:03.646721-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"
+Value too long for column "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/-1200Wx1200H-70060029.jpg-515Wx515H?context... (266)"; SQL statement:
+insert into productos (categoria,descripcion,es_pesable,fecha_fin_promo,fecha_inicio_promo,imagen,nombre,precio,precio_compra,precio_por_kilo,precio_promo,promocion_activa,proveedor_id,stock,version,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,default) [22001-224]
+2026-04-05 20:47:03.662435-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/Ground-Beef-80-Lean-Ground-Beef-1-.jpg?cont... (327)"
+Value too long for column "IMAGEN CHARACTER VARYING(255)": "'https://sigmafoodservice.com/medias/Ground-Beef-80-Lean-Ground-Beef-1-.jpg?cont... (327)"; SQL statement:
+insert into productos (categoria,descripcion,es_pesable,fecha_fin_promo,fecha_inicio_promo,imagen,nombre,precio,precio_compra,precio_por_kilo,precio_promo,promocion_activa,proveedor_id,stock,version,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,default) [22001-224]

@@ -36,6 +36,9 @@ public class Cliente {
     @Column(columnDefinition = "TEXT")
     private String plantillaMsgAbono;
 
+    @Column(columnDefinition = "TEXT")
+    private String plantillaMsgOferta;
+
     public Cliente() {
         this.fechaRegistro = LocalDate.now();
         this.deudaActiva = 0.0;
@@ -81,4 +84,7 @@ public class Cliente {
 
     public String getPlantillaMsgAbono() { return plantillaMsgAbono; }
     public void setPlantillaMsgAbono(String plantillaMsgAbono) { this.plantillaMsgAbono = plantillaMsgAbono; }
+
+    public String getPlantillaMsgOferta() { return plantillaMsgOferta; }
+    public void setPlantillaMsgOferta(String plantillaMsgOferta) { this.plantillaMsgOferta = plantillaMsgOferta; }
 }

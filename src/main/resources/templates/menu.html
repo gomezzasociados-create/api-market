@@ -13,301 +13,229 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="manifest" href="/manifest-menu.json">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#0a0a0f">
+
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Limber">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/869/869062.png">
+    <meta name="apple-mobile-web-app-title" content="Límber Market">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=M&background=0a0a0f&color=39ff14&size=512&bold=true&font-size=0.6">
 
     <style>
         :root {
-            --bg-futurist: #f4f7f6;
             --neon-green: #39ff14;
             --neon-cyan: #00f3ff;
-            --text-dark: #1a1a1a;
+            --neon-magenta: #ff007c;
+            --neon-yellow: #fcee0a;
+            --glass-bg: rgba(15, 15, 20, 0.65);
+            --glass-blur: blur(12px);
         }
 
         body, html {
             margin: 0; padding: 0; font-family: 'Outfit', sans-serif;
-            background-color: transparent;
-            color: var(--text-dark);
-            min-height: 100vh; overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-futurist); }
-        ::-webkit-scrollbar-thumb { background: var(--text-dark); border-radius: 10px; border: 1px solid var(--neon-green); }
-        ::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
-
-        /* --- 🖼️ FONDO DINÁMICO GOMEZ MARKET --- */
-        .market-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2;
-            opacity: 1;
-            pointer-events: none;
+            color: #ffffff; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth;
             background-color: #1a1a1a;
             background-image: url('https://res.cloudinary.com/doi0o3hlr/image/upload/v1775196208/mk_bbslzj.png');
-            background-size: cover; background-position: center;
-            background-attachment: fixed;
-            animation: softPulse 15s infinite alternate ease-in-out;
-            will-change: transform;
+            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
 
-        @keyframes softPulse {
-            0% { transform: scale(1); filter: brightness(1.1) contrast(1.1); }
-            100% { transform: scale(1.05); filter: brightness(1.2) contrast(1.2); }
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; box-shadow: 0 0 10px var(--neon-cyan); }
 
-        .overlay-futurist {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.6) 100%);
-            z-index: -1; pointer-events: none;
-        }
-
-        /* --- FX DE CARGA --- */
         #futurist-loader {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #1a1a1a; z-index: 9999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; transition: opacity 0.5s;
         }
+
         .vortex {
-            width: 100px; height: 100px; border-radius: 50%;
-            border: 3px solid transparent; border-top-color: var(--neon-green);
-            border-bottom-color: var(--neon-cyan);
+            width: 100px; height: 100px; border-radius: 50%; border: 3px solid transparent;
+            border-top-color: var(--neon-green); border-bottom-color: var(--neon-cyan);
             animation: vortexRotate 1s linear infinite;
         }
         @keyframes vortexRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- HEADER NEGRO TRANSLÚCIDO Y TÍTULO NIVEL DIOS --- */
         header {
-            padding: 25px; text-align: center;
-            background: rgba(15, 15, 15, 0.75); /* Cristal Negro Translúcido */
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(57, 255, 20, 0.3); /* Línea inferior neón verde */
-            position: sticky; top: 0; z-index: 100;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            padding: 20px; text-align: center;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 2px solid rgba(0, 243, 255, 0.4); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .epic-title-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-        .epic-market {
-            font-size: 6rem;
-            font-weight: 900;
-            line-height: 0.8;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            margin: 0;
-            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.8));
-        }
-        .epic-limber {
-            font-size: 5.5rem;
-            font-weight: 900;
-            line-height: 0.9;
-            letter-spacing: 20px;
-            margin: 0;
-            margin-top: -5px;
-            margin-left: 20px; /* Para centrar ópticamente por el letter-spacing */
-            text-transform: uppercase;
-            color: var(--neon-cyan);
-            animation: limberGodMode 2.5s ease-in-out infinite alternate;
-        }
+        .epic-title-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .epic-market { font-size: 4.5rem; font-weight: 900; line-height: 0.8; letter-spacing: -2px; text-transform: uppercase; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8)); }
+        .epic-limber { font-size: 4rem; font-weight: 900; line-height: 0.9; letter-spacing: 15px; margin: 0; margin-top: -5px; margin-left: 15px; text-transform: uppercase; color: var(--neon-cyan); animation: limberGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 15px var(--neon-cyan); }
+        @keyframes limberGodMode { 0% { text-shadow: 0 0 10px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 20px #fff, 0 0 30px var(--neon-cyan), 0 0 50px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
 
-        @keyframes limberGodMode {
-            0% {
-                text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
-                transform: scale(1);
-            }
-            100% {
-                text-shadow: 0 0 20px #fff, 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-cyan), 0 0 120px var(--neon-cyan);
-                transform: scale(1.04);
-                color: #ffffff;
-            }
-        }
-
-        /* --- GUÍA G.O.M.E.Z. (CLIENTES) --- */
+        /* --- GUÍA ESCRITA Y POR VOZ --- */
         .gomez-guide-box {
-            background: rgba(10, 10, 10, 0.85); /* Más oscuro para resaltar en el fondo */
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 20px;
-            padding: 15px 25px;
-            margin: 20px auto;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.15);
-            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 243, 255, 0.3); border-left: 4px solid var(--neon-cyan);
+            border-radius: 15px; padding: 15px 20px; margin: 15px auto; max-width: 800px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); transition: 0.3s;
         }
-        .gomez-guide-box:hover { box-shadow: 0 10px 40px rgba(0, 243, 255, 0.3); transform: translateY(-2px); }
+        .gomez-guide-box i.main-icon { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
         .btn-speak-guide {
-            background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; transition: 0.3s; flex-shrink: 0;
+            background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); border: 2px solid var(--neon-cyan);
+            min-width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
         .btn-speak-guide:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); transform: scale(1.1); }
+        .guide-toggler[aria-expanded="true"] .bi-chevron-expand { transform: rotate(180deg); color: var(--neon-magenta) !important; }
+        .guide-toggler .bi-chevron-expand { transition: 0.3s; }
+
+        /* --- BOTÓN SLIM DESCARGAR APP --- */
+        .btn-slim-install {
+            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--neon-magenta); color: var(--neon-magenta);
+            border-radius: 8px; padding: 6px 20px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; display: none; margin: -5px auto 15px auto; width: fit-content;
+            transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 124, 0.3); backdrop-filter: blur(5px);
+            align-items: center; justify-content: center; cursor: pointer;
+        }
+        .btn-slim-install:hover { background: var(--neon-magenta); color: #fff; box-shadow: 0 0 20px var(--neon-magenta), inset 0 0 10px var(--neon-magenta); transform: scale(1.05); }
+        .btn-slim-install i { text-shadow: 0 0 15px var(--neon-magenta); font-size: 1.2rem; }
 
         /* --- FILTROS --- */
-        .filter-container { margin-top: 25px; }
+        .filter-container { margin-top: 10px; display: flex; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; gap: 8px; justify-content: center; }
+        .filter-container::-webkit-scrollbar { display: none; }
         .btn-neon-filter {
-            background: rgba(20,20,20,0.9); border: 1px solid rgba(255,255,255,0.2); color: #fff;
-            border-radius: 30px; padding: 10px 25px; font-weight: 700;
-            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
-            margin: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7); border: 1px solid rgba(0,243,255,0.4); color: #fff;
+            border-radius: 12px; padding: 8px 18px; font-weight: 700; font-size: 0.85rem;
+            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0;
+            backdrop-filter: blur(5px);
         }
-        .btn-neon-filter:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); transform: translateY(-2px); }
-        .btn-neon-filter.active { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.6); }
+        .btn-neon-filter:hover { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0,243,255,0.4); }
+        .btn-neon-filter.active { background: var(--neon-cyan); color: #000; border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
 
-        /* --- TARJETAS WAOOO --- */
-        .catalog-container { padding: 40px 20px; max-width: 1600px; margin: 0 auto; }
-        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; }
+        /* --- GRID COMPACTO --- */
+        .catalog-container { padding: 20px 10px; max-width: 1400px; margin: 0 auto; }
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
 
-        .tilt-wrapper { perspective: 2000px; }
+        /* --- TARJETAS NIVEL DIOS --- */
+        .tilt-wrapper { perspective: 1200px; }
         .producto-card {
-            background: #ffffff; border: 1px solid #eee;
-            border-radius: 30px; overflow: hidden; display: flex; flex-direction: column;
+            background: rgba(20, 20, 25, 0.9); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
             position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform-style: preserve-3d; box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            height: 100%; cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
-        .producto-card::before {
-            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 5px;
-            background: var(--neon-green); box-shadow: 0 0 20px var(--neon-green);
-            z-index: 10; pointer-events: none;
+        .producto-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); z-index: 10; transition: 0.3s; }
+        .producto-card::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 2px; background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); z-index: 11; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+        .producto-card:hover::after { animation: laserScan 1.5s linear infinite; opacity: 1; }
+        @keyframes laserScan { 0% { top: 0%; } 100% { top: 100%; } }
+
+        .card-god-mode {
+            transform: perspective(1000px) scale(1.15) translateZ(80px) !important;
+            box-shadow: 0 0 40px var(--neon-green), inset 0 0 20px rgba(57,255,20,0.3) !important;
+            border-color: var(--neon-green) !important; z-index: 9999 !important; filter: brightness(1.2);
+            background: rgba(0,0,0,0.95);
         }
-        .producto-card:hover::before { animation: neonScan 1.2s linear infinite; }
-        @keyframes neonScan { 0% { top: -5%; } 100% { top: 105%; } }
+        .cyber-ripple { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: var(--neon-cyan); border-radius: 50%; transform: translate(-50%, -50%); animation: rippleBurst 0.6s ease-out forwards; pointer-events: none; z-index: 100; }
+        @keyframes rippleBurst { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(50); opacity: 0; } }
 
-        .img-container { height: 240px; overflow: hidden; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
-        .producto-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .producto-card:hover .producto-img { transform: scale(1.12) translateZ(30px); filter: brightness(1.05); }
+        .img-container { height: 130px; overflow: hidden; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative;}
+        .producto-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); opacity: 0.95; }
+        .producto-card:hover .producto-img { transform: scale(1.2); opacity: 1; filter: brightness(1.1); }
 
-        .producto-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; transform: translateZ(40px); background: #fff; }
-        .producto-nombre { font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin-bottom: 5px; line-height: 1.2; text-transform: capitalize; }
-        .precio-main { font-size: 2.2rem; font-weight: 800; color: var(--neon-green); display: block; margin-bottom: 15px; text-shadow: 0 0 1px rgba(57, 255, 20, 0.2); }
+        .producto-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; background: rgba(0,0,0,0.4); }
+        .producto-nombre { font-size: 0.85rem; font-weight: 800; color: #fff; margin-bottom: 5px; line-height: 1.2; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 4px rgba(0,0,0,0.8);}
 
-        .btn-add {
-            background: var(--text-dark); color: var(--neon-green); border: none;
-            width: 100%; padding: 15px; border-radius: 18px; font-weight: 800; font-size: 1.1rem;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-            cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-add:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 25px rgba(57, 255, 20, 0.5); transform: translateY(-3px) translateZ(30px); }
-        .btn-add:active { transform: translateY(2px) translateZ(10px); }
+        .precio-main { font-size: 1.4rem; font-weight: 900; color: var(--neon-green); display: block; margin-bottom: 8px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.4); letter-spacing: -1px;}
+        .precio-main .fs-6 { font-size: 0.7rem !important; color: #ccc !important; text-shadow: none;}
+
+        .btn-add { background: rgba(0, 243, 255, 0.15); color: var(--neon-cyan); border: 1px solid rgba(0,243,255,0.4); width: 100%; padding: 8px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: auto; text-shadow: 0 0 5px rgba(0,243,255,0.5); }
+        .producto-card:hover .btn-add { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); border-color: var(--neon-cyan); text-shadow: none; }
+
+        /* Badges */
+        .badge-promo { position:absolute; top:8px; right:8px; background:var(--neon-magenta); color:white; padding:3px 8px; border-radius:8px; font-weight:900; box-shadow:0 0 15px var(--neon-magenta); z-index:20; font-size:0.6rem; letter-spacing:1px; border: 1px solid #fff; }
+        .badge-stock { position:absolute; top:8px; left:8px; background:var(--neon-yellow); color:#000; padding:3px 8px; border-radius:8px; font-weight:900; box-shadow:0 0 15px var(--neon-yellow); z-index:20; font-size:0.6rem; letter-spacing:0.5px;}
+        .badge-agotado { position:absolute; top:8px; left:8px; background:#ff003c; color:white; padding:3px 8px; border-radius:8px; font-weight:900; box-shadow:0 0 15px #ff003c; z-index:20; font-size:0.6rem; letter-spacing:1px;}
 
         /* --- CARRITO FLOTANTE --- */
-        .cart-float-btn {
-            position: fixed; bottom: 40px; right: 40px; width: 85px; height: 85px;
-            background: var(--text-dark); color: var(--neon-green);
-            border-radius: 50%; border: 3px solid var(--neon-green);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem; cursor: pointer; z-index: 1000;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .cart-float-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 40px var(--neon-green); }
+        .cart-float-btn { position: fixed; bottom: 80px; right: 20px; width: 75px; height: 75px; background: rgba(0,0,0,0.9); color: var(--neon-green); border-radius: 50%; border: 3px solid var(--neon-green); display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px rgba(57, 255, 20, 0.4), inset 0 0 10px rgba(57, 255, 20, 0.2); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); }
+        .cart-float-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 35px var(--neon-green); background: var(--neon-green); color: #000; }
         .cart-float-btn.pulse { animation: neonPulse 1.5s infinite; }
-        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.4); } 50% { box-shadow: 0 0 45px var(--neon-green); } }
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.4); } 50% { box-shadow: 0 0 50px var(--neon-green); } }
+        .cart-count-badge { position: absolute; top: -5px; right: -5px; background: var(--neon-cyan); color: #000; width: 30px; height: 30px; border-radius: 50%; font-size: 0.95rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon-cyan); border: 2px solid #000; }
 
-        .cart-count-badge {
-            position: absolute; top: -8px; right: -8px; background: var(--neon-cyan); color: #000;
-            width: 35px; height: 35px; border-radius: 50%; font-size: 1.1rem; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon-cyan);
-        }
+        /* --- CAJA TERMINAL OFF-CANVAS --- */
+        .offcanvas-caja { background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(40px); border-left: 2px solid var(--neon-cyan); width: 450px !important; border-radius: 30px 0 0 30px; box-shadow: -20px 0 60px rgba(0,0,0,0.9); color: #fff;}
+        @media (max-width: 768px) { .offcanvas-caja { width: 100% !important; border-radius: 0; border-left: none; } }
 
-        /* --- CAJA TERMINAL (CARRITO BRUTAL) --- */
-        .offcanvas-caja {
-            background: rgba(250, 250, 250, 0.95); backdrop-filter: blur(40px);
-            border-left: 2px solid var(--neon-green); width: 500px !important; border-radius: 40px 0 0 40px;
-            box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-        }
-        .offcanvas-header { border-bottom: 2px dashed rgba(0,0,0,0.05); padding: 30px; }
+        .offcanvas-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 25px; position: relative;}
+        .btn-close-cart-custom { position: absolute; right: 25px; top: 25px; background: transparent; border: 2px solid var(--neon-magenta); color: var(--neon-magenta); border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 15px rgba(255, 0, 124, 0.3); transition: 0.3s; }
+        .btn-close-cart-custom:hover { background: var(--neon-magenta); color: #fff; transform: scale(1.1) rotate(90deg); }
 
-        /* Items del carrito (Diseño Premium) */
-        .cart-item-row {
-            background: #fff; border-radius: 20px; padding: 20px; margin-bottom: 15px;
-            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            transition: 0.3s; position: relative; overflow: hidden;
-        }
-        .cart-item-row:hover { border-color: var(--neon-cyan); box-shadow: 0 8px 25px rgba(0, 243, 255, 0.15); transform: translateX(-5px); }
-        .cart-item-row::before { content:''; position:absolute; left:0; top:0; height:100%; width:4px; background: var(--neon-green); }
+        .cart-item-row { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 15px; margin-bottom: 12px; border: 1px solid rgba(0,243,255,0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; position: relative; overflow: hidden; }
+        .cart-item-row:hover { border-color: var(--neon-green); box-shadow: 0 8px 25px rgba(57, 255, 20, 0.15); transform: translateX(-5px); }
+        .cart-item-row::before { content:''; position:absolute; left:0; top:0; height:100%; width:4px; background: var(--neon-cyan); }
 
-        .total-display-box {
-            background: #1a1a1a; color: #fff; padding: 30px; border-radius: 30px;
-            text-align: center; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        .total-display-box::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 6px; background: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); }
+        .total-display-box { background: #000; border: 1px solid var(--neon-green); color: #fff; padding: 25px; border-radius: 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 30px rgba(57,255,20,0.15); }
+        .total-display-box::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); }
 
-        .btn-pay-action {
-            border-radius: 20px; padding: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 1.1rem;
-            transition: 0.3s; border: none;
-        }
-        .btn-pay-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .btn-pay-action { border-radius: 15px; padding: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 1rem; transition: 0.3s; border: none; }
+        .btn-pay-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); filter: brightness(1.2); }
+
+        /* SweetAlert Cibernético */
+        .swal2-popup { background: #1e222b !important; border: 1px solid var(--neon-cyan); border-radius: 20px !important; box-shadow: 0 0 50px rgba(0,243,255,0.3) !important; color: #fff !important; }
+        .swal-input-cyber { background: rgba(0,0,0,0.6) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: #fff !important; }
+        .swal-input-cyber:focus { border-color: var(--neon-cyan) !important; box-shadow: 0 0 15px rgba(0,243,255,0.3) !important; }
 
         @media (max-width: 768px) {
-            .hero-section { padding: 30px 10px; }
-            .epic-market { font-size: 3rem; margin-bottom: -5px; }
-            .epic-limber { font-size: 2.8rem; letter-spacing: 4px; margin-left: 0; }
-            .gomez-guide-box { flex-direction: row; text-align: left; margin: 5px 0; padding: 10px 15px; border-radius: 18px; align-items: center; gap: 10px; }
-            .gomez-guide-box i.bi-robot { font-size: 1.8rem !important; margin-bottom: 0; }
-            .gomez-guide-box strong { font-size: 1.1rem !important; display: block; line-height: 1; }
-            .gomez-guide-box span { font-size: 0.8rem !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2; margin-top: 4px; }
-            .btn-speak-guide { width: 35px; height: 35px; min-width: 35px; font-size: 1.1rem; }
-            .filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 15px; }
-            .btn-neon-filter { padding: 8px 15px; font-size: 0.8rem; margin: 0; }
-            .cart-float-btn { bottom: 20px; right: 20px; width: 65px; height: 65px; font-size: 1.5rem; }
-            .offcanvas-caja { width: 100% !important; border-radius: 0; border-left: none; }
-            .catalog-container { padding: 20px 10px; }
-            .grid-productos { gap: 15px; }
-            .producto-nombre { font-size: 1.1rem; }
-            .precio-main { font-size: 1.6rem; }
+            .epic-market { font-size: 3.5rem; margin-bottom: -5px; }
+            .epic-limber { font-size: 3rem; letter-spacing: 10px; margin-left: 0; }
         }
     </style>
 </head>
 <body>
 
-<div id="futurist-loader"><div class="vortex mb-3"></div><h4 class="text-white fw-bold" style="letter-spacing: 2px;">INICIANDO SISTEMAS...</h4></div>
-<div class="market-bg"></div><div class="overlay-futurist"></div>
+<div id="futurist-loader">
+    <div class="vortex mb-3"></div>
+    <h4 class="text-white fw-bold" style="letter-spacing: 2px;">INICIANDO E-COMMERCE...</h4>
+</div>
 
-<audio id="sfx-hover" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
-<audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" preload="auto"></audio>
-<audio id="sfx-add" src="https://assets.mixkit.co/active_storage/sfx/2016/2016-preview.mp3" preload="auto"></audio>
+<div class="market-bg"></div>
+<div class="overlay-futurist"></div>
+
+<audio id="sfx-hover" src="https://assets.mixkit.co/active_storage/sfx/2578/2578-preview.mp3" preload="auto"></audio>
+<audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+<audio id="sfx-add" src="https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3" preload="auto"></audio>
 <audio id="sfx-open" src="https://assets.mixkit.co/active_storage/sfx/2833/2833-preview.mp3" preload="auto"></audio>
-<audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
-<audio id="sfx-cash" src="https://actions.google.com/sounds/v1/alarms/cash_register.ogg" preload="auto"></audio>
+<audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
 <header>
     <div class="container animate__animated animate__fadeInDown position-relative">
-        <button id="btn-descargar-app" class="btn text-dark fw-bold position-absolute top-0 end-0 mt-3 me-3 shadow-lg" style="display: none; z-index: 1000; background: var(--neon-green); border-radius: 20px; font-size: 0.85rem; padding: 8px 15px;" onclick="instalarAppPWA()">
-            <i class="bi bi-cloud-arrow-down-fill me-1 fs-5"></i> INSTALAR APP
-        </button>
-
         <div class="epic-title-wrapper">
             <h1 class="epic-market">MARKET</h1>
             <h1 class="epic-limber">LIMBER</h1>
         </div>
 
-        <div class="gomez-guide-box animate__animated animate__fadeIn animate__delay-1s">
-            <i class="bi bi-robot" style="font-size: 2.5rem; color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan);"></i>
-            <div class="text-start" style="flex-grow: 1;">
-                <strong class="text-white fs-5">Hola, soy Limber 2.0 🤖</strong><br>
-                <span class="text-light opacity-75">Selecciona tus productos deslizando el catálogo. Si compras frutas o verduras, te pediré el peso en kilos. Cuando estés listo, presiona el <strong>carrito flotante abajo a la derecha</strong> para elegir tu método de pago preferido.</span>
+        <div class="gomez-guide-box flex-column align-items-stretch animate__animated animate__fadeIn animate__delay-1s mb-2">
+            <div class="d-flex justify-content-between align-items-center w-100 guide-toggler" data-bs-toggle="collapse" data-bs-target="#collapseGuide" style="cursor: pointer;" onclick="playSfx('hover')">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-robot main-icon" style="font-size: 1.8rem;"></i>
+                    <strong class="text-white fs-6 m-0" style="letter-spacing: 1px;">ASISTENTE VIRTUAL</strong>
+                </div>
+                <i class="bi bi-chevron-expand text-neon-cyan fs-4"></i>
             </div>
-            <button class="btn-speak-guide shadow" onclick="GOMEZ.speak('Hola, soy Limber 2 punto cero. Para comprar, simplemente selecciona los productos tocando Agregar. Si son productos a granel como pan o manzanas, yo te preguntaré el peso. Cuando finalices tu pedido, pulsa el botón del carrito en la esquina inferior derecha para procesar tu pago de forma instantánea.')" title="Escuchar instrucciones">
-                <i class="bi bi-volume-up-fill"></i>
-            </button>
+            <div id="collapseGuide" class="collapse">
+                <div class="d-flex align-items-center gap-3 mt-3 pt-3 border-top border-secondary">
+                    <div class="text-start" style="flex-grow: 1;">
+                        <strong class="text-white fs-6">Hola, bienvenidos a Market Limber ✨</strong><br>
+                        <span class="text-light opacity-75" style="font-size: 0.85rem;">Toca cualquier producto para agregarlo a la orden. Si compras por kilo, te pediré el peso exacto. Presiona el <strong>carrito flotante</strong> cuando estés listo para pagar y agendar tu retiro.</span>
+                    </div>
+                    <button class="btn-speak-guide shadow" onclick="GOMEZ.speak('Hola, bienvenidos a Market Límber. Toca cualquier tarjeta para agregar el producto a tu orden. Si compras a granel, yo te pediré el peso exacto. Cuando finalices, pulsa el botón del carrito abajo a la derecha para procesar tu pago y agendar tu retiro en el local.')" title="Escuchar instrucciones">
+                        <i class="bi bi-volume-up-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="btn-descargar-app" class="btn-slim-install animate__animated animate__fadeInUp" onclick="instalarAppPWA()">
+            <i class="bi bi-phone-vibrate me-2"></i> DESCARGAR APP NATIVA
         </div>
 
         <div class="filter-container animate__animated animate__fadeInUp animate__delay-1s">
@@ -330,9 +258,15 @@
 
 <div class="offcanvas offcanvas-end offcanvas-caja" id="offcanvasCaja" aria-labelledby="offcanvasCajaLabel">
     <div class="offcanvas-header">
-        <h4 class="offcanvas-title fw-800 text-dark" id="offcanvasCajaLabel"><i class="bi bi-bag-check-fill text-success me-2"></i> TU <span class="text-success">PEDIDO</span></h4>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+        <h4 class="offcanvas-title fw-800 text-white" id="offcanvasCajaLabel">
+            <i class="bi bi-bag-check-fill me-2" style="color: var(--neon-cyan);"></i> TU <span style="color: var(--neon-cyan);">PEDIDO</span>
+        </h4>
+        <button type="button" class="btn-close-cart-custom d-md-none" onclick="toggleCaja()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <button type="button" class="btn-close btn-close-white d-none d-md-block" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
+
     <div class="offcanvas-body d-flex flex-column p-4">
         <div id="lista-carrito" class="flex-grow-1" style="overflow-y: auto; padding-right: 5px;">
             <div class="text-center text-muted mt-5 d-flex flex-column align-items-center">
@@ -341,19 +275,20 @@
                 <p class="small">Agrega ítems desde el catálogo.</p>
             </div>
         </div>
-        <div class="cart-footer mt-auto pt-4">
+
+        <div class="cart-footer mt-auto pt-4 border-top border-secondary">
             <div class="total-display-box mb-4 animate__animated animate__fadeInUp">
-                <span class="d-block small fw-bold text-muted mb-1" style="letter-spacing: 2px;">TOTAL A PAGAR</span>
-                <h1 class="fw-800 m-0 text-success" id="cart-total" style="font-size: 3.5rem; text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);">$0</h1>
+                <span class="d-block small fw-bold mb-1" style="letter-spacing: 2px; color: var(--neon-green);">TOTAL A PAGAR</span>
+                <h1 class="fw-900 m-0 text-white" id="cart-total" style="font-size: 3rem; text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);">$0</h1>
             </div>
             <div class="d-grid gap-3">
-                <button class="btn btn-pay-action text-white" style="background: #1a1a1a;" onclick="procesarVenta('TRANSFERENCIA')">
-                    <i class="bi bi-bank"></i> Transferencia
+                <button class="btn btn-pay-action text-white" style="background: #111; border: 1px solid rgba(255,255,255,0.2);" onclick="procesarVenta('TRANSFERENCIA')">
+                    <i class="bi bi-bank"></i> Transferencia (Retiro)
                 </button>
-                <button class="btn btn-pay-action text-dark" style="background: var(--neon-yellow);" onclick="procesarVenta('FIADO')">
-                    <i class="bi bi-star-fill text-dark"></i> Pago Crédito VIP
+                <button class="btn btn-pay-action text-dark" style="background: var(--neon-yellow); box-shadow: 0 0 15px rgba(252, 238, 10, 0.4);" onclick="procesarVenta('FIADO')">
+                    <i class="bi bi-star-fill text-dark"></i> Crédito VIP
                 </button>
-                <button class="btn btn-pay-action text-white" onclick="procesarVenta('MERCADOPAGO')" style="background: linear-gradient(90deg, #009ee3, #00b4d8); box-shadow: 0 10px 25px rgba(0,158,227,0.3);">
+                <button class="btn btn-pay-action text-white" onclick="procesarVenta('MERCADOPAGO')" style="background: linear-gradient(90deg, #009ee3, #00b4d8); box-shadow: 0 0 20px rgba(0,158,227,0.4);">
                     <i class="bi bi-credit-card-fill"></i> Mercado Pago
                 </button>
             </div>
@@ -362,14 +297,18 @@
 </div>
 
 <script>
-    // --- SISTEMA DE INSTALACIÓN PWA (APP NATIVA) ---
+    // ==========================================
+    // SISTEMA PWA E INSTALACIÓN
+    // ==========================================
     let eventoInstalacionPWA;
     const btnDescarga = document.getElementById('btn-descargar-app');
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         eventoInstalacionPWA = e;
-        if(btnDescarga) btnDescarga.style.display = 'inline-block';
+        if (btnDescarga) {
+            btnDescarga.style.display = 'inline-flex';
+        }
     });
 
     async function instalarAppPWA() {
@@ -377,55 +316,97 @@
             eventoInstalacionPWA.prompt();
             const { outcome } = await eventoInstalacionPWA.userChoice;
             if (outcome === 'accepted') {
-                if(btnDescarga) btnDescarga.style.display = 'none';
+                if (btnDescarga) {
+                    btnDescarga.style.display = 'none';
+                }
             }
             eventoInstalacionPWA = null;
         }
     }
 
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js');
+        });
     }
 
-    // --- MOTOR DE VOZ LIMBER 2.0 (CLIENTES) ---
+    // ==========================================
+    // REPRODUCTOR DE SONIDOS SCI-FI
+    // ==========================================
+    const sfx = {
+        hover: document.getElementById('sfx-hover'),
+        click: document.getElementById('sfx-click'),
+        add: document.getElementById('sfx-add'),
+        open: document.getElementById('sfx-open'),
+        success: document.getElementById('sfx-success')
+    };
+
+    function playSfx(type, volume = 0.3) {
+        try {
+            if (sfx[type]) {
+                sfx[type].currentTime = 0;
+                sfx[type].volume = volume;
+                sfx[type].play();
+            }
+        } catch (error) {}
+    }
+
+    // ==========================================
+    // MOTOR DE VOZ FONÉTICO (LÍMBER)
+    // ==========================================
     const GOMEZ = {
         synth: window.speechSynthesis,
         bestVoice: null,
         initVoices: function() {
             let voices = this.synth.getVoices();
             if (!voices.length) return;
-            // Intentar fijar una voz consistente (Priorizar voz de hombre para "Limber")
             const maleHints = ['pablo', 'jorge', 'diego', 'alvaro', 'google español'];
             this.bestVoice = voices.find(v => v.lang.startsWith('es') && maleHints.some(h => v.name.toLowerCase().includes(h)))
                           || voices.find(v => v.lang === 'es-ES' && !v.name.toLowerCase().includes('sabina'))
                           || voices.find(v => v.lang.startsWith('es'));
         },
         speak: function(text) {
-            if (this.synth.speaking) this.synth.cancel();
+            if (this.synth.speaking) {
+                this.synth.cancel();
+            }
             const utterance = new SpeechSynthesisUtterance(text);
-            if (this.bestVoice) utterance.voice = this.bestVoice;
-            utterance.lang = 'es-MX'; // Fallback a es-MX (Suele ser hombre en algunos android) o afecta pronunciación.
+            if (this.bestVoice) {
+                utterance.voice = this.bestVoice;
+            }
+            utterance.lang = 'es-MX';
             utterance.pitch = 1.0;
             utterance.rate = 1.1;
             this.synth.speak(utterance);
         }
     };
 
-    // Cargar voces en cuanto estén listas
     if (speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = () => GOMEZ.initVoices();
     }
     GOMEZ.initVoices();
 
-    // --- EFECTOS DE SONIDO ---
-    const sfx = { hover: document.getElementById('sfx-hover'), click: document.getElementById('sfx-click'), add: document.getElementById('sfx-add'), open: document.getElementById('sfx-open'), success: document.getElementById('sfx-success'), cash: document.getElementById('sfx-cash') };
-    const play = (s, v = 0.3) => { try { s.currentTime = 0; s.volume = v; s.play(); } catch(e){} };
+    // ==========================================
+    // VARIABLES Y LÓGICA PRINCIPAL (CATÁLOGO)
+    // ==========================================
+    let catalogoTotal = [];
+    let carrito = [];
+    const grid = document.getElementById('contenedor-grid');
+    const bsOff = new bootstrap.Offcanvas(document.getElementById('offcanvasCaja'));
 
-    let catalogoTotal = [], carrito = [];
-    const grid = document.getElementById('contenedor-grid'), bsOff = new bootstrap.Offcanvas(document.getElementById('offcanvasCaja'));
-    const fmt = (n) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n));
+    const fmt = (n) => new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+        maximumFractionDigits: 0
+    }).format(Math.round(n));
 
-    window.onload = () => setTimeout(() => { document.getElementById('futurist-loader').style.opacity = '0'; setTimeout(() => document.getElementById('futurist-loader').style.display = 'none', 500); }, 1000);
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('futurist-loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('futurist-loader').style.display = 'none';
+            }, 500);
+        }, 1000);
+    };
 
     function optimizarCatalogo(datosBrutos) {
         const catalogoLimpio = [];
@@ -436,27 +417,38 @@
 
             if (!nombresYaVistos.has(nombreNorm)) {
                 nombresYaVistos.add(nombreNorm);
+
                 let imgInvalida = !producto.imagen || String(producto.imagen).trim() === '' || String(producto.imagen).toLowerCase() === 'null' || String(producto.imagen).includes('placeholder');
+
                 if (imgInvalida) {
-                    let nombreUrl = encodeURIComponent(producto.nombre || 'Producto');
-                    producto.imagen = `https://ui-avatars.com/api/?name=${nombreUrl}&background=1a1a1a&color=39ff14&size=400&bold=true&font-size=0.4`;
+                    producto.imagen = `https://ui-avatars.com/api/?name=${encodeURIComponent(producto.nombre || 'Producto')}&background=0a0a0f&color=00f3ff&size=400&bold=true`;
                 }
-                if (!producto.categoria) producto.categoria = 'Todos';
+
+                if (!producto.categoria) {
+                    producto.categoria = 'Todos';
+                }
+
                 catalogoLimpio.push(producto);
             }
         });
+
         return catalogoLimpio.slice(0, 100);
     }
 
     async function fetchProds() {
         try {
             const res = await fetch('/api/productos');
-            if (!res.ok) throw new Error("Error en la respuesta del servidor");
-            const datosCrudos = await res.json();
-            catalogoTotal = optimizarCatalogo(datosCrudos);
+            if (!res.ok) {
+                throw new Error("Error en servidor");
+            }
+            catalogoTotal = optimizarCatalogo(await res.json());
             renderGrid(catalogoTotal);
         } catch (error) {
-            grid.innerHTML = '<div class="col-12 text-center mt-5 text-white"><h5 class="fw-bold"><i class="bi bi-wifi-off text-danger"></i> Sin conexión con la Base de Datos.</h5><button class="btn btn-outline-light mt-3 fw-bold" onclick="fetchProds()">Reintentar</button></div>';
+            grid.innerHTML = `
+                <div class="col-12 text-center mt-5 text-white">
+                    <h5 class="fw-bold"><i class="bi bi-wifi-off text-danger"></i> Sin conexión.</h5>
+                    <button class="btn btn-outline-light mt-3" onclick="fetchProds()">Reintentar</button>
+                </div>`;
             document.getElementById('futurist-loader').style.display = 'none';
         }
     }
@@ -464,20 +456,20 @@
     function renderGrid(prods) {
         grid.innerHTML = '';
         if (prods.length === 0) {
-             grid.innerHTML = '<div class="col-12 text-center mt-5 text-white fw-bold">No se encontraron productos disponibles.</div>';
-             return;
+            grid.innerHTML = '<div class="col-12 text-center mt-5 text-white fw-bold">No hay productos disponibles.</div>';
+            return;
         }
+
         prods.forEach((p, i) => {
             const wrap = document.createElement('div');
             wrap.className = `tilt-wrapper animate__animated animate__fadeInUp`;
-            wrap.style.animationDelay = `${(i % 12) * 0.08}s`;
+            wrap.style.animationDelay = `${(i % 15) * 0.05}s`;
 
-            let fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=1a1a1a&color=39ff14&size=400&bold=true&font-size=0.4`;
-
+            let fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=0a0a0f&color=00f3ff&size=400&bold=true`;
             let precioActual = p.esPesable ? p.precioPorKilo : p.precio;
             let original = precioActual;
-
             let hayPromo = false;
+
             if (p.promocionActiva && p.precioPromo > 0) {
                 if (p.fechaInicioPromo && p.fechaFinPromo) {
                     const hoy = new Date().toISOString().split('T')[0];
@@ -490,167 +482,285 @@
                     hayPromo = true;
                 }
             }
+
             p.precioFinalApp = precioActual;
 
-            let badgeOferta = hayPromo ? `<div style="position:absolute; top:15px; right:15px; background:linear-gradient(90deg, #ff003c, #d100d1); color:white; padding:5px 15px; border-radius:20px; font-weight:900; box-shadow:0 0 15px rgba(255,0,60,0.5); z-index:20; font-size:0.8rem; letter-spacing:1px; transform:rotate(5deg);"><i class="bi bi-tag-fill me-1"></i> OFERTA</div>` : '';
-
+            let badgeOferta = hayPromo ? `<div class="badge-promo"><i class="bi bi-lightning-charge-fill"></i> PROMO</div>` : '';
             let badgeStock = '';
-            let btnAgotado = '';
             let filterCss = '';
 
             if (p.stock !== null && p.stock !== undefined) {
                 if (p.stock <= 0) {
-                    badgeStock = `<div style="position:absolute; top:15px; left:15px; background:rgba(255, 59, 48, 0.95); color:white; padding:5px 15px; border-radius:20px; font-weight:900; box-shadow:0 0 15px rgba(255,0,0,0.5); z-index:20; font-size:0.8rem; letter-spacing:1px; transform:rotate(-5deg);"><i class="bi bi-x-circle-fill me-1"></i> AGOTADO</div>`;
-                    filterCss = 'filter: grayscale(100%) opacity(0.5);';
-                    btnAgotado = 'disabled style="background:#555; color:#999; cursor:not-allowed; box-shadow:none;"';
-                } else if (p.stock <= 5 && !p.esPesable) {
-                    badgeStock = `<div style="position:absolute; top:15px; left:15px; background:rgba(255, 204, 0, 0.95); color:#1a1a1a; padding:5px 15px; border-radius:20px; font-weight:900; box-shadow:0 0 15px rgba(255,204,0,0.5); z-index:20; font-size:0.8rem; letter-spacing:1px;"><i class="bi bi-exclamation-triangle-fill me-1"></i> QUEDAN ${p.stock}</div>`;
-                } else if (p.stock <= 5 && p.esPesable) {
-                    badgeStock = `<div style="position:absolute; top:15px; left:15px; background:rgba(255, 204, 0, 0.95); color:#1a1a1a; padding:5px 15px; border-radius:20px; font-weight:900; box-shadow:0 0 15px rgba(255,204,0,0.5); z-index:20; font-size:0.8rem; letter-spacing:1px;"><i class="bi bi-exclamation-triangle-fill me-1"></i> QUEDAN ${p.stock} KG</div>`;
+                    badgeStock = `<div class="badge-agotado"><i class="bi bi-x-octagon-fill"></i> AGOTADO</div>`;
+                    filterCss = 'filter: grayscale(100%) opacity(0.4);';
+                } else if (p.stock <= 5) {
+                    badgeStock = `<div class="badge-stock"><i class="bi bi-exclamation-triangle-fill"></i> ${p.stock}${p.esPesable?'kg':''}</div>`;
                 }
             }
 
-            let bloquePrecio = '';
-            if (hayPromo) {
-                bloquePrecio = `<div class="d-flex align-items-center mb-1"><span class="text-muted text-decoration-line-through fw-bold me-2 fs-5" style="opacity:0.7;">${fmt(original)}</span></div><span class="precio-main text-danger" style="text-shadow:0 0 10px rgba(255,0,60,0.3);">${fmt(precioActual)} <span class="fs-6 text-muted fw-bold">${p.esPesable?'/Kg':''}</span></span>`;
-            } else {
-                bloquePrecio = `<span class="precio-main">${fmt(precioActual)} <span class="fs-6 text-muted fw-bold">${p.esPesable?'/Kg':''}</span></span>`;
-            }
+            let bloquePrecio = hayPromo
+                ? `<div class="d-flex justify-content-center align-items-center mb-1">
+                     <span class="text-muted text-decoration-line-through fw-bold" style="font-size: 0.75rem;">${fmt(original)}</span>
+                   </div>
+                   <span class="precio-main" style="color:var(--neon-magenta); text-shadow:0 0 10px rgba(255,0,124,0.4);">
+                     ${fmt(precioActual)} <span class="fs-6">${p.esPesable?'/Kg':''}</span>
+                   </span>`
+                : `<span class="precio-main">
+                     ${fmt(precioActual)} <span class="fs-6">${p.esPesable?'/Kg':''}</span>
+                   </span>`;
 
             wrap.innerHTML = `
-                <div class="producto-card h-100 ${hayPromo ? 'border border-danger' : ''}">
+                <div class="producto-card" id="card-${p.id}" onclick='clickWao(${p.id}, ${JSON.stringify(p).replace(/'/g, "&#39;")})'>
                     ${badgeOferta}
                     ${badgeStock}
                     <div class="img-container">
                         <img src="${p.imagen}" class="producto-img" alt="${p.nombre}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackUrl}';" style="${filterCss}">
                     </div>
                     <div class="producto-info">
-                        <h3 class="producto-nombre text-truncate" title="${p.nombre}">${p.nombre}</h3>
-                        <div class="precios-area mt-auto">
-                            ${bloquePrecio}
-                            <button class="btn-add ${hayPromo && (p.stock > 0 || p.stock == null) ? 'bg-danger text-white' : ''}" onclick='añadir(${JSON.stringify(p)})' ${btnAgotado}>
-                                ${p.stock !== null && p.stock <= 0 ? '<i class="bi bi-slash-circle fs-5"></i> NO DISPONIBLE' : '<i class="bi bi-cart-plus-fill fs-5"></i> AGREGAR'}
-                            </button>
+                        <div class="producto-nombre">${p.nombre}</div>
+                        ${bloquePrecio}
+                        <div class="btn-add">
+                            ${p.stock !== null && p.stock <= 0 ? '<i class="bi bi-slash-circle"></i>' : '<i class="bi bi-plus-lg fw-bolder"></i> AGREGAR'}
                         </div>
                     </div>
                 </div>
             `;
+
             const card = wrap.querySelector('.producto-card');
+
+            // Efecto 3D en Hover para PC
             card.onmousemove = (e) => {
+                if (card.classList.contains('card-god-mode')) return;
                 const r = card.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width - 0.5) * 25;
-                const y = ((e.clientY - r.top) / r.height - 0.5) * -25;
-                card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.04)`;
+                const x = ((e.clientX - r.left) / r.width - 0.5) * 35;
+                const y = ((e.clientY - r.top) / r.height - 0.5) * -35;
+                card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.05)`;
             };
-            card.onmouseleave = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-            card.onmouseenter = () => play(sfx.hover, 0.1);
+
+            card.onmouseleave = () => {
+                if (!card.classList.contains('card-god-mode')){
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+                }
+            };
+
+            card.onmouseenter = () => playSfx('hover', 0.15);
+
             grid.appendChild(wrap);
         });
     }
 
-    async function añadir(p) {
-        play(sfx.click);
+    // ==========================================
+    // EFECTO GOD MODE AL HACER CLICK
+    // ==========================================
+    function clickWao(id, p) {
+        if (p.stock !== null && p.stock <= 0) {
+            Swal.fire({
+                toast: true,
+                title: 'Stock Agotado',
+                icon: 'error',
+                position: 'top-end',
+                background: '#000',
+                color: '#fff'
+            });
+            return;
+        }
+
+        playSfx('click', 0.8);
+
+        const card = document.getElementById(`card-${id}`);
+
+        if (card) {
+            card.classList.add('card-god-mode');
+
+            const ripple = document.createElement('div');
+            ripple.className = 'cyber-ripple';
+            card.appendChild(ripple);
+
+            setTimeout(() => {
+                card.classList.remove('card-god-mode');
+                ripple.remove();
+                añadirLogica(p);
+            }, 500);
+        } else {
+            añadirLogica(p);
+        }
+    }
+
+    // ==========================================
+    // AGREGAR AL CARRITO (CON BALANZA)
+    // ==========================================
+    async function añadirLogica(p) {
         let cant = 1;
+
         if (p.esPesable) {
             const { value: kg } = await Swal.fire({
                 title: `Balanza Digital`,
                 html: `<h4 class="fw-bold text-success">${p.nombre}</h4><p class="text-muted">Ingrese el peso exacto en Kilos</p>`,
-                input: 'number', background: '#fff', color: '#000', confirmButtonColor: '#39ff14',
+                input: 'number',
+                background: '#0a0a0f',
+                color: '#fff',
+                confirmButtonColor: '#39ff14',
                 confirmButtonText: '<strong class="text-dark">Confirmar Peso</strong>',
-                showCancelButton: true, cancelButtonText: 'Cancelar',
-                inputAttributes: { min: 0.01, step: 0.01, placeholder: 'Ej: 1.5' }
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                inputAttributes: { min: 0.01, step: 0.01, placeholder: 'Ej: 1.5' },
+                customClass: { input: 'swal-input-cyber' }
             });
+
             if (!kg || kg <= 0) return;
             cant = parseFloat(kg);
         }
-        play(sfx.add, 0.5);
+
+        playSfx('add', 0.8);
+
         const ex = carrito.find(i => i.id === p.id);
         const pReal = p.precioFinalApp ? p.precioFinalApp : (p.esPesable ? p.precioPorKilo : p.precio);
 
-        if (ex && !p.esPesable) ex.cantidad += cant;
-        else if (ex && p.esPesable) ex.cantidad = cant;
-        else carrito.push({ id: p.id, titulo: p.nombre, precio: pReal, cantidad: cant, esPesable: p.esPesable });
+        if (ex && !p.esPesable) {
+            ex.cantidad += cant;
+        } else if (ex && p.esPesable) {
+            ex.cantidad = cant;
+        } else {
+            carrito.push({
+                id: p.id,
+                titulo: p.nombre,
+                precio: pReal,
+                cantidad: cant,
+                esPesable: p.esPesable
+            });
+        }
 
-        // Latido del botón carrito
+        // Animación de pulso en el botón flotante
         const btnCart = document.getElementById('btn-flotante-caja');
         btnCart.classList.remove('pulse');
         void btnCart.offsetWidth;
         btnCart.classList.add('animate__rubberBand', 'pulse');
-        setTimeout(() => btnCart.classList.remove('animate__rubberBand'), 1000);
+
+        setTimeout(() => {
+            btnCart.classList.remove('animate__rubberBand');
+        }, 1000);
 
         actualizarUI();
     }
 
     function actualizarUI() {
-        const list = document.getElementById('lista-carrito'), totalEl = document.getElementById('cart-total'), count = document.getElementById('cart-count');
-        count.innerText = carrito.length;
+        const list = document.getElementById('lista-carrito');
+        const totalEl = document.getElementById('cart-total');
+        const count = document.getElementById('cart-count');
 
-        // Animar badge
+        count.innerText = carrito.length;
         count.classList.remove('animate__zoomIn');
         void count.offsetWidth;
         count.classList.add('animate__zoomIn');
 
         if (carrito.length === 0) {
-            list.innerHTML = '<div class="text-center text-muted mt-5"><i class="bi bi-basket fs-1 mb-3 opacity-50 d-block"></i><h5 class="fw-bold">Aún no hay productos</h5></div>';
-            totalEl.innerText = '$0'; return;
+            list.innerHTML = `
+                <div class="text-center text-muted mt-5">
+                    <i class="bi bi-basket fs-1 mb-3 opacity-25 d-block"></i>
+                    <h5 class="fw-bold">Vacío</h5>
+                </div>`;
+            totalEl.innerText = '$0';
+            return;
         }
-        let h = '', t = 0;
+
+        let h = '';
+        let t = 0;
+
         carrito.forEach((it, i) => {
-            const sub = it.precio * it.cantidad; t += sub;
-            let qtyLabel = it.esPesable ? `${it.cantidad.toFixed(2)} Kg` : `${it.cantidad} Unid.`;
-            h += `<div class="cart-item-row d-flex justify-content-between align-items-center animate__animated animate__fadeInRight animate__faster">
+            const sub = it.precio * it.cantidad;
+            t += sub;
+            let qtyLabel = it.esPesable ? `${it.cantidad.toFixed(2)} Kg` : `${it.cantidad} Un.`;
+
+            h += `
+                <div class="cart-item-row d-flex justify-content-between align-items-center animate__animated animate__fadeInRight animate__faster">
                     <div>
-                        <h6 class="m-0 fw-bolder text-dark" style="text-transform: capitalize;">${it.titulo}</h6>
-                        <small class="text-muted fw-bold">${qtyLabel} x ${fmt(it.precio)}</small>
+                        <h6 class="m-0 fw-bolder text-white" style="text-transform: capitalize;">${it.titulo}</h6>
+                        <small style="color: var(--neon-cyan); font-weight: 800;">${qtyLabel} x ${fmt(it.precio)}</small>
                     </div>
                     <div class="text-end d-flex align-items-center">
-                        <span class="fw-800 text-success fs-5 me-3">${fmt(sub)}</span>
+                        <span class="fw-900 text-success fs-5 me-3">${fmt(sub)}</span>
                         <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" style="width:35px; height:35px; display:flex; align-items:center; justify-content:center;" onclick="carrito.splice(${i},1); actualizarUI();">
                             <i class="bi bi-trash3-fill"></i>
                         </button>
                     </div>
                 </div>`;
         });
-        list.innerHTML = h; totalEl.innerText = fmt(t);
+
+        list.innerHTML = h;
+        totalEl.innerText = fmt(t);
     }
 
-    function toggleCaja() { play(sfx.open); bsOff.toggle(); }
+    function toggleCaja() {
+        playSfx('open', 0.8);
+        bsOff.toggle();
+    }
 
+    // ==========================================
+    // SISTEMA E-COMMERCE CLICK & COLLECT + CRM
+    // ==========================================
     async function procesarVenta(met) {
-        play(sfx.click);
-        if (carrito.length === 0) return Swal.fire({toast:true, position:'top-end', icon:'warning', title:'El carrito está vacío', showConfirmButton:false, timer:2000});
+        playSfx('click', 0.8);
 
-        // ⚠️ FIX DEFINITIVO TECLADO: Ocultar Offcanvas para que Bootstrap suelte el teclado
+        if (carrito.length === 0) {
+            return Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'El carrito está vacío',
+                showConfirmButton: false,
+                timer: 2000,
+                background: '#000',
+                color: '#fff'
+            });
+        }
+
         bsOff.hide();
-        await new Promise(r => setTimeout(r, 300)); // Pequeña pausa para que termine la animación de cierre
+        await new Promise(r => setTimeout(r, 300));
 
         let cId = null;
+        let datosPedidoStr = "";
+        let datosClienteObj = null;
 
-        // 1. LÓGICA DE IDENTIFICACIÓN VIP
+        // --- FLUJO 1: PAGO FIADO (Módulo VIP Original) ---
         if (met === 'FIADO') {
             const { value: q, isDismissed } = await Swal.fire({
                 title: '<i class="bi bi-star-fill text-warning"></i> ACCESO VIP',
                 html: '<p class="text-muted fw-bold">Ingrese RUT, DNI o Teléfono del titular</p>',
                 input: 'text',
-                inputPlaceholder: 'Escriba aquí...',
-                background: '#1a1a1a', color: '#fff',
-                confirmButtonColor: '#39ff14', confirmButtonText: '<strong class="text-dark">Buscar Identidad</strong>',
-                showCancelButton: true, cancelButtonText: 'Cancelar', cancelButtonColor: '#555'
+                background: '#1e222b',
+                color: '#fff',
+                confirmButtonColor: '#39ff14',
+                confirmButtonText: '<strong class="text-dark">Buscar Identidad</strong>',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                customClass: { input: 'swal-input-cyber' }
             });
 
             if (isDismissed || !q) {
-                bsOff.show(); // Restaurar carrito si cancela
+                bsOff.show();
                 return;
             }
 
-            Swal.fire({ title: 'Verificando en BD Gómez...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading() });
+            Swal.fire({
+                title: 'Buscando en BD...',
+                background: '#1e222b',
+                color: '#fff',
+                didOpen: () => Swal.showLoading()
+            });
+
             try {
                 const res = await fetch(`/api/checkout/buscarCliente?q=${encodeURIComponent(q)}`);
                 if (!res.ok) throw new Error("Error de conexión");
                 const cls = await res.json();
 
                 if (cls.length === 0) {
-                    await Swal.fire({ title: 'Acceso Denegado', text: 'El cliente no está en la base VIP.', icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#ff003c' });
+                    await Swal.fire({
+                        title: 'Denegado',
+                        text: 'Cliente no es VIP.',
+                        icon: 'error',
+                        background: '#000',
+                        color: '#fff'
+                    });
                     bsOff.show();
                     return;
                 }
@@ -659,9 +769,15 @@
                 cls.forEach(c => opciones[c.id] = `${c.nombre} (${c.dni || c.telefono})`);
 
                 const { value: sel, isDismissed: dismissSel } = await Swal.fire({
-                    title: 'Seleccione Identidad', input: 'select', inputOptions: opciones,
-                    confirmButtonColor: '#39ff14', confirmButtonText: '<strong class="text-dark">Confirmar Identidad</strong>',
-                    background: '#1a1a1a', color: '#fff', showCancelButton: true, cancelButtonColor: '#555'
+                    title: 'Seleccione Identidad',
+                    input: 'select',
+                    inputOptions: opciones,
+                    confirmButtonColor: '#39ff14',
+                    confirmButtonText: '<strong class="text-dark">Confirmar</strong>',
+                    background: '#1e222b',
+                    color: '#fff',
+                    showCancelButton: true,
+                    customClass: { input: 'swal-input-cyber' }
                 });
 
                 if (dismissSel || !sel) {
@@ -669,19 +785,95 @@
                     return;
                 }
                 cId = sel;
+
             } catch (e) {
-                await Swal.fire({ title: 'Error', text: 'Fallo al buscar cliente', icon: 'error', background: '#1a1a1a', color: '#fff' });
+                await Swal.fire({
+                    title: 'Error',
+                    text: 'Fallo al buscar cliente',
+                    icon: 'error',
+                    background: '#000',
+                    color: '#fff'
+                });
                 bsOff.show();
                 return;
             }
         }
 
-        Swal.fire({ title: 'PROCESANDO TRANSACCIÓN...', background: '#1a1a1a', color: '#fff', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+        // --- FLUJO 2: PAGO NORMAL (E-commerce Click & Collect y CRM) ---
+        else {
+            const { value: datosClienteForm, isDismissed } = await Swal.fire({
+                title: '<i class="bi bi-bag-check-fill text-info"></i> DATOS DE RETIRO',
+                html: `
+                    <p class="text-muted small mb-3">Ingresa tus datos para preparar tu pedido. <b>(Retiro en Local)</b></p>
+                    <input id="swal-ped-nom" type="text" class="swal2-input swal-input-cyber mb-3 shadow-none" placeholder="👤 Tu Nombre" autocomplete="off">
+                    <input id="swal-ped-tel" type="tel" class="swal2-input swal-input-cyber mb-3 shadow-none" placeholder="📱 Tu WhatsApp" autocomplete="off">
+                    <input id="swal-ped-dir" type="text" class="swal2-input swal-input-cyber shadow-none" placeholder="📍 Dirección (Opcional)" autocomplete="off">
+                `,
+                background: '#1e222b',
+                color: '#fff',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#00f3ff',
+                confirmButtonText: '<strong class="text-dark">Continuar al Pago</strong>',
+                preConfirm: () => {
+                    const nom = document.getElementById('swal-ped-nom').value.trim();
+                    const tel = document.getElementById('swal-ped-tel').value.trim();
 
+                    if (!nom || !tel) {
+                        Swal.showValidationMessage('⚠️ Nombre y WhatsApp son obligatorios');
+                        return false;
+                    }
+
+                    return {
+                        nom: nom,
+                        tel: tel,
+                        dir: document.getElementById('swal-ped-dir').value.trim() || 'Retiro en Local'
+                    }
+                }
+            });
+
+            if (isDismissed) {
+                bsOff.show();
+                return;
+            }
+
+            datosClienteObj = datosClienteForm;
+            datosPedidoStr = `\n=== DATOS DEL PEDIDO ===\n👤 Cliente: ${datosClienteForm.nom}\n📱 Tel/Wsp: ${datosClienteForm.tel}\n📍 Dir: ${datosClienteForm.dir}\n========================\n\n`;
+        }
+
+        // --- PROCESAMIENTO FINAL ---
+        Swal.fire({
+            title: 'PROCESANDO...',
+            background: '#1e222b',
+            color: '#fff',
+            didOpen: () => Swal.showLoading(),
+            allowOutsideClick: false
+        });
+
+        // 1. GUARDADO SILENCIOSO EN CRM (CON AWAIT PARA QUE NO FALLE)
+        if (datosClienteObj) {
+            try {
+                await fetch('/api/clientes/guardar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombre: datosClienteObj.nom,
+                        telefono: datosClienteObj.tel,
+                        dni: "S/N",
+                        email: "S/E",
+                        etiqueta: "REGULAR" // Se guarda en Perfiles Regulares
+                    })
+                });
+            } catch(e) {
+                console.error("Error al registrar CRM", e);
+            }
+        }
+
+        // 2. PROCESAR VENTA / TICKET
         try {
-            // 2. ARMAMOS EL PAQUETE IDÉNTICO AL DEL POS PRINCIPAL
-            let detalleTexto = "";
+            let detalleTexto = datosPedidoStr;
             let totalNeto = 0;
+
             carrito.forEach(item => {
                 const cant = item.esPesable ? item.cantidad.toFixed(2) + ' Kg' : item.cantidad + ' un';
                 detalleTexto += `• ${cant} x ${item.titulo}\n`;
@@ -696,70 +888,99 @@
                 items: carrito.map(i => ({ id: i.id, cantidad: i.cantidad }))
             };
 
-            // 3. LA CLAVE: APUNTAMOS DIRECTO A VentaRestController
             const res = await fetch('/api/ventas/procesar', {
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            // 👇👇👇 AQUI ESTA EL CAMBIO DEL DETECTOR DE ERRORES 👇👇👇
             if (!res.ok) {
                 const errorReal = await res.text();
                 throw new Error(`HTTP ${res.status} - ${errorReal}`);
             }
 
-            // 4. MANEJO DE RESPUESTA TEXTO vs JSON (Igual al POS)
             const textResponse = await res.text();
             let d = {};
+
             try {
                 d = JSON.parse(textResponse);
             } catch(e) {
-                if (textResponse === "OK") d = { status: "ok", mensaje: "Venta registrada con éxito." };
-                else if (textResponse.startsWith("http")) d = { status: "mercadopago", init_point: textResponse };
-                else d = { status: "error", mensaje: textResponse };
+                if (textResponse === "OK") {
+                    d = { status: "ok", mensaje: "Venta registrada." };
+                } else if (textResponse.startsWith("http")) {
+                    d = { status: "mercadopago", init_point: textResponse };
+                } else {
+                    d = { status: "error", mensaje: textResponse };
+                }
             }
 
             if (d.status === 'mercadopago') {
                 window.location.href = d.init_point;
-            } else if (d.status === 'ok') {
-                if(sfx.cash) play(sfx.cash, 1.0); else play(sfx.success, 0.6);
+            }
+            else if (d.status === 'ok') {
+                playSfx('success', 0.8);
 
-                carrito = []; actualizarUI();
+                carrito = [];
+                actualizarUI();
                 Swal.fire({
-                    icon: 'success', title: '¡PAGO EXITOSO!', text: d.mensaje,
-                    background: '#fff', color: '#1a1a1a', confirmButtonColor: '#39ff14',
-                    confirmButtonText: '<strong class="text-dark">Volver a la tienda</strong>',
-                    backdrop: `rgba(57, 255, 20, 0.1) url("https://media.tenor.com/8K55A6_X5G8AAAAC/success-confetti.gif") centre/cover no-repeat`
+                    icon: 'success',
+                    title: '¡PEDIDO ENVIADO!',
+                    text: 'Recibimos tu orden, te esperamos para el retiro.',
+                    background: '#1e222b',
+                    color: '#fff',
+                    confirmButtonColor: '#39ff14',
+                    confirmButtonText: '<strong class="text-dark">Volver al Inicio</strong>',
+                    backdrop: `rgba(57, 255, 20, 0.1)`
                 });
             } else {
                 throw new Error(d.mensaje);
             }
+
         } catch (e) {
-            // El errorReal saldrá aquí en este recuadro rojo
-            await Swal.fire({ title: 'ERROR DE TRANSACCIÓN', text: e.message, icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#ff003c' });
+            await Swal.fire({
+                title: 'ERROR',
+                text: e.message,
+                icon: 'error',
+                background: '#000',
+                color: '#fff'
+            });
             bsOff.show();
         }
     }
 
-    document.querySelectorAll('.btn-neon-filter').forEach(b => b.onclick = (e) => {
-        play(sfx.click, 0.1);
-        document.querySelectorAll('.btn-neon-filter').forEach(x => x.classList.remove('active'));
-        e.target.classList.add('active');
-        const f = e.target.dataset.filter;
-        renderGrid(f === 'Todos' ? catalogoTotal : catalogoTotal.filter(p => p.categoria.includes(f)));
+    // ==========================================
+    // EVENTOS Y RECARGA EN TIEMPO REAL
+    // ==========================================
+    document.querySelectorAll('.btn-neon-filter').forEach(b => {
+        b.onclick = (e) => {
+            playSfx('click', 0.1);
+            document.querySelectorAll('.btn-neon-filter').forEach(x => x.classList.remove('active'));
+            e.target.classList.add('active');
+            const f = e.target.dataset.filter;
+
+            if (f === 'Todos') {
+                renderGrid(catalogoTotal);
+            } else {
+                renderGrid(catalogoTotal.filter(p => p.categoria.includes(f)));
+            }
+        };
     });
 
     fetchProds();
 
-    // Auto-sincronización en tiempo real (cada 5 segundos)
     function verificarDiferenciasReactivo(viejos, nuevos) {
         if (!viejos || viejos.length !== nuevos.length) return true;
+
         for (let i = 0; i < nuevos.length; i++) {
             let n = nuevos[i];
             let v = viejos.find(x => x.id === n.id);
             if (!v) return true;
-            if (v.stock !== n.stock || v.precio !== n.precio || v.precioPorKilo !== n.precioPorKilo || v.promocionActiva !== n.promocionActiva || v.precioPromo !== n.precioPromo) {
+
+            if (v.stock !== n.stock ||
+                v.precio !== n.precio ||
+                v.precioPorKilo !== n.precioPorKilo ||
+                v.promocionActiva !== n.promocionActiva ||
+                v.precioPromo !== n.precioPromo) {
                 return true;
             }
         }
@@ -770,15 +991,24 @@
         try {
             const res = await fetch('/api/productos');
             if (res.ok) {
-                const crudos = await res.json();
-                const limpios = optimizarCatalogo(crudos);
+                const limpios = optimizarCatalogo(await res.json());
+
                 if (verificarDiferenciasReactivo(catalogoTotal, limpios)) {
-                    // Mantener propiedades inyectadas por la UI vieja
-                    limpios.forEach(l => { const old = catalogoTotal.find(c => c.id===l.id); if(old && old.precioFinalApp) l.precioFinalApp = old.precioFinalApp; });
+                    limpios.forEach(l => {
+                        const old = catalogoTotal.find(c => c.id === l.id);
+                        if (old && old.precioFinalApp) {
+                            l.precioFinalApp = old.precioFinalApp;
+                        }
+                    });
+
                     catalogoTotal = limpios;
                     const activeBtn = document.querySelector('.btn-neon-filter.active');
-                    const f = activeBtn ? activeBtn.dataset.filter : 'Todos';
-                    renderGrid(f === 'Todos' ? catalogoTotal : catalogoTotal.filter(p => p.categoria.includes(f)));
+
+                    if (activeBtn && activeBtn.dataset.filter !== 'Todos') {
+                        renderGrid(catalogoTotal.filter(p => p.categoria.includes(activeBtn.dataset.filter)));
+                    } else {
+                        renderGrid(catalogoTotal);
+                    }
                 }
             }
         } catch(e) {}
