@@ -849,7 +849,7 @@
     async function cargarTodosLosSistemas() {
         const [resProv, resProds, resVentas, resClientes] = await Promise.all([
             fetch('/api/admin/proveedores').catch(()=>({json:()=>[]})),
-            fetch('/api/productos').catch(()=>({json:()=>[]})),
+            fetch('/api/productos?limit=500&size=500&maxResults=500').catch(()=>({json:()=>[]})),
             fetch('/api/admin/ventas').catch(()=>({json:()=>[]})),
             fetch('/api/admin/clientes/autorizados').catch(()=>({json:()=>[]}))
         ]);
@@ -1833,7 +1833,7 @@
                 }
 
                 // Sincronizar Inventario
-                const r4 = await fetch('/api/productos');
+                const r4 = await fetch('/api/productos?limit=500&size=500&maxResults=500');
                 const catalogoFetch = await r4.json();
                 catalogoFetch.forEach(p => {
                     const inputStock = document.getElementById(`stock-${p.id}`);

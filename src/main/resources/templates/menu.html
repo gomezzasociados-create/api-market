@@ -238,11 +238,33 @@
             <i class="bi bi-phone-vibrate me-2"></i> DESCARGAR APP NATIVA
         </div>
 
-        <div class="filter-container animate__animated animate__fadeInUp animate__delay-1s">
-            <button class="btn btn-neon-filter active" data-filter="Todos">Explorar Todos</button>
-            <button class="btn btn-neon-filter" data-filter="Feria">Frutas y Verduras</button>
-            <button class="btn btn-neon-filter" data-filter="Abarrotes">Abarrotes</button>
-            <button class="btn btn-neon-filter" data-filter="Bebestibles">Bebestibles</button>
+        <div class="accordion accordion-flush mt-3 mb-2 animate__animated animate__fadeInUp animate__delay-1s" id="accordionCategorias" style="max-width: 800px; margin: 0 auto; background: transparent;">
+            <div class="accordion-item" style="background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 15px; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+                <h2 class="accordion-header" id="headingCategorias">
+                    <button class="accordion-button collapsed text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategorias" aria-expanded="false" aria-controls="collapseCategorias" style="background: transparent; box-shadow: none; font-weight: bold; letter-spacing: 1px;">
+                        <i class="bi bi-funnel-fill me-2" style="color: var(--neon-cyan);"></i> EXPLORAR POR CATEGORÍAS
+                    </button>
+                </h2>
+                <div id="collapseCategorias" class="accordion-collapse collapse" aria-labelledby="headingCategorias" data-bs-parent="#accordionCategorias">
+                    <div class="accordion-body border-top border-secondary">
+                        <div class="filter-container d-flex justify-content-center" style="flex-wrap: wrap !important; overflow-x: visible; gap: 10px; margin-top: 0; padding-bottom: 0;">
+                            <button class="btn btn-neon-filter active" data-filter="Todos">Todos</button>
+                            <button class="btn btn-neon-filter" data-filter="Feria">Feria</button>
+                            <button class="btn btn-neon-filter" data-filter="Panader">Panadería</button>
+                            <button class="btn btn-neon-filter" data-filter="Carnicer">Carnicería</button>
+                            <button class="btn btn-neon-filter" data-filter="Fiambrer">Fiambrería</button>
+                            <button class="btn btn-neon-filter" data-filter="Abarrotes">Abarrotes</button>
+                            <button class="btn btn-neon-filter" data-filter="Desayuno">Desayuno</button>
+                            <button class="btn btn-neon-filter" data-filter="Lacteos">Lácteos</button>
+                            <button class="btn btn-neon-filter" data-filter="Bebidas">Bebidas</button>
+                            <button class="btn btn-neon-filter" data-filter="Snacks">Snacks</button>
+                            <button class="btn btn-neon-filter" data-filter="Aseo">Aseo</button>
+                            <button class="btn btn-neon-filter" data-filter="Perfumer">Perfumería</button>
+                            <button class="btn btn-neon-filter" data-filter="Congelados">Congelados</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>
@@ -432,12 +454,12 @@
             }
         });
 
-        return catalogoLimpio.slice(0, 100);
+        return catalogoLimpio.slice(0, 500); // LÍMITE AUMENTADO AQUÍ
     }
 
     async function fetchProds() {
         try {
-            const res = await fetch('/api/productos');
+            const res = await fetch('/api/productos?limit=500&size=500&maxResults=500'); // LÍMITE AUMENTADO AQUÍ
             if (!res.ok) {
                 throw new Error("Error en servidor");
             }
@@ -989,7 +1011,7 @@
 
     setInterval(async () => {
         try {
-            const res = await fetch('/api/productos');
+            const res = await fetch('/api/productos?limit=500&size=500&maxResults=500'); // LÍMITE AUMENTADO AQUÍ
             if (res.ok) {
                 const limpios = optimizarCatalogo(await res.json());
 
