@@ -156,12 +156,13 @@
         .badge-retiro { background: var(--neon-yellow); color: #000 !important; font-weight: 900; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; letter-spacing: 1px; box-shadow: 0 0 10px var(--neon-yellow); }
         .dir-text { color: var(--neon-yellow) !important; font-weight: 800; font-size: 1rem; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px; border: 1px dashed rgba(252,238,10,0.3); }
         .total-text { color: var(--neon-green) !important; font-weight: 900; font-size: 2rem; text-shadow: 0 0 15px rgba(57,255,20,0.4); }
-        .btn-despachar { background: rgba(57,255,20,0.1); border: 2px solid var(--neon-green); color: var(--neon-green); font-weight: 900; border-radius: 12px; transition: 0.3s; padding: 12px; margin-top: 15px; width: 100%; text-transform: uppercase;}
+        .btn-despachar { background: rgba(57,255,20,0.1); border: 2px solid var(--neon-green); color: var(--neon-green); font-weight: 900; border-radius: 12px; transition: 0.3s; padding: 12px; width: 100%; text-transform: uppercase;}
         .btn-despachar:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green); transform: translateY(-2px); }
         .btn-hub-pulse { animation: hubPulse 1.5s infinite; }
         @keyframes hubPulse { 0%, 100% { box-shadow: 0 0 5px rgba(255, 0, 124, 0.4); } 50% { box-shadow: 0 0 25px var(--neon-magenta); } }
 
-        /* SweetAlert */
+        /* SweetAlert Asegurar que esté encima del Hub Web */
+        .swal2-container { z-index: 10600 !important; }
         .swal2-popup { background: rgba(15,15,20,0.98) !important; border: 1px solid var(--neon-cyan); border-radius: 20px !important; box-shadow: 0 0 50px rgba(0,243,255,0.3) !important; color: #fff !important; }
 
         @media print {
@@ -268,25 +269,29 @@
             <h1 class="epic-limber">LIMBER</h1>
         </div>
 
-        <div class="d-flex ms-xl-4 gap-2 gap-xl-3 align-items-center" id="hud-caja-indicadores">
-            <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
+        <div class="d-flex ms-xl-4 gap-2 gap-xl-3 align-items-center flex-wrap" id="hud-caja-indicadores">
+            <div class="bg-dark border border-success p-2 px-3 rounded-4 text-center shadow-sm flex-fill" onclick="abrirLibroCaja()">
                 <div class="text-success small fw-bold text-uppercase"><i class="bi bi-cash-stack"></i> Efectivo</div>
                 <div class="fs-5 fw-bolder text-white" id="hud-efectivo">$0</div>
             </div>
-            <div class="bg-dark border border-primary p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
+            <div class="bg-dark border border-primary p-2 px-3 rounded-4 text-center shadow-sm flex-fill" onclick="abrirLibroCaja()">
                 <div class="text-primary small fw-bold text-uppercase"><i class="bi bi-credit-card"></i> Máquina</div>
                 <div class="fs-5 fw-bolder text-white" id="hud-tarjeta">$0</div>
             </div>
-            <div class="bg-dark border border-warning p-2 px-3 rounded-4 text-center shadow-sm w-100" onclick="abrirLibroCaja()">
+            <div class="bg-dark border border-info p-2 px-3 rounded-4 text-center shadow-sm flex-fill" onclick="abrirLibroCaja()">
+                <div class="text-info small fw-bold text-uppercase"><i class="bi bi-bank"></i> Transf.</div>
+                <div class="fs-5 fw-bolder text-white" id="hud-transferencia">$0</div>
+            </div>
+            <div class="bg-dark border border-warning p-2 px-3 rounded-4 text-center shadow-sm flex-fill" onclick="abrirLibroCaja()">
                 <div class="text-warning small fw-bold text-uppercase"><i class="bi bi-person-vcard text-warning"></i> Fiados</div>
                 <div class="fs-5 fw-bolder text-white" id="hud-fiado">$0</div>
             </div>
 
-            <button class="btn bg-black rounded-4 px-3 py-2 fw-bold shadow-sm w-100" onclick="abrirLibroCaja()" style="border: 1px solid rgba(0,243,255,0.4); color: var(--neon-cyan);">
+            <button class="btn bg-black rounded-4 px-3 py-2 fw-bold shadow-sm flex-fill" onclick="abrirLibroCaja()" style="border: 1px solid rgba(0,243,255,0.4); color: var(--neon-cyan);">
                 <i class="bi bi-journal-check fs-4 mb-1 d-block text-neon-cyan"></i> Libro
             </button>
 
-            <button id="btn-pedidos-web" class="btn rounded-4 px-3 py-2 fw-bold shadow-sm w-100 position-relative" onclick="abrirHubEcommerce()" style="background: rgba(255,0,124,0.1); border: 1px solid var(--neon-magenta); color: #fff;">
+            <button id="btn-pedidos-web" class="btn rounded-4 px-3 py-2 fw-bold shadow-sm flex-fill position-relative" onclick="abrirHubEcommerce()" style="background: rgba(255,0,124,0.1); border: 1px solid var(--neon-magenta); color: #fff;">
                 <i class="bi bi-globe fs-4 mb-1 d-block text-neon-magenta"></i> Pedidos
                 <span id="badge-pedidos-web" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none; box-shadow: 0 0 10px red;">0</span>
             </button>
@@ -514,6 +519,52 @@
     function bloquearCaja() { document.getElementById('securityLock').style.display = 'flex'; document.getElementById('mainPosUI').style.display = 'none'; document.getElementById('pinInput').value = ""; }
     document.getElementById('pinInput').addEventListener('keydown', (e) => { if(e.key==='Enter') unlockPOS(); });
 
+    // --- ELIMINACION / DEVOLUCIONES ---
+    async function anularVenta(id, esWeb = false) {
+        const { isConfirmed } = await Swal.fire({
+            title: '⚠️ ¿ANULAR VENTA?',
+            text: 'Esta acción es irreversible. Se restará el dinero y se eliminará el registro.',
+            icon: 'warning',
+            background: '#1e222b', color: '#fff',
+            showCancelButton: true, confirmButtonColor: '#ff003c', cancelButtonColor: '#555',
+            confirmButtonText: '<strong class="text-white">Sí, Eliminar</strong>', cancelButtonText: 'Cancelar'
+        });
+
+        if (isConfirmed) {
+            Swal.fire({ title: 'Eliminando...', background: '#1e222b', color: '#fff', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            try {
+                let res = await fetch(`/api/ventas/${id}`, { method: 'DELETE' });
+
+                // Intento fallback si la ruta principal no sirve
+                if (res.status === 404) res = await fetch(`/api/admin/ventas/${id}`, { method: 'DELETE' });
+
+                if (res.ok) {
+                    play(sfx.error, 0.5); // Sonido de eliminación
+
+                    if (window.tempVentasGlobal) {
+                        window.tempVentasGlobal = window.tempVentasGlobal.filter(v => v.id.toString() !== id.toString());
+                    }
+
+                    if (esWeb) {
+                        renderPedidosWeb();
+                    } else {
+                        Swal.close();
+                        actualizarCajaFuerte();
+                    }
+
+                    Swal.fire({toast:true, icon:'success', title:'Eliminado con éxito', position:'top-end', background:'#1e222b', color:'#fff', showConfirmButton:false, timer:2000});
+                } else {
+                    const errorTxt = await res.text();
+                    throw new Error(`El servidor rechazó la eliminación: ${errorTxt || res.statusText}`);
+                }
+            } catch(e) {
+                console.error("Error al anular:", e);
+                Swal.fire({ title: 'Error', text: e.message, icon: 'error', background: '#1e222b', color: '#fff', confirmButtonColor: '#ff003c' });
+            }
+        }
+    }
+
+
     // --- HUB E-COMMERCE ---
     let numeroDePedidosVistos = 0;
     function abrirHubEcommerce() {
@@ -597,8 +648,11 @@
                                 <span class="text-muted small fw-bold">DESTINO:</span>
                                 <span class="dir-text text-warning fw-bold text-end" style="max-width: 60%;">${dirStr}</span>
                             </div>
-                            <button class="btn btn-despachar" onclick="marcarPedidoDespachado(${p.id}, \`${p.detalle.replace(/`/g, "'")}\`)">
+                            <button class="btn btn-despachar mb-2" onclick="marcarPedidoDespachado('${p.id}', \`${p.detalle.replace(/`/g, "'")}\`)">
                                 <i class="bi bi-check-circle-fill me-2"></i> MARCAR DESPACHADO
+                            </button>
+                            <button class="btn btn-outline-danger w-100 fw-bold" style="border-radius: 12px; padding: 10px;" onclick="anularVenta('${p.id}', true)">
+                                <i class="bi bi-trash3-fill me-2"></i> ANULAR PEDIDO
                             </button>
                         </div>
                     </div>
@@ -607,23 +661,39 @@
     }
 
     async function marcarPedidoDespachado(ventaId, detalleActual) {
-        const { isConfirmed } = await Swal.fire({ title: '¿Confirmar Despacho?', text: 'El pedido desaparecerá de esta pantalla.', icon: 'question', background: '#1e222b', color: '#fff', showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555', confirmButtonText: '<strong class="text-dark">Sí, está listo</strong>' });
+        const { isConfirmed } = await Swal.fire({ title: '¿Confirmar Despacho?', text: 'El pedido se registrará en el Cuaderno y la Caja Fuerte.', icon: 'question', background: '#1e222b', color: '#fff', showCancelButton: true, confirmButtonColor: '#39ff14', cancelButtonColor: '#555', confirmButtonText: '<strong class="text-dark">Sí, está listo</strong>' });
+
         if (isConfirmed) {
-            Swal.fire({ title: 'Actualizando...', background: '#1e222b', color: '#fff', didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Actualizando...', background: '#1e222b', color: '#fff', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             const nuevoDetalle = detalleActual.replace('=== DATOS DEL PEDIDO ===', '=== PEDIDO ENTREGADO ===');
+
             try {
                 const resVentas = await fetch('/api/admin/ventas');
+                if (!resVentas.ok) throw new Error("No se pudo obtener la lista de ventas del servidor.");
                 const ventas = await resVentas.json();
-                const ventaParaActualizar = ventas.find(v => v.id === ventaId);
+                const ventaParaActualizar = ventas.find(v => v.id.toString() === ventaId.toString());
 
-                if(ventaParaActualizar) {
-                    ventaParaActualizar.detalle = nuevoDetalle;
-                    const resPut = await fetch(`/api/ventas/${ventaId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ventaParaActualizar) });
+                if (!ventaParaActualizar) throw new Error("El pedido no existe en la base de datos actual.");
+
+                ventaParaActualizar.detalle = nuevoDetalle;
+
+                let resPut = await fetch(`/api/ventas/${ventaId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ventaParaActualizar) });
+                if (resPut.status === 404) resPut = await fetch(`/api/admin/ventas/${ventaId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ventaParaActualizar) });
+
+                if (resPut.ok) {
                     play(sfx.cash, 0.8);
-                    window.tempVentasGlobal = null; renderPedidosWeb();
+                    if (window.tempVentasGlobal) window.tempVentasGlobal = window.tempVentasGlobal.map(v => v.id.toString() === ventaId.toString() ? ventaParaActualizar : v);
+                    renderPedidosWeb();
+                    actualizarCajaFuerte();
                     Swal.fire({toast:true, icon:'success', title:'Despachado', position:'top-end', background:'#1e222b', color:'#fff', showConfirmButton:false, timer:2000});
+                } else {
+                    const errorDelBackend = await resPut.text();
+                    throw new Error(`El servidor rechazó la petición: ${errorDelBackend || resPut.statusText}`);
                 }
-            } catch(e) { Swal.close(); }
+            } catch(e) {
+                console.error("Error en despacho:", e);
+                Swal.fire({ title: 'Error de Servidor', text: e.message, icon: 'error', background: '#1e222b', color: '#fff', confirmButtonColor: '#ff003c' });
+            }
         }
     }
 
@@ -870,6 +940,7 @@
 
                 generarTicketImpresion(metodo, payload.total);
                 carrito = []; actualizarUI();
+                actualizarCajaFuerte();
 
                 setTimeout(() => window.print(), 800);
 
@@ -916,31 +987,93 @@
             if(!res.ok) throw new Error();
             const data = await res.json();
 
-            document.getElementById('hud-efectivo').innerText = fmt(data.totalEfectivo);
-            document.getElementById('hud-tarjeta').innerText = fmt(data.totalTarjeta || 0);
-            document.getElementById('hud-fiado').innerText = fmt(data.totalFiado);
-            document.getElementById('badge-total-ventas').innerText = data.ventas.length + ' Bts.';
+            // Buscar tambien pedidos web del admin para empalmarlos localmente
+            let adminVentas = [];
+            try {
+                const resAdmin = await fetch('/api/admin/ventas');
+                if(resAdmin.ok) adminVentas = await resAdmin.json();
+            } catch(e) {}
+
+            let ventasTurno = data.ventas || [];
+            const ventasTurnoIds = new Set(ventasTurno.map(v => v.id));
+
+            const hoyStr = new Date().toDateString();
+            adminVentas.forEach(vw => {
+                if (vw.detalle && vw.detalle.includes('=== PEDIDO ENTREGADO ===') && !ventasTurnoIds.has(vw.id)) {
+                    if (new Date(vw.fechaHora).toDateString() === hoyStr) {
+                        ventasTurno.push(vw);
+                    }
+                }
+            });
+
+            ventasTurno.sort((a,b) => new Date(b.fechaHora) - new Date(a.fechaHora));
+
+            // Calculo manual en Frontend para garantizar que las Transferencias no salgan en Máquina
+            let tEfe = 0, tTar = 0, tFia = 0, tTra = 0;
+
+            ventasTurno.forEach(v => {
+                let tipo = v.tipoPago ? v.tipoPago.toUpperCase() : '';
+                let det = v.detalle ? v.detalle.toUpperCase() : '';
+
+                if (tipo === 'TRANSFERENCIA' || det.includes('TRANSFERENCIA')) {
+                    tTra += v.montoTotal;
+                } else if (tipo === 'TARJETA' || tipo === 'MERCADOPAGO' || det.includes('MERCADOPAGO')) {
+                    tTar += v.montoTotal;
+                } else if (tipo === 'FIADO') {
+                    tFia += v.montoTotal;
+                } else {
+                    tEfe += v.montoTotal;
+                }
+            });
+
+            document.getElementById('hud-efectivo').innerText = fmt(tEfe);
+            document.getElementById('hud-tarjeta').innerText = fmt(tTar);
+            document.getElementById('hud-fiado').innerText = fmt(tFia);
+            document.getElementById('hud-transferencia').innerText = fmt(tTra);
+            document.getElementById('badge-total-ventas').innerText = ventasTurno.length + ' Bts.';
 
             const list = document.getElementById('lista-ventas-historico');
             list.innerHTML = '';
 
-            if(data.ventas.length === 0) {
+            if(ventasTurno.length === 0) {
                 list.innerHTML = '<div class="p-4 text-center text-muted fw-bold">No hay transacciones.</div>';
                 return;
             }
 
-            data.ventas.forEach(v => {
-                const isFiado = v.tipoPago === 'FIADO';
-                const icon = isFiado ? '<i class="bi bi-person-vcard text-warning"></i>' : '<i class="bi bi-cash text-success"></i>';
-                const badgeE = isFiado ? '<span class="badge bg-warning text-dark opacity-75">PENDIENTE</span>' : '<span class="badge bg-success opacity-75">PAGADO</span>';
-                const hora = v.fechaHora ? v.fechaHora.split('T')[1].substring(0,5) : '00:00';
+            ventasTurno.forEach(v => {
+                let tipo = v.tipoPago ? v.tipoPago.toUpperCase() : 'EFECTIVO';
+                let det = v.detalle ? v.detalle.toUpperCase() : '';
 
+                const isFiado = tipo === 'FIADO';
+                const isTransf = tipo === 'TRANSFERENCIA' || det.includes('TRANSFERENCIA');
+                const isTarjeta = tipo === 'TARJETA' || tipo === 'MERCADOPAGO' || det.includes('MERCADOPAGO');
+                const isWeb = det.includes('PEDIDO ENTREGADO');
+
+                let displayTipo = tipo;
+                if(isTransf) displayTipo = 'TRANSFERENCIA';
+                else if(isTarjeta) displayTipo = 'MÁQUINA';
+                else if(isWeb && displayTipo === '') displayTipo = 'TRANSFERENCIA WEB';
+
+                let icon = '<i class="bi bi-cash text-success"></i>';
+                if (isFiado) icon = '<i class="bi bi-person-vcard text-warning"></i>';
+                else if (isTransf) icon = '<i class="bi bi-bank text-info"></i>';
+                else if (isTarjeta) icon = '<i class="bi bi-credit-card text-primary"></i>';
+
+                let originBadge = isWeb ? '<span class="badge bg-danger ms-2" style="font-size:0.6rem; box-shadow: 0 0 5px red;"><i class="bi bi-globe"></i> E-COMMERCE</span>' : '<span class="badge bg-secondary ms-2" style="font-size:0.6rem;"><i class="bi bi-shop"></i> LOCAL</span>';
+
+                let badgeE = isFiado ? '<span class="badge bg-warning text-dark opacity-75">PENDIENTE</span>' : '<span class="badge bg-success opacity-75">PAGADO</span>';
+                if(isTransf) badgeE = '<span class="badge bg-info text-dark opacity-75">TRANSF</span>';
+
+                const hora = v.fechaHora ? new Date(v.fechaHora).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'}) : '00:00';
+
+                // CORRECCION: Ahora pasamos el ID de la venta para poder anularla
                 list.innerHTML += `
-                    <button class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary p-3 d-flex justify-content-between align-items-center" onclick="verDetalleVenta('${encodeURIComponent(v.detalle)}')">
+                    <button class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary p-3 d-flex justify-content-between align-items-center" onclick="verDetalleVenta('${encodeURIComponent(v.detalle)}', '${v.id}')">
                         <div>
                             <span class="fs-5 me-2">${icon}</span>
                             <strong class="fs-6">${fmt(v.montoTotal)}</strong>
-                            <div class="small text-info mt-1"><i class="bi bi-clock"></i> ${hora}</div>
+                            ${originBadge}
+                            <div class="small text-info mt-1"><i class="bi bi-clock"></i> ${hora} | Pago: ${displayTipo}</div>
                         </div>
                         <div>${badgeE}</div>
                     </button>
@@ -949,14 +1082,21 @@
         } catch(e) {}
     }
 
-    function verDetalleVenta(detalleEncoded) {
+    function verDetalleVenta(detalleEncoded, idVenta) {
         let det = decodeURIComponent(detalleEncoded);
-        let htmlTicket = `<div style="font-family: monospace; text-align: left; background: #fff; color: #000; padding: 15px; border-radius: 5px; font-size: 14px; white-space: pre-wrap;">${det}</div>`;
-        Swal.fire({ title: 'TICKET CERRADO', html: htmlTicket, background: '#1e222b', color: '#fff', confirmButtonColor: '#00f3ff', confirmButtonText: '<strong class="text-dark">Cerrar</strong>' });
+        let htmlTicket = `
+            <div style="font-family: monospace; text-align: left; background: #fff; color: #000; padding: 15px; border-radius: 5px; font-size: 14px; white-space: pre-wrap; margin-bottom: 15px;">${det}</div>
+            <button class="btn btn-danger w-100 fw-bold py-2" onclick="anularVenta('${idVenta}', false)" style="border-radius: 10px; box-shadow: 0 0 15px rgba(255,0,60,0.4);">
+                <i class="bi bi-trash3-fill me-2"></i> ANULAR TICKET (DEVOLUCIÓN)
+            </button>
+        `;
+        Swal.fire({ title: 'TICKET CERRADO', html: htmlTicket, background: '#1e222b', color: '#fff', showConfirmButton: false, showCloseButton: true });
     }
 
     async function confirmarCierreCaja() {
         const hEfe = document.getElementById('hud-efectivo').innerText;
+        const hTar = document.getElementById('hud-tarjeta').innerText;
+        const hTra = document.getElementById('hud-transferencia').innerText;
         const hFia = document.getElementById('hud-fiado').innerText;
 
         const { isConfirmed } = await Swal.fire({
@@ -966,7 +1106,8 @@
                     <p class="text-white small">El turno se cerrará y el balance regresará a cero.</p>
                     <div class="p-3 bg-dark border border-secondary rounded">
                         <strong class="d-block text-success">EFECTIVO: ${hEfe}</strong>
-                        <strong class="d-block text-primary mt-2">MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</strong>
+                        <strong class="d-block text-primary mt-2">MÁQUINA: ${hTar}</strong>
+                        <strong class="d-block text-info mt-2">TRANSFERENCIAS: ${hTra}</strong>
                         <strong class="d-block text-warning mt-2">VIP EMITIDA: ${hFia}</strong>
                     </div>
                 </div>
@@ -991,7 +1132,8 @@
                         <p style="margin:2px 0;">FECHA: ${new Date().toLocaleString()}</p>
                         <p style="margin:2px 0;">------------------------</p>
                         <h5 style="margin:8px 0;">EFECTIVO: ${hEfe}</h5>
-                        <h5 style="margin:8px 0;">MÁQUINA: ${document.getElementById('hud-tarjeta').innerText}</h5>
+                        <h5 style="margin:8px 0;">MÁQUINA: ${hTar}</h5>
+                        <h5 style="margin:8px 0;">TRANSF: ${hTra}</h5>
                         <h5 style="margin:8px 0; color: #666;">FIADOS: ${hFia}</h5>
                         <p style="text-align:center; margin-top:15px;">Corte generado.</p>
                     </div>`;

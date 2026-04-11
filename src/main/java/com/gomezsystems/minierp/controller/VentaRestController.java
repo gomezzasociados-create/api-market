@@ -11,10 +11,12 @@ import com.gomezsystems.minierp.repository.ProductoRepository;
 import com.gomezsystems.minierp.repository.AjusteRepository;
 import com.gomezsystems.minierp.service.WhatsappService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ventas")
@@ -176,6 +178,63 @@ public class VentaRestController {
             return "OK";
         } catch (Exception e) {
             return "ERROR: " + e.getMessage();
+        }
+    }
+
+    // ========================================================
+    // 🟢 NUEVA FUNCIÓN: Permite marcar pedidos como despachados y sumarlos a Tesorería
+    // ========================================================
+    @PutMapping("/{id}")
+    public ResponseEntity<Venta> actualizarVenta(@PathVariable Long id, @RequestBody Venta ventaActualizada) {
+        Optional<Venta> ventaExistente = ventaRepository.findById(id);
+
+        if (ventaExistente.isPresent()) {
+            Venta venta = ventaExistente.get();
+
+            // 1. Actualizamos el detalle para que cambie a === PEDIDO ENTREGADO ===
+            venta.setDetalle(ventaActualizada.getDetalle());
+
+            // 2. MAGIA FINANCIERA: Lo inyectamos en el turno actual de la Caja POS y Tesorería
+            venta.setCierreAplicado(false); // Falso = Aún no se ha hecho el Corte Z de este dinero
+            venta.setEstado("PAGADO");      // Confirma el ingreso en Tesorería
+
+            // 3. Si por alguna razón el pedido web no trajo tipo de pago, lo aseguramos
+            if (venta.getTipoPago() == null || venta.getTipoPago().trim().isEmpty()) {
+                venta.setTipoPago("TRANSFERENCIA");
+            }
+
+            // Guardamos los cambios en la base de datos
+            Venta ventaGuardada = ventaRepository.save(venta);
+            return ResponseEntity.ok(ventaGuardada);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // ========================================================
+    // 🔴 NUEVA FUNCIÓN: Eliminar venta / Devolución / Anulación
+    // ========================================================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarVenta(@PathVariable Long id) {
+        Optional<Venta> ventaExistente = ventaRepository.findById(id);
+
+        if (ventaExistente.isPresent()) {
+            Venta venta = ventaExistente.get();
+
+            // Si fue un crédito VIP (Fiado), le descontamos la deuda al cliente
+            if ("FIADO".equals(venta.getTipoPago()) && venta.getCliente() != null) {
+                Cliente c = venta.getCliente();
+                Double deudaActual = c.getDeudaActiva() != null ? c.getDeudaActiva() : 0.0;
+                // Evitamos que la deuda baje de cero por error
+                c.setDeudaActiva(Math.max(0, deudaActual - venta.getMontoTotal()));
+                clienteRepository.save(c);
+            }
+
+            // Eliminamos permanentemente el ticket de la base de datos
+            ventaRepository.delete(venta);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
