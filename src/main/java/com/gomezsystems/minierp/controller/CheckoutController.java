@@ -121,7 +121,7 @@ public class CheckoutController {
 
                     // G.O.M.E.Z. ENVÍA WHATSAPP INMEDIATO
                     if(c.getTelefono() != null && !c.getTelefono().isEmpty()) {
-                        String msjWhatsApp = "🤖 *MARKET LIMBER INFORMA*\n" +
+                        String msjWhatsApp = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
                                 "_Comprobante de compra a Crédito_\n\n" +
                                 "Hola *" + c.getNombre() + "*. Se ha registrado un nuevo cargo en tu cuenta VIP:\n\n" +
                                 "*🛒 Detalle de compra:*\n" + ticketFinalStr + "\n\n" +

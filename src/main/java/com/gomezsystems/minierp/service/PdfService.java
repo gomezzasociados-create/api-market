@@ -55,7 +55,7 @@ public class PdfService {
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             
-            Paragraph sub = new Paragraph("MARKET LÍMBER", FONT_BOLD);
+            Paragraph sub = new Paragraph("MARKET GOMEZ SYSTEMS", FONT_BOLD);
             sub.setAlignment(Element.ALIGN_CENTER);
             document.add(sub);
             
@@ -125,7 +125,7 @@ public class PdfService {
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             
-            Paragraph sub = new Paragraph("MARKET LÍMBER", FONT_BOLD);
+            Paragraph sub = new Paragraph("MARKET GOMEZ SYSTEMS", FONT_BOLD);
             sub.setAlignment(Element.ALIGN_CENTER);
             document.add(sub);
             
@@ -176,7 +176,7 @@ public class PdfService {
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             
-            Paragraph sub = new Paragraph("MARKET LÍMBER", FONT_BOLD);
+            Paragraph sub = new Paragraph("MARKET GOMEZ SYSTEMS", FONT_BOLD);
             sub.setAlignment(Element.ALIGN_CENTER);
             document.add(sub);
             

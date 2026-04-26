@@ -198,8 +198,8 @@ base.forEach((item) => {
 });
 
 // Paths
-const desktopPath1 = "C:\\Users\\gomez\\OneDrive\\Desktop\\MARKET GOMEZ\\catalogo_limber_final.csv";
-const desktopPath2 = "C:\\Users\\gomez\\OneDrive\\Desktop\\catalogo_limber_final.csv";
+const desktopPath1 = "C:\\Users\\gomez\\OneDrive\\Desktop\\MARKET GOMEZ\\catalogo_market_gomez_systems_final.csv";
+const desktopPath2 = "C:\\Users\\gomez\\OneDrive\\Desktop\\catalogo_market_gomez_systems_final.csv";
 
 try { fs.writeFileSync(desktopPath1, csvContent, 'utf-8'); } catch(e){}
 try { fs.writeFileSync(desktopPath2, csvContent, 'utf-8'); } catch(e){}

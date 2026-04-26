@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARKET LIMBER - POS Premium IA</title>
+    <title>MARKET GOMEZ SYSTEMS - POS Premium IA</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -71,8 +71,8 @@
         .pos-header { border-bottom: 1px solid rgba(0, 240, 255, 0.3); background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(15px); display: flex; align-items: center; padding: 15px 30px; box-shadow: 0 5px 30px rgba(0,0,0,0.5); z-index: 100; position: relative; }
         .epic-title-wrapper { display: flex; align-items: baseline; gap: 10px; }
         .epic-market { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8)); }
-        .epic-limber { font-size: 2.2rem; font-weight: 900; letter-spacing: 12px; margin: 0; text-transform: uppercase; color: var(--neon-cyan); animation: limberGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);}
-        @keyframes limberGodMode { 0% { text-shadow: 0 0 5px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 15px #fff, 0 0 25px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
+        .epic-gomez { font-size: 2.2rem; font-weight: 900; letter-spacing: 12px; margin: 0; text-transform: uppercase; color: var(--neon-cyan); animation: gomezGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);}
+        @keyframes gomezGodMode { 0% { text-shadow: 0 0 5px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 15px #fff, 0 0 25px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
 
         .btn-slim-install { background: rgba(0, 0, 0, 0.7); border: 1px solid var(--neon-magenta); color: var(--neon-magenta); border-radius: 8px; padding: 5px 15px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: none; margin: 0 0 15px 0; width: fit-content; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 124, 0.3); backdrop-filter: blur(5px); align-items: center; justify-content: center; cursor: pointer; }
         .btn-slim-install:hover { background: var(--neon-magenta); color: #fff; box-shadow: 0 0 20px var(--neon-magenta), inset 0 0 10px var(--neon-magenta); transform: scale(1.05); }
@@ -240,7 +240,7 @@
 
 <div id="securityLock" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(10,10,15,0.95); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; backdrop-filter: blur(20px);">
     <i class="bi bi-fingerprint text-neon-cyan pop-anim" style="font-size: 6rem; text-shadow: 0 0 40px var(--neon-cyan);"></i>
-    <h2 class="mt-4 text-white fw-bolder" style="letter-spacing: 8px;">LIMBER POS CORE</h2>
+    <h2 class="mt-4 text-white fw-bolder" style="letter-spacing: 8px;">GOMEZ SYSTEMS POS CORE</h2>
     <div class="d-flex gap-3 mt-4 flex-wrap justify-content-center">
         <input type="password" id="pinInput" class="form-control bg-dark text-center text-white fw-bold fs-2 shadow-none" style="width: 180px; letter-spacing: 10px; border: 2px solid var(--neon-cyan); box-shadow: 0 0 20px rgba(0,243,255,0.3);" maxlength="4" placeholder="••••">
         <button class="btn btn-outline-info fw-bold px-5 fs-5" style="border-width: 2px; border-radius: 15px;" onclick="unlockPOS()"><i class="bi bi-power me-2"></i> INICIAR</button>
@@ -266,7 +266,7 @@
     <div class="pos-header">
         <div class="epic-title-wrapper">
             <h1 class="epic-market">MARKET</h1>
-            <h1 class="epic-limber">LIMBER</h1>
+            <h1 class="epic-gomez">GOMEZ SYSTEMS</h1>
         </div>
 
         <div class="d-flex ms-xl-4 gap-2 gap-xl-3 align-items-center flex-wrap" id="hud-caja-indicadores">
@@ -410,7 +410,7 @@
 
 <div id="area-impresion" style="display: none; background: white; color: black; font-family: monospace;">
     <div style="text-align: center; margin-bottom: 10px;">
-        <h2 style="margin: 0; font-size: 1.5rem;">LIMBER MARKET</h2>
+        <h2 style="margin: 0; font-size: 1.5rem;">MARKET GOMEZ SYSTEMS</h2>
         <p style="margin: 0; font-size: 0.8rem;">Plataforma Inteligente GOMEZ</p>
         <p style="margin: 0; font-size: 0.8rem;" id="ticket-fecha"></p>
         <p style="margin: 0; font-size: 0.8rem;">------------------------</p>

@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="Actualizacion 7">
+    <list default="true" id="0933c012-833f-406e-8161-1b909f43f161" name="Changes" comment="PERFECCIONADO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/basedatos/gymdb.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/basedatos/gymdb.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentaRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gomezsystems/minierp/controller/VentaRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentaRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gomezsystems/minierp/controller/VentaRestController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/pos.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/pos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/menu.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,19 +45,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.MinierpApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/gomez/OneDrive/Desktop/PROYECTOS/MARKET GOMEZ"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.MinierpApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gomez/OneDrive/Desktop/PROYECTOS/MARKET GOMEZ&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gomez\OneDrive\Desktop\MARKET GOMEZ\src\main\resources\static" />
@@ -166,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775506966308</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="PERFECCIONADO">
+      <option name="closed" value="true" />
+      <created>1775878745101</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1775878745102</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -177,6 +183,7 @@
     <MESSAGE value="Actualizacion 4" />
     <MESSAGE value="Actualizacion 5" />
     <MESSAGE value="Actualizacion 7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Actualizacion 7" />
+    <MESSAGE value="PERFECCIONADO" />
+    <option name="LAST_COMMIT_MESSAGE" value="PERFECCIONADO" />
   </component>
 </project>

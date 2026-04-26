@@ -216,14 +216,14 @@ for idx, p in enumerate(todos, 1):
     csv_content += f"{idx},{p[0]},{p[1]},{p[2]},{p[3]},{p[4]},{p[5]},{unsplash_url}\n"
 
 # Paths
-desktop_path_1 = "C:\\Users\\gomez\\OneDrive\\Desktop\\MARKET GOMEZ\\catalogo_limber_150.csv"
+desktop_path_1 = "C:\\Users\\gomez\\OneDrive\\Desktop\\MARKET GOMEZ\\catalogo_market_gomez_systems_150.csv"
 
 # Resolving universal Desktop via env (usually C:\Users\user\Desktop or C:\Users\user\OneDrive\Desktop)
 import ctypes.wintypes
 CSIDL_DESKTOP = 0
 buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
 ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_DESKTOP, None, 0, buf)
-desktop_path_2 = os.path.join(buf.value, "catalogo_limber_150.csv")
+desktop_path_2 = os.path.join(buf.value, "catalogo_market_gomez_systems_150.csv")
 
 try:
     with open(desktop_path_1, 'w', encoding='utf-8') as f1:
@@ -238,7 +238,7 @@ try:
     print(f"✅ Guardado en: {desktop_path_2}")
 except Exception as e:
     # Fallback to direct C:\Users\gomez\Desktop fallback
-    desktop_path_3 = "C:\\Users\\gomez\\Desktop\\catalogo_limber_150.csv"
+    desktop_path_3 = "C:\\Users\\gomez\\Desktop\\catalogo_market_gomez_systems_150.csv"
     try:
         with open(desktop_path_3, 'w', encoding='utf-8') as f3:
            f3.write(csv_content)

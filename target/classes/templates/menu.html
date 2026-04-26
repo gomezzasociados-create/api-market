@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIMBER MARKET - Pro Terminal</title>
+    <title>MARKET GOMEZ SYSTEMS - Pro Terminal</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Límber Market">
+    <meta name="apple-mobile-web-app-title" content="Market Gomez Systems">
     <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=M&background=0a0a0f&color=39ff14&size=512&bold=true&font-size=0.6">
 
     <style>
@@ -63,10 +63,55 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .epic-title-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 10px; }
-        .epic-market { font-size: 4.5rem; font-weight: 900; line-height: 0.8; letter-spacing: -2px; text-transform: uppercase; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8)); }
-        .epic-limber { font-size: 4rem; font-weight: 900; line-height: 0.9; letter-spacing: 15px; margin: 0; margin-top: -5px; margin-left: 15px; text-transform: uppercase; color: var(--neon-cyan); animation: limberGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 15px var(--neon-cyan); }
-        @keyframes limberGodMode { 0% { text-shadow: 0 0 10px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 20px #fff, 0 0 30px var(--neon-cyan), 0 0 50px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
+        /* --- CONTENEDOR DEL TÍTULO --- */
+        .epic-title-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 10px; position: relative; }
+
+        .epic-market { font-size: 4.5rem; font-weight: 900; line-height: 0.8; letter-spacing: -2px; text-transform: uppercase; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8)); position: relative; z-index: 5; }
+        .epic-gomez { font-size: 4rem; font-weight: 900; line-height: 0.9; letter-spacing: 15px; margin: 0; margin-top: -5px; margin-left: 15px; text-transform: uppercase; color: var(--neon-cyan); animation: gomezGodMode 2.5s ease-in-out infinite alternate; text-shadow: 0 0 15px var(--neon-cyan); position: relative; z-index: 5; }
+        @keyframes gomezGodMode { 0% { text-shadow: 0 0 10px var(--neon-cyan); transform: scale(1); } 100% { text-shadow: 0 0 20px #fff, 0 0 30px var(--neon-cyan), 0 0 50px var(--neon-cyan); transform: scale(1.02); color: #ffffff; } }
+
+        /* --- EFECTO SMART REAJUSTADO MILIMÉTRICAMENTE --- */
+        .epic-smart {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--neon-magenta);
+            text-shadow: 0 0 10px var(--neon-magenta), 0 0 30px var(--neon-magenta);
+            letter-spacing: 5px;
+            pointer-events: none;
+            /* Anclado al centro para calcular la salida */
+            left: 50%;
+            top: 15px;
+            opacity: 0;
+            z-index: 1; /* Nace detrás de MARKET */
+            animation: emergeSmart 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s, neonFlicker 3s infinite alternate 2.7s;
+        }
+
+        @keyframes emergeSmart {
+            /* 0% Escondido detrás del centro exacto */
+            0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); filter: blur(8px); z-index: 1; }
+            /* 40% Salta al frente rompiendo la capa */
+            40% { opacity: 1; transform: translate(-50%, -30px) scale(1.2); filter: blur(0px); z-index: 10; text-shadow: 0 0 40px #fff; }
+            /* 100% Ajustado más al centro y un poco más abajo (debajo de E y R) */
+            100% { opacity: 1; transform: translate(75px, 65px) scale(1) rotate(-12deg); z-index: 10; }
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px var(--neon-magenta), 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-magenta); opacity: 1; }
+            20%, 24%, 55% { text-shadow: none; opacity: 0.4; }
+        }
+
+        @media (max-width: 768px) {
+            .epic-market { font-size: 3.5rem; margin-bottom: -5px; }
+            .epic-gomez { font-size: 3rem; letter-spacing: 10px; margin-left: 0; }
+            .epic-smart { font-size: 1.1rem; letter-spacing: 3px; top: 10px; }
+            @keyframes emergeSmart {
+                0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); filter: blur(8px); z-index: 1; }
+                40% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); filter: blur(0px); z-index: 10; }
+                /* Ajuste proporcional fino para celulares */
+                100% { opacity: 1; transform: translate(50px, 42px) scale(1) rotate(-12deg); z-index: 10; }
+            }
+        }
 
         /* --- GUÍA ESCRITA Y POR VOZ --- */
         .gomez-guide-box {
@@ -184,10 +229,6 @@
         .swal-input-cyber { background: rgba(0,0,0,0.6) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: #fff !important; }
         .swal-input-cyber:focus { border-color: var(--neon-cyan) !important; box-shadow: 0 0 15px rgba(0,243,255,0.3) !important; }
 
-        @media (max-width: 768px) {
-            .epic-market { font-size: 3.5rem; margin-bottom: -5px; }
-            .epic-limber { font-size: 3rem; letter-spacing: 10px; margin-left: 0; }
-        }
     </style>
 </head>
 <body>
@@ -210,7 +251,8 @@
     <div class="container animate__animated animate__fadeInDown position-relative">
         <div class="epic-title-wrapper">
             <h1 class="epic-market">MARKET</h1>
-            <h1 class="epic-limber">LIMBER</h1>
+            <h1 class="epic-gomez">GOMEZ SYSTEMS</h1>
+            <span class="epic-smart">SMART</span>
         </div>
 
         <div class="gomez-guide-box flex-column align-items-stretch animate__animated animate__fadeIn animate__delay-1s mb-2">
@@ -224,10 +266,10 @@
             <div id="collapseGuide" class="collapse">
                 <div class="d-flex align-items-center gap-3 mt-3 pt-3 border-top border-secondary">
                     <div class="text-start" style="flex-grow: 1;">
-                        <strong class="text-white fs-6">Hola, bienvenidos a Market Limber ✨</strong><br>
+                        <strong class="text-white fs-6">Hola, bienvenidos a Market Gomez Systems ✨</strong><br>
                         <span class="text-light opacity-75" style="font-size: 0.85rem;">Toca cualquier producto para agregarlo a la orden. Si compras por kilo, te pediré el peso exacto. Presiona el <strong>carrito flotante</strong> cuando estés listo para pagar y agendar tu retiro.</span>
                     </div>
-                    <button class="btn-speak-guide shadow" onclick="GOMEZ.speak('Hola, bienvenidos a Market Límber. Toca cualquier tarjeta para agregar el producto a tu orden. Si compras a granel, yo te pediré el peso exacto. Cuando finalices, pulsa el botón del carrito abajo a la derecha para procesar tu pago y agendar tu retiro en el local.')" title="Escuchar instrucciones">
+                    <button class="btn-speak-guide shadow" onclick="GOMEZ.speak('Hola, bienvenidos a Market Gomez Systems. Toca cualquier tarjeta para agregar el producto a tu orden. Si compras a granel, yo te pediré el peso exacto. Cuando finalices, pulsa el botón del carrito abajo a la derecha para procesar tu pago y agendar tu retiro en el local.')" title="Escuchar instrucciones">
                         <i class="bi bi-volume-up-fill"></i>
                     </button>
                 </div>
@@ -374,7 +416,7 @@
     }
 
     // ==========================================
-    // MOTOR DE VOZ FONÉTICO (LÍMBER)
+    // MOTOR DE VOZ FONÉTICO
     // ==========================================
     const GOMEZ = {
         synth: window.speechSynthesis,
