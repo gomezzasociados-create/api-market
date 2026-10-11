@@ -29,7 +29,7 @@ public class CobranzaRobotService {
     @Scheduled(cron = "0 * * * * *")
     public void escaneoRobotCobranzas() {
         Ajuste encendido = ajusteRepository.findById("ROBOT_COBRANZA_ACTIVO").orElse(new Ajuste("ROBOT_COBRANZA_ACTIVO", "false"));
-        if (!"true".equalsIgnoreCase(encendido.getValor())) {
+        if (!"true".equalsIgnoreCase(encendido.getValor()) && !"ON".equalsIgnoreCase(encendido.getValor())) {
             return;
         }
 

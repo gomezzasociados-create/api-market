@@ -35,6 +35,13 @@ public class SecurityConfig {
                                 response.sendRedirect("/login");
                             }
                         })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            if (request.getRequestURI().startsWith("/api/")) {
+                                response.setStatus(403);
+                            } else {
+                                response.sendRedirect("/pos");
+                            }
+                        })
                 )
                 .formLogin(form -> form.disable())
                 .logout(logout -> logout

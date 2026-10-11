@@ -297,9 +297,10 @@
             </button>
         </div>
 
-        <div class="ms-auto flex-nowrap d-flex align-items-center gap-3">
+        <div class="ms-auto flex-nowrap d-flex align-items-center gap-2">
             <span class="badge bg-dark border border-secondary p-2 fs-6 text-white"><i class="bi bi-person-badge me-1"></i> Caja 01</span>
-            <button class="btn btn-outline-danger fw-bold rounded-pill px-4 text-white border-2" onclick="bloquearCaja()"><i class="bi bi-lock-fill me-1"></i> Bloquear</button>
+            <a href="/admin" class="btn btn-outline-info fw-bold rounded-pill px-3 text-white border-2"><i class="bi bi-speedometer2 me-1"></i> Admin</a>
+            <a href="/logout" class="btn btn-outline-danger fw-bold rounded-pill px-3 text-white border-2"><i class="bi bi-power me-1"></i> Salir</a>
         </div>
     </div>
 
@@ -738,8 +739,10 @@
             const promoBadge = hayPromo ? `<span class="promo-badge"><i class="bi bi-tag-fill"></i> OFERTA</span>` : '';
             let stockBadge = '';
             if (p.stock !== null && p.stock !== undefined) {
-                if (p.stock <= 0) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 59, 48, 0.95); color: white; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.7rem; letter-spacing: 1px; z-index: 15;"><i class="bi bi-exclamation-triangle-fill"></i> AGOTADO</span>`;
-                else if (p.stock <= 5) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 0.7rem; z-index: 15;"><i class="bi bi-clock-history"></i> Quedan ${p.stock}</span>`;
+                const uMedPos = p.esPesable ? ' Kg' : ' un';
+                const sFormPos = p.esPesable ? Number(p.stock).toFixed(2).replace(/\.?0+$/, '') : p.stock;
+                if (p.stock <= 0) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 59, 48, 0.95); color: white; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.7rem; letter-spacing: 1px; z-index: 15;"><i class="bi bi-exclamation-triangle-fill"></i> ${p.esPesable ? 'SIN PESO' : 'AGOTADO'}</span>`;
+                else if (p.stock <= (p.esPesable ? 2.0 : 5)) stockBadge = `<span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 0, 0.95); color: #1a1a1a; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 0.7rem; z-index: 15;"><i class="bi bi-clock-history"></i> Quedan ${sFormPos}${uMedPos}</span>`;
             }
 
             let precioHTML = hayPromo ? `<span class="product-price text-warning">$${precioActual} <small class="text-decoration-line-through">$${original}</small></span>` : `<span class="product-price">$${precioActual} <small>${p.esPesable?'/KG':''}</small></span>`;

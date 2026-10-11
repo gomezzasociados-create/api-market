@@ -27,7 +27,8 @@ public class AbastecimientoRobotService {
     // Cron checking every minute for the admin configured hour (08:00 AM)
     @Scheduled(cron = "0 * * * * *")
     public void vigilarInventario() {
-        boolean robotAlertaActivo = "ON".equalsIgnoreCase(ajusteRepository.findById("ROBOT_ALERTA_ESTADO").map(Ajuste::getValor).orElse("OFF"));
+        String val = ajusteRepository.findById("ROBOT_ALERTA_ESTADO").map(Ajuste::getValor).orElse("OFF");
+        boolean robotAlertaActivo = "ON".equalsIgnoreCase(val) || "true".equalsIgnoreCase(val);
         if (!robotAlertaActivo) return;
 
         String horaAviso = ajusteRepository.findById("ROBOT_ALERTA_HORA").map(Ajuste::getValor).orElse("08:00");

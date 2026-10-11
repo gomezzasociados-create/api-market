@@ -26,17 +26,26 @@ public class MarketingRobotService {
     // Se ejecutará cada minuto cron para ver si la hora coincide EXACTAMENTE con lo programado.
     @Scheduled(cron = "0 * * * * *")
     public void escaneoRobotMarketing() {
-        Ajuste encendido = ajusteRepository.findById("ROBOT_MKT_ACTIVO").orElse(new Ajuste("ROBOT_MKT_ACTIVO", "OFF"));
-        if (!"ON".equalsIgnoreCase(encendido.getValor())) {
+        String estado = ajusteRepository.findById("ROBOT_MKT_ACTIVO")
+                .map(Ajuste::getValor)
+                .orElseGet(() -> ajusteRepository.findById("ROBOT_OFERTA_ACTIVO")
+                        .map(Ajuste::getValor)
+                        .orElse("OFF"));
+
+        if (!"ON".equalsIgnoreCase(estado) && !"true".equalsIgnoreCase(estado)) {
             return;
         }
 
-        Ajuste horaAjuste = ajusteRepository.findById("ROBOT_MKT_HORA").orElse(new Ajuste("ROBOT_MKT_HORA", "18:00"));
+        String horaStr = ajusteRepository.findById("ROBOT_MKT_HORA")
+                .map(Ajuste::getValor)
+                .orElseGet(() -> ajusteRepository.findById("ROBOT_OFERTA_HORA")
+                        .map(Ajuste::getValor)
+                        .orElse("18:00"));
         
         LocalTime horaActual = LocalTime.now();
         LocalTime horaConfigurada;
         try {
-            horaConfigurada = LocalTime.parse(horaAjuste.getValor());
+            horaConfigurada = LocalTime.parse(horaStr.trim());
         } catch (Exception e) {
             horaConfigurada = LocalTime.of(18, 0);
         }
@@ -48,12 +57,17 @@ public class MarketingRobotService {
     }
 
     public void ejecutarCampanaVip() {
-        Ajuste etiquetaAjuste = ajusteRepository.findById("ROBOT_MKT_TARGET").orElse(new Ajuste("ROBOT_MKT_TARGET", "VIP"));
-        Ajuste plantillaAjuste = ajusteRepository.findById("ROBOT_MKT_PLANTILLA")
-                .orElse(new Ajuste("ROBOT_MKT_PLANTILLA", "¡Hola [NOMBRE]! Te seleccionamos por ser cliente [ETIQUETA]. Tenemos una oferta relámpago con un 20% de descuento solo por hoy."));
-                
-        String etiquetaTarget = etiquetaAjuste.getValor().trim().toUpperCase();
-        String plantilla = plantillaAjuste.getValor();
+        String etiquetaTarget = ajusteRepository.findById("ROBOT_MKT_TARGET")
+                .map(Ajuste::getValor)
+                .orElseGet(() -> ajusteRepository.findById("ROBOT_OFERTA_ETIQUETA")
+                        .map(Ajuste::getValor)
+                        .orElse("VIP")).trim().toUpperCase();
+
+        String plantilla = ajusteRepository.findById("ROBOT_MKT_PLANTILLA")
+                .map(Ajuste::getValor)
+                .orElseGet(() -> ajusteRepository.findById("ROBOT_OFERTA_PLANTILLA")
+                        .map(Ajuste::getValor)
+                        .orElse("¡Hola [NOMBRE]! Te seleccionamos por ser cliente [ETIQUETA]. Tenemos una oferta relámpago con un 20% de descuento solo por hoy."));
 
         List<Cliente> clientes = clienteRepository.findAll();
         int count = 0;

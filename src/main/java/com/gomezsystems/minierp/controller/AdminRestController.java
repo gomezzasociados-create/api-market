@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -73,6 +74,17 @@ public class AdminRestController {
     public String crearProductoTotal(@RequestBody Producto payload) {
         if(payload.getPrecioCompra() == null) payload.setPrecioCompra(0.0);
         if(payload.getStock() == null) payload.setStock(0.0);
+        if(payload.isEsPesable()) {
+            if(payload.getPrecioPorKilo() == null && payload.getPrecio() != null) {
+                payload.setPrecioPorKilo(payload.getPrecio());
+            }
+            payload.setPrecio(null);
+        } else {
+            if(payload.getPrecio() == null && payload.getPrecioPorKilo() != null) {
+                payload.setPrecio(payload.getPrecioPorKilo());
+            }
+            payload.setPrecioPorKilo(null);
+        }
         productoRepository.save(payload);
         return "OK";
     }
@@ -87,6 +99,10 @@ public class AdminRestController {
             if (payload.containsKey("descripcion")) p.setDescripcion(payload.get("descripcion").toString());
             if (payload.containsKey("imagen") && payload.get("imagen") != null) p.setImagen(payload.get("imagen").toString());
 
+            if (payload.containsKey("esPesable") && payload.get("esPesable") != null) {
+                p.setEsPesable(Boolean.parseBoolean(payload.get("esPesable").toString()));
+            }
+
             if (payload.containsKey("precioCompra") && payload.get("precioCompra") != null) {
                 p.setPrecioCompra(Double.parseDouble(payload.get("precioCompra").toString()));
             }
@@ -94,10 +110,15 @@ public class AdminRestController {
                 p.setStock(Double.parseDouble(payload.get("stock").toString()));
             }
 
-            if (payload.containsKey("precio")) {
+            if (payload.containsKey("precio") && payload.get("precio") != null && !payload.get("precio").toString().isEmpty()) {
                 Double nuevoPrecio = Double.parseDouble(payload.get("precio").toString());
-                if (p.isEsPesable()) p.setPrecioPorKilo(nuevoPrecio);
-                else p.setPrecio(nuevoPrecio);
+                if (p.isEsPesable()) {
+                    p.setPrecioPorKilo(nuevoPrecio);
+                    p.setPrecio(null);
+                } else {
+                    p.setPrecio(nuevoPrecio);
+                    p.setPrecioPorKilo(null);
+                }
             }
 
             if (payload.containsKey("proveedorId") && payload.get("proveedorId") != null && !payload.get("proveedorId").toString().isEmpty()) {
@@ -347,6 +368,22 @@ public class AdminRestController {
     public String triggerRobot() {
         cobranzaRobotService.ejecutarRondaMensajes();
         return "Disparo Manual Completado. Verifica la consola.";
+    }
+
+    @PostMapping("/robot/test-whatsapp")
+    public ResponseEntity<Map<String, Object>> testWhatsapp(@RequestBody Map<String, String> payload) {
+        String telefono = payload.get("telefono");
+        String mensaje = payload.getOrDefault("mensaje", "🤖 *PRUEBA GOMEZ SYSTEMS*: Conexión Evolution API WhatsApp exitosa.");
+        Map<String, Object> resp = new HashMap<>();
+        if (telefono == null || telefono.trim().isEmpty()) {
+            resp.put("success", false);
+            resp.put("mensaje", "Número de teléfono no ingresado.");
+            return ResponseEntity.badRequest().body(resp);
+        }
+        boolean ok = evolutionApiService.enviarMensajeFiado(telefono, mensaje);
+        resp.put("success", ok);
+        resp.put("mensaje", ok ? "Mensaje enviado exitosamente a Evolution API." : "Error al conectar con Evolution API. Revisa URL, Instancia o API Key.");
+        return ResponseEntity.ok(resp);
     }
 
     // 9. Despacho Masivo de WhatsApp por Etiqueta

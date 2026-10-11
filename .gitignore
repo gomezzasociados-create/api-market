@@ -1,0 +1,4 @@
+# Maven target directory untracked files
+target/maven-status/
+target/test-classes/
+*.log
