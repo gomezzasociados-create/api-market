@@ -1288,7 +1288,7 @@
                     <div class="row g-2 mb-2">
                         <div class="col-md-7 col-12">
                             <label class="cyber-label">URL del Servidor Evolution</label>
-                            <input type="text" id="ajusteEvolutionUrl" class="form-control text-white bg-black border-secondary" placeholder="https://api.gomezz.space">
+                            <input type="text" id="ajusteEvolutionUrl" class="form-control text-white bg-black border-secondary" placeholder="https://api.gomezsystems.online/manager/">
                         </div>
                         <div class="col-md-5 col-12">
                             <label class="cyber-label">Instancia WhatsApp</label>
@@ -3811,7 +3811,7 @@
         const data = await r.json();
 
         // Evolution API Gateway
-        document.getElementById('ajusteEvolutionUrl').value = data["EVOLUTION_API_URL"] || "https://api.gomezz.space";
+        document.getElementById('ajusteEvolutionUrl').value = data["EVOLUTION_API_URL"] || "https://api.gomezsystems.online/manager/";
         document.getElementById('ajusteEvolutionInstancia').value = data["EVOLUTION_INSTANCE"] || "systems";
         document.getElementById('ajusteEvolutionKey').value = data["EVOLUTION_APIKEY"] || "9FCB1D6E24E9-4815-B408-2EC8C2735312";
         const testStatus = document.getElementById('testWsStatus');

@@ -18,7 +18,7 @@ public class EvolutionApiService {
     @Autowired
     private AjusteRepository ajusteRepository;
 
-    @Value("${evolution.url:https://api.gomezz.space}")
+    @Value("${evolution.url:https://api.gomezsystems.online}")
     private String defaultEvolutionUrl;
 
     @Value("${evolution.instance:systems}")
@@ -28,10 +28,23 @@ public class EvolutionApiService {
     private String defaultApikey;
 
     public String getEvolutionUrl() {
-        return ajusteRepository.findById("EVOLUTION_API_URL")
+        String url = ajusteRepository.findById("EVOLUTION_API_URL")
                 .map(Ajuste::getValor)
                 .filter(v -> v != null && !v.trim().isEmpty())
                 .orElse(defaultEvolutionUrl);
+        if (url != null) {
+            url = url.trim();
+            while (url.endsWith("/")) {
+                url = url.substring(0, url.length() - 1);
+            }
+            if (url.toLowerCase().endsWith("/manager")) {
+                url = url.substring(0, url.length() - 8);
+                while (url.endsWith("/")) {
+                    url = url.substring(0, url.length() - 1);
+                }
+            }
+        }
+        return url;
     }
 
     public String getInstanceName() {
