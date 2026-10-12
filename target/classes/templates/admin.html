@@ -742,12 +742,12 @@
 
                 <!-- CATEGORY FILTER PILLS -->
                 <div id="pillsCategoriasInventario" class="d-flex gap-2 mb-3 overflow-auto pb-2" style="white-space: nowrap;"></div>
-
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <div class="d-flex gap-2 overflow-auto align-items-center" style="white-space: nowrap;">
                         <input type="file" id="archivoCsv" class="form-control form-control-sm" accept=".csv" style="width: auto; display: inline-block;">
-                        <button class="btn btn-sm btn-neon fw-bold" onclick="playSfx('click'); subirCsv()"><i class="bi bi-upload"></i> Importar CSV</button>
-                        <button class="btn btn-sm btn-outline-danger border-2 fw-bold text-white" onclick="playSfx('click'); borrarTodoElCatalogo()"><i class="bi bi-trash3"></i> Purgar BD</button>
+                        <button class="btn btn-sm btn-neon fw-bold" onclick="playSfx('click'); subirCsv()"><i class="bi bi-upload me-1"></i> Importar CSV</button>
+                        <button class="btn btn-sm btn-outline-warning border-1 fw-bold" onclick="playSfx('click'); limpiarDuplicadosCatalogo()"><i class="bi bi-magic me-1"></i> Limpiar Duplicados</button>
+                        <button class="btn btn-sm btn-outline-danger border-2 fw-bold text-white" onclick="playSfx('click'); borrarTodoElCatalogo()"><i class="bi bi-trash3 me-1"></i> Purgar BD</button>
                     </div>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-sm btn-outline-info text-info border-1 fw-bold" onclick="desplegarTodosLosAcordeones(true)"><i class="bi bi-arrows-expand me-1"></i> Expandir Todo</button>
@@ -1705,14 +1705,119 @@
 
     async function subirCsv() {
         const fileInput = document.getElementById('archivoCsv');
-        if (fileInput.files.length === 0) return;
+        if (fileInput.files.length === 0) {
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'warning',
+                title: 'Selecciona un archivo .csv primero',
+                showConfirmButton: false,
+                timer: 2000,
+                background: '#161a23',
+                color: '#00f3ff'
+            });
+            return;
+        }
 
         const formData = new FormData();
         formData.append("file", fileInput.files[0]);
 
-        const r = await fetch('/api/admin/inventario/csv', { method: 'POST', body: formData });
-        alert(await r.text());
-        cargarTodosLosSistemas();
+        Swal.fire({
+            title: 'Procesando archivo CSV...',
+            text: 'Validando catálogo y evitando duplicados...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            background: '#161a23',
+            color: '#00f3ff',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            const r = await fetch('/api/admin/inventario/csv', { method: 'POST', body: formData });
+            const respText = await r.text();
+            if (r.ok) {
+                playSfx('success');
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Importación Completada!',
+                    text: respText,
+                    background: '#161a23',
+                    color: '#00f3ff',
+                    confirmButtonColor: '#00f3ff'
+                });
+                fileInput.value = '';
+                cargarTodosLosSistemas();
+            } else {
+                playSfx('alert');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error en Importación',
+                    text: respText,
+                    background: '#161a23',
+                    color: '#ff0055'
+                });
+            }
+        } catch(e) {
+            playSfx('alert');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de Red',
+                text: e.message,
+                background: '#161a23',
+                color: '#ff0055'
+            });
+        }
+    }
+
+    async function limpiarDuplicadosCatalogo() {
+        Swal.fire({
+            title: 'Saneando Catálogo...',
+            text: 'Detectando y fusionando productos duplicados...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            background: '#161a23',
+            color: '#00f3ff',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            const r = await fetch('/api/admin/inventario/deduplicar', { method: 'POST' });
+            const data = await r.json();
+            if (data.success) {
+                playSfx('success');
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Catálogo Saneado!',
+                    text: data.mensaje,
+                    background: '#161a23',
+                    color: '#00f3ff',
+                    confirmButtonColor: '#00f3ff'
+                });
+                cargarTodosLosSistemas();
+            } else {
+                playSfx('alert');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.mensaje,
+                    background: '#161a23',
+                    color: '#ff0055'
+                });
+            }
+        } catch(e) {
+            playSfx('alert');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de Red',
+                text: e.message,
+                background: '#161a23',
+                color: '#ff0055'
+            });
+        }
     }
 
     async function borrarTodoElCatalogo() {
