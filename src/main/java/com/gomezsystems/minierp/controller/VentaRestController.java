@@ -95,32 +95,50 @@ public class VentaRestController {
                     clienteRepository.save(c);
 
                     // ========================================================
-                    // 🛡️ BLINDAJE DEL MOTOR G.O.M.E.Z. (TRY-CATCH SEPARADO)
+                    // 🛡️ BLINDAJE DEL MOTOR G.O.M.E.Z. (COMPROBANTE WHATSAPP VIP)
                     // ========================================================
                     try {
                         if (c.getTelefono() != null && !c.getTelefono().trim().isEmpty()) {
                             System.out.println("✅ [DEBUG-CAJA] Preparando WhatsApp para " + c.getTelefono());
 
-                            String defaultMsg = "🛒 Hola [NOMBRE], registramos una nueva compra.\nDetalle:\n[DETALLE]\nTotal compra: $[TOTAL]\nDeuda anterior: $[DEUDA_ANTERIOR]\nDeuda total actualizada: $[DEUDA]";
+                            Double limitePersonalizado = c.getCupoMaximo() != null ? c.getCupoMaximo() : 100000.0;
+                            Double cupoDisponible = Math.max(0, limitePersonalizado - c.getDeudaActiva());
+
+                            String defaultMsg = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
+                                    "━━━━━━━━━━━━━━━━━━━━\n" +
+                                    "✨ *COMPROBANTE DE COMPRA A CRÉDITO VIP* ✨\n\n" +
+                                    "Hola *[NOMBRE]*, se ha registrado un nuevo cargo en tu cuenta corriente:\n\n" +
+                                    "*🛒 DETALLE DE COMPRA:*\n[DETALLE]\n\n" +
+                                    "💵 *Monto de esta compra:* $[TOTAL]\n" +
+                                    "📊 *Deuda anterior:* $[DEUDA_ANTERIOR]\n" +
+                                    "🔴 *NUEVA DEUDA TOTAL:* $[DEUDA]\n" +
+                                    "🟢 *CUPO DISPONIBLE:* $[CUPO_DISPONIBLE]\n" +
+                                    "━━━━━━━━━━━━━━━━━━━━\n" +
+                                    "_Gracias por confiar en nosotros. Cuentas claras conservan amistades._";
 
                             String msgTemplate = (c.getPlantillaMsgCompra() != null && !c.getPlantillaMsgCompra().trim().isEmpty())
                                     ? c.getPlantillaMsgCompra()
-                                    : ajusteRepository.findById("ROBOT_MSG_COMPRA").map(a -> a.getValor()).orElse(defaultMsg);
+                                    : ajusteRepository.findById("ROBOT_MSG_COMPRA").map(a -> a.getValor()).filter(val -> val != null && !val.trim().isEmpty()).orElse(defaultMsg);
 
                             String msg = msgTemplate
                                     .replace("[NOMBRE]", c.getNombre() != null ? c.getNombre() : "Cliente")
                                     .replace("[TOTAL]", String.valueOf(Math.round(total)))
                                     .replace("[DETALLE]", detalle)
                                     .replace("[DEUDA_ANTERIOR]", String.valueOf(Math.round(deudaAnterior)))
-                                    .replace("[DEUDA]", String.valueOf(Math.round(c.getDeudaActiva())));
+                                    .replace("[DEUDA]", String.valueOf(Math.round(c.getDeudaActiva())))
+                                    .replace("[CUPO_DISPONIBLE]", String.valueOf(Math.round(cupoDisponible)))
+                                    .replace("[CUPO_MAXIMO]", String.valueOf(Math.round(limitePersonalizado)));
 
-                            whatsappService.enviarMensajeTexto(c.getTelefono(), msg);
-                            System.out.println("✅ [DEBUG-CAJA] Orden despachada a Evolution.");
+                            boolean enviado = whatsappService.enviarMensajeTexto(c.getTelefono(), msg);
+                            if (enviado) {
+                                System.out.println("✅ [DEBUG-CAJA] Orden despachada a Evolution exitosamente.");
+                            } else {
+                                System.err.println("⚠️ [DEBUG-CAJA] No se pudo enviar el mensaje por Evolution API a " + c.getTelefono());
+                            }
                         } else {
-                            System.out.println("⚠️ [DEBUG-CAJA] El cliente no tiene teléfono. Se omite el WhatsApp.");
+                            System.out.println("⚠️ [DEBUG-CAJA] El cliente no tiene teléfono registrado. Se omite el WhatsApp.");
                         }
                     } catch (Exception wsEx) {
-                        // Si falla la plantilla o el envío, LA VENTA Y EL ABONO SE SALVAN
                         System.err.println("⚠️ [DEBUG-CAJA] Error construyendo/enviando WhatsApp: " + wsEx.getMessage());
                     }
                     // ========================================================

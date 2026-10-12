@@ -102,7 +102,7 @@ public class CheckoutController {
         nuevaVenta.setFechaHora(LocalDateTime.now());
 
         // 3. Procesar Fiado y Enviar WhatsApp
-        if ("FIADO".equals(metodo)) {
+        if ("FIADO".equals(metodo) || "CREDITO".equals(metodo) || "CREDITO_VIP".equals(metodo)) {
             if (request.getClienteId() != null) {
                 Optional<Cliente> optCliente = clienteRepository.findById(request.getClienteId());
                 if (optCliente.isPresent()) {
@@ -117,18 +117,21 @@ public class CheckoutController {
                     clienteRepository.save(c);
 
                     nuevaVenta.setCliente(c);
+                    nuevaVenta.setTipoPago("FIADO");
                     nuevaVenta.setEstado("PENDIENTE");
 
                     // G.O.M.E.Z. ENVÍA WHATSAPP INMEDIATO
                     if(c.getTelefono() != null && !c.getTelefono().isEmpty()) {
                         String msjWhatsApp = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
-                                "_Comprobante de compra a Crédito_\n\n" +
+                                "━━━━━━━━━━━━━━━━━━━━\n" +
+                                "✨ *COMPROBANTE DE COMPRA A CRÉDITO VIP* ✨\n\n" +
                                 "Hola *" + c.getNombre() + "*. Se ha registrado un nuevo cargo en tu cuenta VIP:\n\n" +
-                                "*🛒 Detalle de compra:*\n" + ticketFinalStr + "\n\n" +
+                                "*🛒 DETALLE DE COMPRA:*\n" + ticketFinalStr + "\n\n" +
                                 "💵 *Monto de esta compra:* $" + totalVenta + "\n" +
                                 "📊 *Deuda Anterior:* $" + Math.round(deudaAnterior) + "\n\n" +
                                 "🔴 *NUEVA DEUDA TOTAL:* $" + Math.round(deudaNueva) + "\n" +
-                                "🟢 *CUPO DISPONIBLE:* $" + Math.round(cupoDisponible) + "\n\n" +
+                                "🟢 *CUPO DISPONIBLE:* $" + Math.round(cupoDisponible) + "\n" +
+                                "━━━━━━━━━━━━━━━━━━━━\n" +
                                 "_Gracias por confiar en nosotros. Cuentas claras conservan amistades._";
 
                         evolutionApiService.enviarMensajeFiado(c.getTelefono(), msjWhatsApp);

@@ -20,7 +20,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/unlock", "/api/admin/robot/test").permitAll()
 
                         // 👇 AQUÍ AGREGAMOS LA RUTA NUEVA AL PASE LIBRE (permitAll) 👇
-                        .requestMatchers("/", "/menu", "/api/productos", "/api/checkout", "/api/checkout/**", "/api/ventas/procesar").permitAll()
+                        .requestMatchers("/", "/menu", "/api/productos", "/api/checkout", "/api/checkout/**", "/api/ventas/procesar", "/api/clientes/guardar").permitAll()
 
                         .requestMatchers("/h2-console/**").hasRole("ADMIN")
                         .requestMatchers("/admin", "/admin/**", "/api/admin/**").hasRole("ADMIN")

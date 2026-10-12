@@ -9,8 +9,8 @@ public class WhatsappService {
     @Autowired
     private EvolutionApiService evolutionApiService;
 
-    public void enviarMensajeTexto(String numeroDestino, String mensaje) {
+    public boolean enviarMensajeTexto(String numeroDestino, String mensaje) {
         System.out.println("🚀 [G.O.M.E.Z.] Despachando mensaje WhatsApp a: " + numeroDestino);
-        evolutionApiService.enviarMensajeFiado(numeroDestino, mensaje);
+        return evolutionApiService.enviarMensajeFiado(numeroDestino, mensaje);
     }
 }
