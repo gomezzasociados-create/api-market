@@ -712,7 +712,7 @@
     <ul class="nav nav-pills" id="adminTabs" role="tablist">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-inventario" onclick="playSfx('hover')"><i class="bi bi-box-seam me-1"></i>Inventario</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-calculadora" onclick="playSfx('hover')"><i class="bi bi-calculator me-1"></i>Precios</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fiadores" onclick="playSfx('hover')"><i class="bi bi-people me-1"></i>Clientes</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fiadores" onclick="playSfx('hover'); recargarCarteraClientes();"><i class="bi bi-people me-1"></i>Clientes</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-compras" onclick="playSfx('hover'); cargarSeccionCompras(); cargarCortesZ();"><i class="bi bi-bank2 me-1"></i>Tesorería & Caja</button></li>
     </ul>
 
@@ -2959,10 +2959,40 @@
         window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
+    async function recargarCarteraClientes() {
+        try {
+            const [resClientes, resVentas] = await Promise.all([
+                fetch('/api/admin/clientes/autorizados').catch(()=>({json:()=>[]})),
+                fetch('/api/admin/ventas').catch(()=>({json:()=>[]}))
+            ]);
+            clientesGlobal = await resClientes.json();
+            historialVentasGlobal = await resVentas.json();
+            await cargarDeudores();
+        } catch(e) {}
+    }
+
     async function cargarDeudores() {
         const vips = document.getElementById('accordion-vip');
         const gens = document.getElementById('grilla-general');
         if(!vips || !gens) return;
+
+        // Recordar acordeones abiertos para no cerrarlos al actualizar
+        const acordeonesAbiertos = new Set(
+            Array.from(document.querySelectorAll('#tab-fiadores .collapse.show')).map(el => el.id)
+        );
+
+        // Si por alguna razón aún no se han cargado las ventas o clientes, cargarlos ahora
+        if (!clientesGlobal || clientesGlobal.length === 0 || !historialVentasGlobal || historialVentasGlobal.length === 0) {
+            try {
+                const [rCli, rVen] = await Promise.all([
+                    (!clientesGlobal || clientesGlobal.length === 0) ? fetch('/api/admin/clientes/autorizados').catch(()=>({json:()=>[]})) : Promise.resolve({json:()=>clientesGlobal}),
+                    (!historialVentasGlobal || historialVentasGlobal.length === 0) ? fetch('/api/admin/ventas').catch(()=>({json:()=>[]})) : Promise.resolve({json:()=>historialVentasGlobal})
+                ]);
+                clientesGlobal = await rCli.json();
+                historialVentasGlobal = await rVen.json();
+            } catch(e) {}
+        }
+
         vips.innerHTML = '';
         gens.innerHTML = '';
 
@@ -3016,8 +3046,10 @@
                     creditBarColor = '#ff0055';
                 }
 
-                // Historial de ventas
-                let misVentas = historialVentasGlobal.filter(v => v.cliente && v.cliente.id === c.id);
+                // Historial de ventas (Ordenado del más reciente al más antiguo)
+                let misVentas = (historialVentasGlobal || [])
+                    .filter(v => v.cliente && Number(v.cliente.id) === Number(c.id))
+                    .sort((a, b) => (b.id || 0) - (a.id || 0));
                 let historialHTML = misVentas.length === 0 ? 
                     '<div class="text-secondary small p-3 text-center fst-italic"><i class="bi bi-clock-history me-1"></i>Sin registros de compras o pagos</div>' : 
                     misVentas.map(v => {
@@ -3392,6 +3424,12 @@
         const hReg = document.getElementById('header-count-regular');
         if(hReg) hReg.innerText = `${regularsCount} Clientes`;
 
+        // Restaurar acordeones que estaban abiertos antes de refrescar
+        acordeonesAbiertos.forEach(accId => {
+            const el = document.getElementById(accId);
+            if (el) el.classList.add('show');
+        });
+
         // Ejecutar filtro activo
         filtrarCRM();
     }
@@ -3534,27 +3572,61 @@
             background: '#1e222b', color: '#fff', showCancelButton: true, confirmButtonColor: '#00f3ff', confirmButtonText: '<strong class="text-dark">PAGAR</strong>',
             preConfirm: () => {
                 const m = parseFloat(document.getElementById('swal-abono-monto').value);
-                if (!m) { Swal.showValidationMessage('Monto inválido'); return false; }
+                if (!m || m <= 0) { Swal.showValidationMessage('Monto inválido'); return false; }
                 return { abono: m, metodoPago: document.getElementById('swal-abono-metodo').value };
             }
         });
 
         if (formValues) {
+            Swal.fire({
+                title: 'Procesando Abono...',
+                text: 'Actualizando cuenta y enviando comprobante por WhatsApp...',
+                background: '#1e222b',
+                color: '#fff',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
             try {
-                await fetch(`/api/clientes/${id}/abonar`, {
+                const resp = await fetch(`/api/clientes/${id}/abonar`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(formValues)
                 });
-                playSfx('cash');
-                const resClientes = await fetch('/api/admin/clientes/autorizados').catch(()=>({json:()=>[]}));
-                clientesGlobal = await resClientes.json();
+                if (!resp.ok) throw new Error('Error al registrar el abono');
 
-                const resVentas = await fetch('/api/admin/ventas').catch(()=>({json:()=>[]}));
+                playSfx('cash');
+                const [resClientes, resVentas] = await Promise.all([
+                    fetch('/api/admin/clientes/autorizados').catch(()=>({json:()=>[]})),
+                    fetch('/api/admin/ventas').catch(()=>({json:()=>[]}))
+                ]);
+                clientesGlobal = await resClientes.json();
                 historialVentasGlobal = await resVentas.json();
 
-                cargarDeudores();
-            } catch(e){}
+                await cargarDeudores();
+
+                // Asegurar que la ficha del cliente quede abierta mostrando su nuevo historial
+                const colEl = document.getElementById(`cli-${id}`);
+                if (colEl) colEl.classList.add('show');
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top',
+                    icon: 'success',
+                    title: '¡Abono registrado en el historial y enviado a WhatsApp!',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    background: '#161a23',
+                    color: '#39ff14'
+                });
+            } catch(e){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo procesar el abono: ' + e.message,
+                    background: '#161a23',
+                    color: '#fff'
+                });
+            }
         }
     }
 
@@ -4151,6 +4223,8 @@
             if (res.ok && data.role === 'ADMIN') {
                 document.getElementById('securityLock').style.display = 'none';
                 document.getElementById('mainAdminUI').style.display = 'block';
+                GOMEZ.speak('Sistemas en línea. Bienvenido al panel de control Market Gomez Systems.');
+                cargarTodosLosSistemas();
             } else if (res.ok && data.role === 'CAJERO') {
                 window.location.href = '/pos';
             } else {
@@ -4189,6 +4263,7 @@
                 if (res.ok) {
                     if (secLock) secLock.style.display = 'none';
                     if (mainUI) mainUI.style.display = 'block';
+                    cargarTodosLosSistemas();
                 }
             })
             .catch(() => {});

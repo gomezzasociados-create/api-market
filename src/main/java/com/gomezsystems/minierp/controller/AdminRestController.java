@@ -226,9 +226,12 @@ public class AdminRestController {
         Cliente c = clienteRepository.findById(id).orElse(null);
         if (c != null && payload.containsKey("abono")) {
             Double abono = Double.parseDouble(payload.get("abono").toString());
-            String metodoPago = payload.containsKey("metodoPago") ? payload.get("metodoPago").toString() : "EFECTIVO";
-            
-            c.setDeudaActiva(Math.max(0, c.getDeudaActiva() - abono));
+            String metodoPago = payload.containsKey("metodoPago") && payload.get("metodoPago") != null
+                    ? payload.get("metodoPago").toString().toUpperCase() : "EFECTIVO";
+
+            Double deudaAnterior = c.getDeudaActiva() != null ? c.getDeudaActiva() : 0.0;
+            Double nuevaDeuda = Math.max(0.0, deudaAnterior - abono);
+            c.setDeudaActiva(nuevaDeuda);
             clienteRepository.save(c);
 
             com.gomezsystems.minierp.model.Venta v = new com.gomezsystems.minierp.model.Venta();
@@ -236,25 +239,44 @@ public class AdminRestController {
             v.setMontoTotal(abono);
             v.setTipoPago("ABONO_" + metodoPago);
             v.setEstado("PAGADO");
-            v.setDetalle("Abono de deuda. Método: " + metodoPago);
+            v.setDetalle("Abono a deuda VIP (" + metodoPago + ")");
             v.setFechaHora(java.time.LocalDateTime.now());
+            v.setCierreAplicado(false);
             ventaRepository.save(v);
 
             // 📲 Enviar Notificación WhatsApp de Abono
             if (c.getTelefono() != null && !c.getTelefono().trim().isEmpty()) {
-                String defaultMsg = "💸 Hola *[NOMBRE]*, recibimos tu abono de *$[ABONO]* mediante [METODO].\n\n¡Muchas Gracias! \n📉 Tu saldo pendiente por pagar se actualizó a: *$[DEUDA]*.";
-                
-                // Si el cliente tiene plantilla personalizada, usarla. Sino usar la global. Sino usar la por defecto.
-                String msgTemplate = c.getPlantillaMsgAbono() != null && !c.getPlantillaMsgAbono().trim().isEmpty() 
-                                     ? c.getPlantillaMsgAbono() 
-                                     : ajusteRepository.findById("ROBOT_MSG_ABONO").map(a -> a.getValor()).orElse(defaultMsg);
-                
+                Double limitePersonalizado = c.getCupoMaximo() != null ? c.getCupoMaximo() : 100000.0;
+                Double cupoDisponible = Math.max(0.0, limitePersonalizado - nuevaDeuda);
+
+                String defaultMsg = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
+                        "━━━━━━━━━━━━━━━━━━━━\n" +
+                        "✅ *COMPROBANTE DE ABONO / PAGO VIP* ✅\n\n" +
+                        "Hola *[NOMBRE]*, hemos procesado tu abono exitosamente:\n\n" +
+                        "💵 *Monto abonado:* $[MONTO] ([METODO])\n" +
+                        "📊 *Deuda anterior:* $[DEUDA_ANTERIOR]\n" +
+                        "📉 *NUEVO SALDO PENDIENTE:* $[DEUDA]\n" +
+                        "🟢 *CUPO DISPONIBLE:* $[CUPO_DISPONIBLE]\n" +
+                        "━━━━━━━━━━━━━━━━━━━━\n" +
+                        "_¡Muchas gracias por tu pago y puntualidad!_";
+
+                String msgTemplate = c.getPlantillaMsgAbono() != null && !c.getPlantillaMsgAbono().trim().isEmpty()
+                        ? c.getPlantillaMsgAbono()
+                        : ajusteRepository.findById("ROBOT_MSG_ABONO")
+                                .map(a -> a.getValor())
+                                .filter(val -> val != null && !val.trim().isEmpty())
+                                .orElse(defaultMsg);
+
                 String msg = msgTemplate
-                        .replace("[NOMBRE]", c.getNombre())
+                        .replace("[NOMBRE]", c.getNombre() != null ? c.getNombre() : "Cliente")
+                        .replace("[MONTO]", String.valueOf(Math.round(abono)))
                         .replace("[ABONO]", String.valueOf(Math.round(abono)))
                         .replace("[METODO]", metodoPago)
-                        .replace("[DEUDA]", String.valueOf(Math.round(c.getDeudaActiva())));
-                
+                        .replace("[DEUDA_ANTERIOR]", String.valueOf(Math.round(deudaAnterior)))
+                        .replace("[DEUDA]", String.valueOf(Math.round(nuevaDeuda)))
+                        .replace("[CUPO_DISPONIBLE]", String.valueOf(Math.round(cupoDisponible)))
+                        .replace("[CUPO_MAXIMO]", String.valueOf(Math.round(limitePersonalizado)));
+
                 evolutionApiService.enviarMensajeFiado(c.getTelefono(), msg);
             }
 
@@ -424,7 +446,12 @@ public class AdminRestController {
 
     @GetMapping("/ventas")
     public List<com.gomezsystems.minierp.model.Venta> getVentas() {
-        return ventaRepository.findAll();
+        List<com.gomezsystems.minierp.model.Venta> lista = ventaRepository.findAll();
+        lista.sort((v1, v2) -> Long.compare(
+                v2.getId() != null ? v2.getId() : 0L,
+                v1.getId() != null ? v1.getId() : 0L
+        ));
+        return lista;
     }
 
     @GetMapping("/proveedores")

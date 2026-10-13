@@ -119,25 +119,38 @@ public class CheckoutController {
                     nuevaVenta.setCliente(c);
                     nuevaVenta.setTipoPago("FIADO");
                     nuevaVenta.setEstado("PENDIENTE");
+                    ventaRepository.save(nuevaVenta);
 
                     // G.O.M.E.Z. ENVÍA WHATSAPP INMEDIATO
-                    if(c.getTelefono() != null && !c.getTelefono().isEmpty()) {
-                        String msjWhatsApp = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
+                    if(c.getTelefono() != null && !c.getTelefono().trim().isEmpty()) {
+                        String defaultMsg = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
                                 "━━━━━━━━━━━━━━━━━━━━\n" +
                                 "✨ *COMPROBANTE DE COMPRA A CRÉDITO VIP* ✨\n\n" +
-                                "Hola *" + c.getNombre() + "*. Se ha registrado un nuevo cargo en tu cuenta VIP:\n\n" +
-                                "*🛒 DETALLE DE COMPRA:*\n" + ticketFinalStr + "\n\n" +
-                                "💵 *Monto de esta compra:* $" + totalVenta + "\n" +
-                                "📊 *Deuda Anterior:* $" + Math.round(deudaAnterior) + "\n\n" +
-                                "🔴 *NUEVA DEUDA TOTAL:* $" + Math.round(deudaNueva) + "\n" +
-                                "🟢 *CUPO DISPONIBLE:* $" + Math.round(cupoDisponible) + "\n" +
+                                "Hola *[NOMBRE]*. Se ha registrado un nuevo cargo en tu cuenta VIP:\n\n" +
+                                "*🛒 DETALLE DE COMPRA:*\n[DETALLE]\n\n" +
+                                "💵 *Monto de esta compra:* $[TOTAL]\n" +
+                                "📊 *Deuda Anterior:* $[DEUDA_ANTERIOR]\n\n" +
+                                "🔴 *NUEVA DEUDA TOTAL:* $[DEUDA]\n" +
+                                "🟢 *CUPO DISPONIBLE:* $[CUPO_DISPONIBLE]\n" +
                                 "━━━━━━━━━━━━━━━━━━━━\n" +
                                 "_Gracias por confiar en nosotros. Cuentas claras conservan amistades._";
 
+                        String msgTemplate = (c.getPlantillaMsgCompra() != null && !c.getPlantillaMsgCompra().trim().isEmpty())
+                                ? c.getPlantillaMsgCompra()
+                                : defaultMsg;
+
+                        String msjWhatsApp = msgTemplate
+                                .replace("[NOMBRE]", c.getNombre() != null ? c.getNombre() : "Cliente")
+                                .replace("[TOTAL]", String.valueOf(totalVenta))
+                                .replace("[MONTO]", String.valueOf(totalVenta))
+                                .replace("[DETALLE]", ticketFinalStr)
+                                .replace("[DEUDA_ANTERIOR]", String.valueOf(Math.round(deudaAnterior)))
+                                .replace("[DEUDA]", String.valueOf(Math.round(deudaNueva)))
+                                .replace("[CUPO_DISPONIBLE]", String.valueOf(Math.round(cupoDisponible)))
+                                .replace("[CUPO_MAXIMO]", String.valueOf(Math.round(limitePersonalizado)));
+
                         evolutionApiService.enviarMensajeFiado(c.getTelefono(), msjWhatsApp);
                     }
-
-                    ventaRepository.save(nuevaVenta);
 
                     response.put("status", "ok");
                     response.put("mensaje", "Venta registrada con éxito. Detalle enviado al WhatsApp del cliente.");
@@ -197,7 +210,7 @@ public class CheckoutController {
         String query = q.toLowerCase().trim();
         List<Cliente> todos = clienteRepository.findAll();
         List<Cliente> autorizados = todos.stream()
-                .filter(c -> c.getEtiqueta() != null && c.getEtiqueta().toUpperCase().contains("VIP"))
+                .filter(c -> c.getEtiqueta() != null && (c.getEtiqueta().toUpperCase().contains("VIP") || c.getEtiqueta().toUpperCase().contains("CREDITO")))
                 .filter(c -> (c.getNombre() != null && c.getNombre().toLowerCase().contains(query)) ||
                         (c.getDni() != null && c.getDni().toLowerCase().contains(query)) ||
                         (c.getTelefono() != null && c.getTelefono().toLowerCase().contains(query)))

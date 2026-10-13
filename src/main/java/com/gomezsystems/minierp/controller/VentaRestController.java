@@ -53,16 +53,21 @@ public class VentaRestController {
 
             System.out.println("🔍 [DEBUG-CAJA] Tipo de pago recibido: " + tipo);
 
-            // DEDUCCIÓN DE INVENTARIO FÍSICO
-            if (payload.containsKey("items")) {
+            // DEDUCCIÓN DE INVENTARIO FÍSICO (Null-safe)
+            if (payload.containsKey("items") && payload.get("items") instanceof List) {
                 List<Map<String, Object>> items = (List<Map<String, Object>>) payload.get("items");
                 for (Map<String, Object> item : items) {
-                    Long prodId = Long.parseLong(item.get("id").toString());
-                    Double cantidad = Double.parseDouble(item.get("cantidad").toString());
-                    Producto p = productoRepository.findById(prodId).orElse(null);
-                    if (p != null) {
-                        p.setStock(p.getStock() - cantidad);
-                        productoRepository.save(p);
+                    try {
+                        Long prodId = Long.parseLong(item.get("id").toString());
+                        Double cantidad = Double.parseDouble(item.get("cantidad").toString());
+                        Producto p = productoRepository.findById(prodId).orElse(null);
+                        if (p != null) {
+                            Double stockActual = p.getStock() != null ? p.getStock() : 0.0;
+                            p.setStock(Math.max(0.0, stockActual - cantidad));
+                            productoRepository.save(p);
+                        }
+                    } catch (Exception itemEx) {
+                        System.err.println("⚠️ [DEBUG-CAJA] Error descontando stock de ítem: " + itemEx.getMessage());
                     }
                 }
             }
@@ -70,9 +75,11 @@ public class VentaRestController {
             Venta v = new Venta();
             v.setMontoTotal(total);
             v.setDetalle(detalle);
+            v.setFechaHora(java.time.LocalDateTime.now());
+            v.setCierreAplicado(false);
 
-            // Aceptamos tanto "FIADO" como "CREDITO"
-            if ("FIADO".equals(tipo) || "CREDITO".equals(tipo)) {
+            // Aceptamos tanto "FIADO" como "CREDITO" o "CREDITO_VIP"
+            if ("FIADO".equals(tipo) || "CREDITO".equals(tipo) || "CREDITO_VIP".equals(tipo)) {
 
                 if (!payload.containsKey("clienteId") || payload.get("clienteId") == null) {
                     System.out.println("❌ [DEBUG-CAJA] Abortado: No se envió el ID del cliente.");
@@ -83,16 +90,21 @@ public class VentaRestController {
                 Cliente c = clienteRepository.findById(clienteId).orElse(null);
 
                 if (c != null) {
-                    System.out.println("🔍 [DEBUG-CAJA] Cliente detectado: " + c.getNombre());
+                    System.out.println("🔍 [DEBUG-CAJA] Cliente detectado: " + c.getNombre() + " (ID: " + c.getId() + ")");
 
                     v.setTipoPago("FIADO");
                     v.setEstado("PENDIENTE");
                     v.setCliente(c);
 
-                    // ACTUALIZAR LA DEUDA EN BD
+                    // 1. ACTUALIZAR LA DEUDA EN BD
                     Double deudaAnterior = c.getDeudaActiva() != null ? c.getDeudaActiva() : 0.0;
-                    c.setDeudaActiva(deudaAnterior + total);
+                    Double nuevaDeuda = deudaAnterior + total;
+                    c.setDeudaActiva(nuevaDeuda);
                     clienteRepository.save(c);
+
+                    // 2. GUARDAR LA VENTA EN EL HISTORIAL INMEDIATAMENTE
+                    ventaRepository.save(v);
+                    System.out.println("✅ [DEBUG-CAJA] Compra a crédito VIP guardada en historial (Ticket ID: " + v.getId() + ").");
 
                     // ========================================================
                     // 🛡️ BLINDAJE DEL MOTOR G.O.M.E.Z. (COMPROBANTE WHATSAPP VIP)
@@ -102,7 +114,7 @@ public class VentaRestController {
                             System.out.println("✅ [DEBUG-CAJA] Preparando WhatsApp para " + c.getTelefono());
 
                             Double limitePersonalizado = c.getCupoMaximo() != null ? c.getCupoMaximo() : 100000.0;
-                            Double cupoDisponible = Math.max(0, limitePersonalizado - c.getDeudaActiva());
+                            Double cupoDisponible = Math.max(0.0, limitePersonalizado - nuevaDeuda);
 
                             String defaultMsg = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
                                     "━━━━━━━━━━━━━━━━━━━━\n" +
@@ -123,9 +135,10 @@ public class VentaRestController {
                             String msg = msgTemplate
                                     .replace("[NOMBRE]", c.getNombre() != null ? c.getNombre() : "Cliente")
                                     .replace("[TOTAL]", String.valueOf(Math.round(total)))
-                                    .replace("[DETALLE]", detalle)
+                                    .replace("[MONTO]", String.valueOf(Math.round(total)))
+                                    .replace("[DETALLE]", detalle != null ? detalle.trim() : "")
                                     .replace("[DEUDA_ANTERIOR]", String.valueOf(Math.round(deudaAnterior)))
-                                    .replace("[DEUDA]", String.valueOf(Math.round(c.getDeudaActiva())))
+                                    .replace("[DEUDA]", String.valueOf(Math.round(nuevaDeuda)))
                                     .replace("[CUPO_DISPONIBLE]", String.valueOf(Math.round(cupoDisponible)))
                                     .replace("[CUPO_MAXIMO]", String.valueOf(Math.round(limitePersonalizado)));
 
@@ -143,6 +156,8 @@ public class VentaRestController {
                     }
                     // ========================================================
 
+                    return "OK";
+
                 } else {
                     System.out.println("❌ [DEBUG-CAJA] Abortado: El ID (" + clienteId + ") no existe.");
                     return "ERROR_CLIENTE";
@@ -152,11 +167,9 @@ public class VentaRestController {
                 // CORRECCIÓN BUG: Ahora respeta si es TRANSFERENCIA, MERCADOPAGO o CONTADO
                 v.setTipoPago(tipo);
                 v.setEstado("PAGADO");
+                ventaRepository.save(v);
+                return "OK";
             }
-
-            // AHORA SÍ: Guardamos la venta en el registro general de la caja
-            ventaRepository.save(v);
-            return "OK";
 
         } catch (Exception e) {
             System.err.println("❌ [DEBUG-CAJA] Excepción crítica general: " + e.getMessage());

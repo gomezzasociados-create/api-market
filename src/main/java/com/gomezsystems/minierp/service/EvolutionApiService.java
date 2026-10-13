@@ -34,13 +34,19 @@ public class EvolutionApiService {
     @Value("${evolution.apikey:9FCB1D6E24E9-4815-B408-2EC8C2735312}")
     private String defaultApikey;
 
+    private final HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(Duration.ofSeconds(15))
+            .build();
+
     @PostConstruct
     public void autoSanarConfiguracion() {
+        System.setProperty("java.net.preferIPv4Stack", "true");
         try {
-            // 1. Auto-sanar URL si está vacía o contiene dominios caídos/obsoletos
+            // 1. Auto-sanar URL si está vacía o no apunta al servidor oficial api.gomezsystems.online
             Ajuste ajusteUrl = ajusteRepository.findById("EVOLUTION_API_URL").orElse(null);
             boolean urlInvalida = (ajusteUrl == null || ajusteUrl.getValor() == null || ajusteUrl.getValor().trim().isEmpty()
-                    || ajusteUrl.getValor().contains("gomezz.space") || ajusteUrl.getValor().contains("localhost"));
+                    || !ajusteUrl.getValor().contains("api.gomezsystems.online"));
             if (urlInvalida) {
                 if (ajusteUrl == null) ajusteUrl = new Ajuste("EVOLUTION_API_URL", "https://api.gomezsystems.online/manager/");
                 else ajusteUrl.setValor("https://api.gomezsystems.online/manager/");
@@ -76,7 +82,7 @@ public class EvolutionApiService {
         if (url != null) {
             url = url.trim();
             // Si la base de datos guardó un dominio obsoleto que ya no responde
-            if (url.contains("gomezz.space") || url.contains("localhost")) {
+            if (url.contains("gomezz.space") || url.contains("localhost") || !url.startsWith("http")) {
                 url = defaultEvolutionUrl;
             }
             while (url.endsWith("/")) {
@@ -96,14 +102,16 @@ public class EvolutionApiService {
         return ajusteRepository.findById("EVOLUTION_INSTANCE")
                 .map(Ajuste::getValor)
                 .filter(v -> v != null && !v.trim().isEmpty())
-                .orElse(defaultInstanceName);
+                .orElse(defaultInstanceName)
+                .trim();
     }
 
     public String getApikey() {
         return ajusteRepository.findById("EVOLUTION_APIKEY")
                 .map(Ajuste::getValor)
                 .filter(v -> v != null && !v.trim().isEmpty())
-                .orElse(defaultApikey);
+                .orElse(defaultApikey)
+                .trim();
     }
 
     public String formatearNumeroWhatsApp(String numeroDestino) {
@@ -112,7 +120,7 @@ public class EvolutionApiService {
         }
 
         String numFinal = numeroDestino.replaceAll("[^0-9]", "");
-        if (numFinal.startsWith("0")) {
+        while (numFinal.startsWith("0")) {
             numFinal = numFinal.substring(1);
         }
 
@@ -149,37 +157,33 @@ public class EvolutionApiService {
         }
         String endpoint = url + "/message/sendText/" + getInstanceName();
 
-        try {
-            Map<String, Object> bodyMap = new HashMap<>();
-            bodyMap.put("number", numFinal);
-            bodyMap.put("text", mensajeCompleto);
-            String jsonPayload = objectMapper.writeValueAsString(bodyMap);
+        for (int intento = 1; intento <= 2; intento++) {
+            try {
+                Map<String, Object> bodyMap = new HashMap<>();
+                bodyMap.put("number", numFinal);
+                bodyMap.put("text", mensajeCompleto);
+                String jsonPayload = objectMapper.writeValueAsString(bodyMap);
 
-            HttpClient client = HttpClient.newBuilder()
-                    .connectTimeout(Duration.ofSeconds(10))
-                    .build();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(endpoint))
+                        .header("Content-Type", "application/json")
+                        .header("apikey", getApikey())
+                        .timeout(Duration.ofSeconds(20))
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                        .build();
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(endpoint))
-                    .header("Content-Type", "application/json")
-                    .header("apikey", getApikey())
-                    .timeout(Duration.ofSeconds(15))
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
-                    .build();
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() >= 200 && response.statusCode() < 300) {
-                System.out.println("✅ EVOLUTION API: Mensaje enviado exitosamente a " + numFinal + " (HTTP " + response.statusCode() + ")");
-                return true;
-            } else {
-                System.err.println("❌ EVOLUTION API ERROR al enviar a " + numFinal + " : (" + response.statusCode() + ") " + response.body());
-                return false;
+                if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                    System.out.println("✅ EVOLUTION API: Mensaje enviado exitosamente a " + numFinal + " (HTTP " + response.statusCode() + ")");
+                    return true;
+                } else {
+                    System.err.println("❌ EVOLUTION API ERROR (intento " + intento + ") al enviar a " + numFinal + " : (" + response.statusCode() + ") " + response.body());
+                }
+            } catch (Exception e) {
+                System.err.println("❌ EVOLUTION API EXCEPTION (intento " + intento + " a " + endpoint + "): " + e.getMessage());
             }
-
-        } catch (Exception e) {
-            System.err.println("❌ EVOLUTION API EXCEPTION: " + e.getMessage());
-            return false;
         }
+        return false;
     }
 }

@@ -88,12 +88,13 @@ public class ClienteRestController {
         if (cliente == null) return ResponseEntity.badRequest().body("Cliente no encontrado");
 
         Double montoAbono = Double.valueOf(payload.get("abono").toString());
+        String metodo = payload.get("metodoPago") != null ? payload.get("metodoPago").toString().toUpperCase() : "EFECTIVO";
 
         // Calculamos la deuda ANTES del abono
         Double deudaAnterior = cliente.getDeudaActiva() != null ? cliente.getDeudaActiva() : 0.0;
 
-        // Calculamos la NUEVA deuda
-        Double nuevaDeuda = deudaAnterior - montoAbono;
+        // Calculamos la NUEVA deuda (sin bajar de 0)
+        Double nuevaDeuda = Math.max(0.0, deudaAnterior - montoAbono);
 
         // Guardamos el nuevo saldo en el perfil
         cliente.setDeudaActiva(nuevaDeuda);
@@ -105,18 +106,15 @@ public class ClienteRestController {
         try {
             Venta registroAbono = new Venta();
             registroAbono.setMontoTotal(montoAbono);
-
-            // Si el frontend envía el método (Efectivo, Transf, etc), lo tomamos, si no, es Efectivo
-            String metodo = payload.get("metodoPago") != null ? payload.get("metodoPago").toString().toUpperCase() : "EFECTIVO";
-
-            // Le ponemos ABONO_ para que el frontend lo reconozca y pinte de verde
             registroAbono.setTipoPago("ABONO_" + metodo);
             registroAbono.setEstado("PAGADO");
             registroAbono.setCliente(cliente);
             registroAbono.setDetalle("Abono a deuda VIP (" + metodo + ")");
+            registroAbono.setFechaHora(java.time.LocalDateTime.now());
+            registroAbono.setCierreAplicado(false);
 
             ventaRepository.save(registroAbono);
-            System.out.println("✅ [DEBUG] Historial de abono guardado correctamente en Caja.");
+            System.out.println("✅ [DEBUG] Historial de abono guardado correctamente en Caja (Ticket ID: " + registroAbono.getId() + ").");
         } catch (Exception ex) {
             System.err.println("⚠️ [DEBUG] Error guardando historial de abono: " + ex.getMessage());
         }
@@ -125,21 +123,41 @@ public class ClienteRestController {
         // --- MOTOR G.O.M.E.Z. ---
         try {
             if (cliente.getTelefono() != null && !cliente.getTelefono().trim().isEmpty()) {
+                Double limitePersonalizado = cliente.getCupoMaximo() != null ? cliente.getCupoMaximo() : 100000.0;
+                Double cupoDisponible = Math.max(0.0, limitePersonalizado - nuevaDeuda);
+
+                String defaultMsg = "🤖 *MARKET GOMEZ SYSTEMS INFORMA*\n" +
+                        "━━━━━━━━━━━━━━━━━━━━\n" +
+                        "✅ *COMPROBANTE DE ABONO / PAGO VIP* ✅\n\n" +
+                        "Hola *[NOMBRE]*, hemos procesado tu abono exitosamente:\n\n" +
+                        "💵 *Monto abonado:* $[MONTO] ([METODO])\n" +
+                        "📊 *Deuda anterior:* $[DEUDA_ANTERIOR]\n" +
+                        "📉 *NUEVO SALDO PENDIENTE:* $[DEUDA]\n" +
+                        "🟢 *CUPO DISPONIBLE:* $[CUPO_DISPONIBLE]\n" +
+                        "━━━━━━━━━━━━━━━━━━━━\n" +
+                        "_¡Muchas gracias por tu pago y puntualidad!_";
 
                 String plantillaAUsar = (cliente.getPlantillaMsgAbono() != null && !cliente.getPlantillaMsgAbono().trim().isEmpty())
                         ? cliente.getPlantillaMsgAbono()
-                        : ajusteRepository.findById("ROBOT_PLANTILLA_MSJ").map(a -> a.getValor()).orElse("✅ Hola [NOMBRE], recibimos tu abono de $[MONTO].");
+                        : ajusteRepository.findById("ROBOT_MSG_ABONO")
+                                .map(a -> a.getValor())
+                                .filter(val -> val != null && !val.trim().isEmpty())
+                                .orElse(defaultMsg);
 
                 String mensajeFinal = plantillaAUsar
                         .replace("[NOMBRE]", cliente.getNombre() != null ? cliente.getNombre() : "Cliente")
                         .replace("[MONTO]", String.valueOf(Math.round(montoAbono)))
+                        .replace("[ABONO]", String.valueOf(Math.round(montoAbono)))
+                        .replace("[METODO]", metodo)
                         .replace("[DEUDA_ANTERIOR]", String.valueOf(Math.round(deudaAnterior)))
-                        .replace("[DEUDA]", String.valueOf(Math.round(nuevaDeuda)));
+                        .replace("[DEUDA]", String.valueOf(Math.round(nuevaDeuda)))
+                        .replace("[CUPO_DISPONIBLE]", String.valueOf(Math.round(cupoDisponible)))
+                        .replace("[CUPO_MAXIMO]", String.valueOf(Math.round(limitePersonalizado)));
 
                 whatsappService.enviarMensajeTexto(cliente.getTelefono(), mensajeFinal);
             }
         } catch (Exception e) {
-            System.err.println("⚠️ [G.O.M.E.Z.] Error enviando WhatsApp: " + e.getMessage());
+            System.err.println("⚠️ [G.O.M.E.Z.] Error enviando WhatsApp de abono: " + e.getMessage());
         }
 
         return ResponseEntity.ok("OK");
